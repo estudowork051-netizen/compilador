@@ -5,12 +5,15 @@
     <string name="moves_label">Movimentos: %d</string>
     <string name="time_label">Tempo: %s</string>
     <string name="btn_undo">Desfazer</string>
+    <string name="btn_hint">Dica</string>
     <string name="btn_restart">Reiniciar</string>
     <string name="btn_scenery">Cenários</string>
     <string name="btn_settings">Configurações</string>
     <string name="btn_next_level">Próximo Nível</string>
     <string name="btn_play_again">Jogar Novamente</string>
     <string name="btn_close">Fechar</string>
+    <string name="hint_no_moves">Nenhum movimento evidente. Compre uma carta do monte!</string>
+    <string name="hint_found">Movimento sugerido destacado na mesa!</string>
     
     <!-- Cenários -->
     <string name="scenery_enchanted_forest">Floresta Encantada</string>

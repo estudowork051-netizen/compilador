@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="#E60D1524"
+                android:endColor="#D9080E18"
+                android:type="linear" />
+        </shape>
+    </item>
+    <!-- Linha de detalhe inferior em ouro nobre translúcido -->
+    <item android:gravity="bottom">
+        <shape android:shape="rectangle">
+            <size android:height="1.5dp" />
+            <solid android:color="#40D4AF37" />
+        </shape>
+    </item>
+</layer-list>

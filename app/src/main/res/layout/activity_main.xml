@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/primary_dark">
 
-    <!-- Custom Canvas Solitaire View (Fills entire screen behind HUD) -->
+    <!-- Custom Canvas Solitaire View (Preenche a tela inteira atrás do HUD) -->
     <com.paciencia.solitaire.ui.SolitaireView
         android:id="@+id/solitaireView"
         android:layout_width="0dp"
@@ -17,39 +17,84 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Top HUD Bar -->
+    <!-- Top HUD Bar: Estilo Fantasia Sombria Unificado -->
     <LinearLayout
         android:id="@+id/topHudBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/hud_background"
+        android:background="@drawable/hud_top_background"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvLevel"
-            android:layout_width="0dp"
+        <!-- Avatar & Nível combinados harmonicamente -->
+        <LinearLayout
+            android:id="@+id/playerAvatarBadge"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/level_label"
-            android:textColor="@color/gold"
-            android:textSize="16sp" />
+            android:background="@drawable/badge_gold_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="4dp">
 
-        <!-- Saldo de Moedas -->
+            <TextView
+                android:id="@+id/tvAvatarIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🤠"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="sans-serif-bold"
+                android:text="@string/level_label"
+                android:textColor="@color/gold"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tvAvatarName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="sans-serif"
+                android:text="Aventureiro"
+                android:textColor="@color/hud_text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Saldo de Moedas no Centro -->
         <LinearLayout
             android:id="@+id/btnCoinsDisplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:background="@drawable/badge_gold_border"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="4dp">
 
             <ImageView
                 android:layout_width="16dp"
@@ -65,27 +110,39 @@
                 android:fontFamily="sans-serif-black"
                 android:text="0"
                 android:textColor="@color/gold"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvMoves"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/moves_label"
-            android:textColor="@color/hud_text_primary"
-            android:textSize="14sp" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-        <TextView
-            android:id="@+id/tvTime"
+        <!-- Estatísticas: Movimentos e Tempo -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/time_label"
-            android:textColor="@color/hud_text_secondary"
-            android:textSize="14sp" />
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/time_label"
+                android:textColor="@color/hud_text_primary"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvMoves"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/moves_label"
+                android:textColor="@color/hud_text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Bottom HUD Controls -->
@@ -93,11 +150,11 @@
         android:id="@+id/bottomHudBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/hud_background"
+        android:background="@drawable/hud_bottom_background"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -113,11 +170,11 @@
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="6dp">
+            android:padding="5dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:contentDescription="@string/btn_undo"
                 android:src="@drawable/ic_undo"
                 app:tint="@color/hud_text_primary" />
@@ -126,6 +183,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="@string/btn_undo"
                 android:textColor="@color/hud_text_secondary"
                 android:textSize="11sp" />
@@ -142,11 +200,11 @@
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="6dp">
+            android:padding="5dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:contentDescription="@string/btn_restart"
                 android:src="@drawable/ic_restart"
                 app:tint="@color/hud_text_primary" />
@@ -155,6 +213,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="@string/btn_restart"
                 android:textColor="@color/hud_text_secondary"
                 android:textSize="11sp" />
@@ -171,11 +230,11 @@
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="6dp">
+            android:padding="5dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:contentDescription="@string/btn_scenery"
                 android:src="@drawable/ic_scenery"
                 app:tint="@color/hud_text_primary" />
@@ -184,6 +243,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="@string/btn_scenery"
                 android:textColor="@color/hud_text_secondary"
                 android:textSize="11sp" />
@@ -200,11 +260,11 @@
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="6dp">
+            android:padding="5dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:contentDescription="@string/btn_shop"
                 android:src="@drawable/ic_shop"
                 app:tint="@color/gold" />
@@ -213,6 +273,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-bold"
                 android:text="@string/btn_shop"
                 android:textColor="@color/gold"
                 android:textSize="11sp" />
@@ -229,11 +290,11 @@
             android:focusable="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="6dp">
+            android:padding="5dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:contentDescription="@string/btn_settings"
                 android:src="@drawable/ic_settings"
                 app:tint="@color/hud_text_primary" />
@@ -242,47 +303,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="@string/btn_settings"
                 android:textColor="@color/hud_text_secondary"
                 android:textSize="11sp" />
         </LinearLayout>
-    </LinearLayout>
-
-    <!-- Avatar do Jogador (Discreto no canto inferior esquerdo) -->
-    <LinearLayout
-        android:id="@+id/playerAvatarBadge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/dialog_background"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomHudBar"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/tvAvatarIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🤠"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/tvAvatarName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="Aventureiro"
-            android:textColor="@color/hud_text_primary"
-            android:textSize="12sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

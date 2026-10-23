@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/dialog_bg" />
+    <gradient
+        android:angle="270"
+        android:startColor="#1A2438"
+        android:centerColor="#121A28"
+        android:endColor="#0B101A"
+        android:type="linear" />
     <stroke
         android:width="2dp"
-        android:color="@color/dialog_stroke" />
-    <corners android:radius="16dp" />
+        android:color="#4D3B5C7D" />
+    <corners android:radius="14dp" />
 </shape>

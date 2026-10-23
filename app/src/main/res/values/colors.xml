@@ -17,15 +17,25 @@
     <color name="card_slot_border">#4B5563</color>
     <color name="card_slot_bg">#20FFFFFF</color>
     
-    <!-- HUD e Diálogos -->
-    <color name="hud_background">#CC0F172A</color>
+    <!-- HUD e Diálogos Fantasia Sombria -->
+    <color name="gold_noble">#D4AF37</color>
+    <color name="gold_dark">#926B1E</color>
+    <color name="gold_glow">#40FBBF24</color>
+    <color name="stone_dark">#111622</color>
+    <color name="stone_surface">#182030</color>
+    <color name="stone_border">#2A364F</color>
+    <color name="bronze_border">#5C4033</color>
+    <color name="parchment_face">#FFFDF9</color>
+    <color name="parchment_aged">#F5EEE1</color>
+    
+    <color name="hud_background">#E00C121F</color>
     <color name="hud_text_primary">#F8FAFC</color>
     <color name="hud_text_secondary">#94A3B8</color>
-    <color name="dialog_bg">#1E293B</color>
-    <color name="dialog_stroke">#334155</color>
-    <color name="button_bg">#2563EB</color>
-    <color name="button_bg_gold">#D97706</color>
-    <color name="button_pressed">#1D4ED8</color>
+    <color name="dialog_bg">#141C2B</color>
+    <color name="dialog_stroke">#3B4861</color>
+    <color name="button_bg">#1E2E4A</color>
+    <color name="button_bg_gold">#B45309</color>
+    <color name="button_pressed">#2E4369</color>
     
     <!-- Paletas dos 5 Cenários -->
     <!-- 1. Floresta Encantada -->

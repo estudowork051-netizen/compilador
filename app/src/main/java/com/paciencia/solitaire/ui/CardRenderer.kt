@@ -21,12 +21,17 @@ import com.paciencia.solitaire.scenery.SceneryTheme
 class CardRenderer {
 
     private val cardFacePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.WHITE
         style = Paint.Style.FILL
     }
 
+    private val cardInnerBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = 0x18D4AF37.toInt() // Filigrana dourada interna sutil
+        style = Paint.Style.STROKE
+        strokeWidth = 1f
+    }
+
     private val cardBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0x26000000.toInt()
+        color = 0x33000000.toInt()
         style = Paint.Style.STROKE
         strokeWidth = 1.5f
     }
@@ -44,7 +49,7 @@ class CardRenderer {
     private val cardBackPatternPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = 0x1AFFFFFF.toInt()
         style = Paint.Style.STROKE
-        strokeWidth = 1f
+        strokeWidth = 1.2f
     }
 
     private val redPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -165,9 +170,19 @@ class CardRenderer {
         height: Float,
         cornerRadius: Float
     ) {
-        // Fundo branco limpo
+        // Fundo em pergaminho nobre com gradiente marfim suave
+        cardFacePaint.shader = LinearGradient(
+            x, y, x, y + height,
+            0xFFFFFDF9.toInt(), 0xFFF3EFE6.toInt(),
+            Shader.TileMode.CLAMP
+        )
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, cardFacePaint)
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, cardBorderPaint)
+
+        // Moldura interna de filigrana dourada suave
+        val innerPad = width * 0.045f
+        shadowRectF.set(x + innerPad, y + innerPad, x + width - innerPad, y + height - innerPad)
+        canvas.drawRoundRect(shadowRectF, cornerRadius * 0.7f, cornerRadius * 0.7f, cardInnerBorderPaint)
 
         val suitPaint = if (card.isRed) redPaint else blackPaint
         textPaint.color = suitPaint.color
@@ -221,25 +236,32 @@ class CardRenderer {
     ) {
         when (card.rank) {
             Rank.ACE -> {
-                // Grande naipe decorativo central
-                val largeSize = width * 0.42f
+                // Grande naipe monumental com aura radiante
+                val largeSize = width * 0.44f
                 drawSuit(canvas, card.suit, cx, cy, largeSize, suitPaint)
             }
             Rank.JACK, Rank.QUEEN, Rank.KING -> {
-                // Borda nobre interna dourada e letra monumental da figura
-                val boxWidth = width * 0.55f
-                val boxHeight = height * 0.45f
+                // Caixa nobre com filigrana dourada e marca d'água heráldica
+                val boxWidth = width * 0.58f
+                val boxHeight = height * 0.46f
                 rectF.set(cx - boxWidth * 0.5f, cy - boxHeight * 0.5f, cx + boxWidth * 0.5f, cy + boxHeight * 0.5f)
-                courtBoxPaint.color = 0x33D4AF37.toInt()
+                courtBoxPaint.color = 0x44D4AF37.toInt()
                 courtBoxPaint.strokeWidth = 1.8f
                 canvas.drawRoundRect(rectF, 6f, 6f, courtBoxPaint)
 
+                // Marca d'água sutil do naipe por trás da letra da figura
+                val watermarkSize = width * 0.28f
+                val oldAlpha = suitPaint.alpha
+                suitPaint.alpha = 24
+                drawSuit(canvas, card.suit, cx, cy - 2f, watermarkSize, suitPaint)
+                suitPaint.alpha = oldAlpha
+
                 courtTextPaint.color = suitPaint.color
                 courtTextPaint.textSize = width * 0.38f
-                canvas.drawText(card.rank.label, cx, cy + width * 0.14f, courtTextPaint)
+                canvas.drawText(card.rank.label, cx, cy + width * 0.13f, courtTextPaint)
 
                 // Pequeno naipe ornamental abaixo da letra
-                val smallSuitSize = width * 0.16f
+                val smallSuitSize = width * 0.15f
                 drawSuit(canvas, card.suit, cx, cy + boxHeight * 0.36f, smallSuitSize, suitPaint)
             }
             else -> {

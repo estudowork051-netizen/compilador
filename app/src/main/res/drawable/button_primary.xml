@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#40FFFFFF">
+    android:color="#40D4AF37">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/button_bg" />
-            <corners android:radius="10dp" />
+            <gradient
+                android:angle="270"
+                android:startColor="#253550"
+                android:endColor="#141E30"
+                android:type="linear" />
+            <stroke
+                android:width="1dp"
+                android:color="#4D4A6B8A" />
+            <corners android:radius="8dp" />
         </shape>
     </item>
 </ripple>

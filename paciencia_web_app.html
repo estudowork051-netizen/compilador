@@ -12,30 +12,34 @@
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
 body, html { width: 100%; height: 100%; overflow: hidden; background: #0B0F19; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; touch-action: none; }
 
-/* Top HUD */
+/* Top HUD — Fantasia Sombria */
 #hud-top {
-  position: absolute; top: 0; left: 0; right: 0; height: 54px;
-  background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(10px);
+  position: absolute; top: 0; left: 0; right: 0; height: 52px;
+  background: linear-gradient(180deg, rgba(13, 21, 36, 0.95), rgba(8, 14, 24, 0.92));
+  backdrop-filter: blur(12px);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 14px; color: #F8FAFC; z-index: 10; font-size: 13px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 12px; color: #F8FAFC; z-index: 10; font-size: 13px;
+  border-bottom: 1.5px solid rgba(212, 175, 55, 0.35);
 }
 .hud-badge {
   display: flex; align-items: center; gap: 6px; cursor: pointer;
-  background: rgba(255, 255, 255, 0.08); padding: 4px 10px; border-radius: 20px;
+  background: rgba(212, 175, 55, 0.12); padding: 4px 10px; border-radius: 8px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
 }
-.hud-badge:active { background: rgba(255, 255, 255, 0.16); }
+.hud-badge:active { background: rgba(212, 175, 55, 0.25); }
 .hud-coins {
   color: #FBBF24; font-weight: bold; display: flex; align-items: center; gap: 4px;
 }
-.level-badge { color: #FBBF24; font-weight: 800; font-size: 15px; }
+.level-badge { color: #FBBF24; font-weight: 800; font-size: 14px; }
 
-/* Bottom HUD */
+/* Bottom HUD — Fantasia Sombria */
 #hud-bottom {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 62px;
-  background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(10px);
+  position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+  background: linear-gradient(0deg, rgba(13, 21, 36, 0.95), rgba(8, 14, 24, 0.92));
+  backdrop-filter: blur(12px);
   display: flex; align-items: center; justify-content: space-around;
-  padding: 0 6px; z-index: 10; border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 6px; z-index: 10;
+  border-top: 1.5px solid rgba(212, 175, 55, 0.35);
 }
 .btn-control {
   background: none; border: none; color: #94A3B8; font-size: 11px;
@@ -55,9 +59,12 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: #0B0F19; f
   backdrop-filter: blur(6px);
 }
 .modal-content {
-  background: #111827; border: 1.5px solid #374151; border-radius: 18px;
+  background: linear-gradient(180deg, #182236, #0E1624);
+  border: 1.5px solid rgba(212, 175, 55, 0.45);
+  border-radius: 16px;
   max-width: 380px; width: 100%; padding: 20px; color: #F8FAFC; text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6); max-height: 90vh; display: flex; flex-direction: column;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.7), 0 0 24px rgba(212, 175, 55, 0.12);
+  max-height: 90vh; display: flex; flex-direction: column;
 }
 .modal h2 { color: #FBBF24; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
 .modal p { color: #94A3B8; font-size: 13px; line-height: 1.4; margin-bottom: 12px; }
@@ -746,12 +753,21 @@ function drawCard(card, x, y, isElevated) {
     // Padrão geométrico da skin
     drawSkinPattern(ctx, currentSkin.pattern, x + cw / 2, y + ch / 2, cw * 0.28, currentSkin.acc);
   } else {
-    // Face frontal
-    ctx.fillStyle = '#FFFFFF';
-    ctx.strokeStyle = '#D1D5DB';
-    ctx.lineWidth = 1;
+    // Face frontal em pergaminho marfim suave
+    let fg = ctx.createLinearGradient(x, y, x, y + ch);
+    fg.addColorStop(0, '#FFFDF9');
+    fg.addColorStop(1, '#F3EFE6');
+    ctx.fillStyle = fg;
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.22)';
+    ctx.lineWidth = 1.2;
     roundRect(ctx, x, y, cw, ch, 6);
     ctx.fill(); ctx.stroke();
+
+    // Moldura interna de filigrana dourada
+    ctx.strokeStyle = 'rgba(212, 175, 55, 0.25)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, x + 3, y + 3, cw - 6, ch - 6, 4);
+    ctx.stroke();
 
     ctx.fillStyle = card.suit.isRed ? '#E11D48' : '#0F172A';
     ctx.font = `bold ${cw * 0.22}px sans-serif`;
@@ -764,16 +780,22 @@ function drawCard(card, x, y, isElevated) {
     // Centro
     if (card.rank.val > 10) {
       // Borda nobre dourada nas figuras J, Q, K
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
-      ctx.lineWidth = 1.5;
-      roundRect(ctx, x + cw * 0.22, y + ch * 0.28, cw * 0.56, ch * 0.44, 4);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
+      ctx.lineWidth = 1.6;
+      roundRect(ctx, x + cw * 0.2, y + ch * 0.26, cw * 0.6, ch * 0.48, 5);
       ctx.stroke();
 
-      ctx.font = `serif bold ${cw * 0.36}px`;
+      // Marca d'água heráldica sutil
+      ctx.fillStyle = card.suit.isRed ? 'rgba(225, 29, 72, 0.12)' : 'rgba(15, 23, 42, 0.12)';
+      ctx.font = `${cw * 0.38}px sans-serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2 - 2);
+
+      ctx.fillStyle = card.suit.isRed ? '#E11D48' : '#0F172A';
+      ctx.font = `serif bold ${cw * 0.36}px`;
       ctx.fillText(card.rank.label, x + cw / 2, y + ch / 2 - 2);
       ctx.font = `${cw * 0.16}px sans-serif`;
-      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch * 0.64);
+      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch * 0.65);
     } else if (card.rank.val === 1) {
       ctx.font = `${cw * 0.42}px sans-serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';

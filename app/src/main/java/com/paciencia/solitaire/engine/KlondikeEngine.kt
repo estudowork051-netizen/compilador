@@ -235,4 +235,83 @@ class KlondikeEngine {
             is PileType.Tableau -> tableauPiles[type.index]
         }
     }
+
+    /**
+     * Identifica um movimento válido para orientar o jogador como dica.
+     */
+    fun findHint(): HintMove? {
+        // 1. Tenta mover do Waste para Fundação
+        val wasteTop = wastePile.top()
+        if (wasteTop != null) {
+            for (foundation in foundationPiles) {
+                if (MoveValidator.canMoveToFoundation(wasteTop, foundation)) {
+                    return HintMove(wastePile.type, foundation.type, wasteTop)
+                }
+            }
+        }
+
+        // 2. Tenta mover de Tableau para Fundação
+        for (tableau in tableauPiles) {
+            val top = tableau.top() ?: continue
+            for (foundation in foundationPiles) {
+                if (MoveValidator.canMoveToFoundation(top, foundation)) {
+                    return HintMove(tableau.type, foundation.type, top)
+                }
+            }
+        }
+
+        // 3. Tenta mover do Waste para Tableau
+        if (wasteTop != null) {
+            for (tableau in tableauPiles) {
+                if (MoveValidator.canMoveToTableau(listOf(wasteTop), tableau)) {
+                    return HintMove(wastePile.type, tableau.type, wasteTop)
+                }
+            }
+        }
+
+        // 4. Tenta mover sequências dentro do Tableau
+        for (sourceTableau in tableauPiles) {
+            val faceUpCards = sourceTableau.cards.filter { it.isFaceUp }
+            if (faceUpCards.isEmpty()) continue
+            for (i in faceUpCards.indices) {
+                val subSequence = faceUpCards.subList(i, faceUpCards.size)
+                val firstCard = subSequence.first()
+                for (destTableau in tableauPiles) {
+                    if (destTableau.type == sourceTableau.type) continue
+                    if (MoveValidator.canMoveToTableau(subSequence, destTableau)) {
+                        // Evita mover Rei de coluna onde é a única carta para outra coluna vazia
+                        if (firstCard.rank == Rank.KING && sourceTableau.cards.size == subSequence.size && destTableau.isEmpty) {
+                            continue
+                        }
+                        return HintMove(sourceTableau.type, destTableau.type, firstCard)
+                    }
+                }
+            }
+        }
+
+        // 5. Se houver cartas no monte ou possibilidade de reciclagem
+        if (stockPile.isNotEmpty) {
+            val stockTop = stockPile.top()
+            if (stockTop != null) {
+                return HintMove(stockPile.type, wastePile.type, stockTop)
+            }
+        } else if (wastePile.isNotEmpty) {
+            val wasteCard = wastePile.top()
+            if (wasteCard != null) {
+                return HintMove(wastePile.type, stockPile.type, wasteCard)
+            }
+        }
+
+        return null
+    }
 }
+
+/**
+ * Representa uma sugestão de movimento identificada pelo motor.
+ */
+data class HintMove(
+    val from: PileType,
+    val to: PileType,
+    val card: Card
+)
+
