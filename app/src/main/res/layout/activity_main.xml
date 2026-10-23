@@ -189,6 +189,36 @@
                 android:textSize="11sp" />
         </LinearLayout>
 
+        <!-- Botão Dica (Hint Mágico) -->
+        <LinearLayout
+            android:id="@+id/btnHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/btn_hint"
+                android:src="@drawable/ic_hint"
+                app:tint="@color/gold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-bold"
+                android:text="@string/btn_hint"
+                android:textColor="@color/gold"
+                android:textSize="11sp" />
+        </LinearLayout>
+
         <!-- Botão Reiniciar -->
         <LinearLayout
             android:id="@+id/btnRestart"

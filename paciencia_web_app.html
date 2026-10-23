@@ -6,227 +6,382 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0F172A">
-<title>Paciência Klondike — Edição Visual Premium</title>
+<meta name="theme-color" content="#0A0D14">
+<title>Paciência Klondike — Edição Visual Premium Fantasy</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
-body, html { width: 100%; height: 100%; overflow: hidden; background: #0B0F19; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; touch-action: none; }
+body, html {
+  width: 100%; height: 100%; overflow: hidden;
+  background: #080B10;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Cinzel", Georgia, serif;
+  touch-action: none;
+}
 
-/* Top HUD — Fantasia Sombria */
+/* Moldura e Cabeçalho Dark Fantasy */
 #hud-top {
-  position: absolute; top: 0; left: 0; right: 0; height: 52px;
-  background: linear-gradient(180deg, rgba(13, 21, 36, 0.95), rgba(8, 14, 24, 0.92));
+  position: absolute; top: 0; left: 0; right: 0; height: 58px;
+  background: linear-gradient(180deg, rgba(14, 18, 28, 0.96) 0%, rgba(10, 14, 22, 0.88) 100%);
   backdrop-filter: blur(12px);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 12px; color: #F8FAFC; z-index: 10; font-size: 13px;
-  border-bottom: 1.5px solid rgba(212, 175, 55, 0.35);
+  padding: 0 16px; color: #F8FAFC; z-index: 20; font-size: 13px;
+  border-bottom: 1.5px solid rgba(212, 175, 55, 0.28);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
+
+.hud-group {
+  display: flex; align-items: center; gap: 8px;
+}
+
 .hud-badge {
   display: flex; align-items: center; gap: 6px; cursor: pointer;
-  background: rgba(212, 175, 55, 0.12); padding: 4px 10px; border-radius: 8px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+  padding: 5px 12px; border-radius: 20px;
   border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  transition: all 0.2s ease;
 }
-.hud-badge:active { background: rgba(212, 175, 55, 0.25); }
-.hud-coins {
-  color: #FBBF24; font-weight: bold; display: flex; align-items: center; gap: 4px;
-}
-.level-badge { color: #FBBF24; font-weight: 800; font-size: 14px; }
+.hud-badge:active { transform: scale(0.96); background: rgba(212, 175, 55, 0.2); }
 
-/* Bottom HUD — Fantasia Sombria */
+.hud-coins {
+  color: #FBBF24; font-weight: 800; display: flex; align-items: center; gap: 5px;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+  font-family: monospace, sans-serif; font-size: 14px;
+}
+
+.level-badge {
+  color: #F8FAFC; font-weight: 800; font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.level-badge span { color: #FBBF24; }
+
+.hud-stats {
+  font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 8px;
+  background: rgba(0, 0, 0, 0.3); padding: 4px 10px; border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.hud-stats strong { color: #F1F5F9; }
+
+/* Barra de Controles Inferior com Efeito Metal Envelhecido */
 #hud-bottom {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
-  background: linear-gradient(0deg, rgba(13, 21, 36, 0.95), rgba(8, 14, 24, 0.92));
+  position: absolute; bottom: 0; left: 0; right: 0; height: 64px;
+  background: linear-gradient(0deg, rgba(14, 18, 28, 0.96) 0%, rgba(10, 14, 22, 0.88) 100%);
   backdrop-filter: blur(12px);
   display: flex; align-items: center; justify-content: space-around;
-  padding: 0 6px; z-index: 10;
-  border-top: 1.5px solid rgba(212, 175, 55, 0.35);
+  padding: 0 8px; z-index: 20;
+  border-top: 1.5px solid rgba(212, 175, 55, 0.28);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
 }
+
 .btn-control {
   background: none; border: none; color: #94A3B8; font-size: 11px;
   display: flex; flex-direction: column; align-items: center; cursor: pointer;
-  padding: 4px 8px; border-radius: 8px; font-weight: 500;
+  padding: 5px 10px; border-radius: 10px; font-weight: 600;
+  letter-spacing: 0.3px; transition: all 0.15s ease;
 }
-.btn-control svg { width: 22px; height: 22px; fill: #F8FAFC; margin-bottom: 2px; }
-.btn-control:active { background: rgba(255,255,255,0.06); }
-.btn-control:active svg { fill: #38BDF8; }
+.btn-control svg {
+  width: 22px; height: 22px; fill: #CBD5E1; margin-bottom: 3px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  transition: all 0.2s;
+}
+.btn-control:active { transform: scale(0.92); color: #FBBF24; }
+.btn-control:active svg { fill: #FBBF24; filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6)); }
 
 #gameCanvas { display: block; width: 100%; height: 100%; }
 
-/* Modals */
+/* Medalhão do Jogador / Avatar no Canto Inferior Esquerdo */
+#avatar-medallion {
+  position: absolute; bottom: 74px; left: 14px;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(212, 175, 55, 0.45);
+  border-radius: 28px; padding: 4px 12px 4px 4px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+  z-index: 15; cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s;
+}
+#avatar-medallion:active { transform: scale(0.95); border-color: #FBBF24; }
+.avatar-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: radial-gradient(circle, #334155, #0F172A);
+  border: 1.5px solid #FBBF24;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+}
+.avatar-meta {
+  display: flex; flex-direction: column; text-align: left;
+}
+.avatar-name { font-size: 11px; font-weight: bold; color: #F8FAFC; line-height: 1.1; }
+.avatar-title { font-size: 9px; color: #FBBF24; letter-spacing: 0.3px; }
+
+/* Modais Dark Fantasy com Bordas Douradas */
 .modal {
-  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  display: none; position: fixed; inset: 0; background: rgba(5, 7, 12, 0.85);
   z-index: 100; align-items: center; justify-content: center; padding: 16px;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
 }
 .modal-content {
-  background: linear-gradient(180deg, #182236, #0E1624);
+  background: linear-gradient(160deg, #161D2C 0%, #0F131D 100%);
   border: 1.5px solid rgba(212, 175, 55, 0.45);
-  border-radius: 16px;
-  max-width: 380px; width: 100%; padding: 20px; color: #F8FAFC; text-align: center;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.7), 0 0 24px rgba(212, 175, 55, 0.12);
+  border-radius: 20px;
+  max-width: 400px; width: 100%; padding: 22px; color: #F8FAFC; text-align: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.15);
   max-height: 90vh; display: flex; flex-direction: column;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.modal h2 { color: #FBBF24; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-.modal p { color: #94A3B8; font-size: 13px; line-height: 1.4; margin-bottom: 12px; }
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal h2 {
+  color: #FBBF24; font-size: 22px; font-weight: 800; margin-bottom: 4px;
+  letter-spacing: 0.5px; text-shadow: 0 2px 10px rgba(251, 191, 36, 0.3);
+}
+.modal p { color: #94A3B8; font-size: 13px; line-height: 1.4; margin-bottom: 14px; }
 .modal-btn {
-  width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold;
-  font-size: 14px; margin-top: 8px; cursor: pointer; transition: transform 0.1s;
+  width: 100%; padding: 12px; border-radius: 12px; border: none; font-weight: bold;
+  font-size: 14px; margin-top: 8px; cursor: pointer; transition: transform 0.1s, filter 0.2s;
+  letter-spacing: 0.3px;
 }
 .modal-btn:active { transform: scale(0.98); }
-.btn-gold { background: linear-gradient(135deg, #FBBF24, #D97706); color: #000; }
-.btn-blue { background: #2563EB; color: #FFF; }
-.btn-gray { background: #374151; color: #F3F4F6; }
+.btn-gold {
+  background: linear-gradient(135deg, #F59E0B, #D97706); color: #050810;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4);
+}
+.btn-gold:hover { filter: brightness(1.1); }
+.btn-blue {
+  background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #FFF;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+.btn-gray { background: #1E293B; color: #E2E8F0; border: 1px solid rgba(255,255,255,0.08); }
 
-/* Shop Modal Styles */
+/* Galeria e Abas da Loja */
 .shop-tabs {
-  display: flex; gap: 6px; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 10px; margin-bottom: 12px;
+  display: flex; gap: 6px; background: rgba(0,0,0,0.35);
+  padding: 4px; border-radius: 12px; margin-bottom: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
 }
 .shop-tab {
   flex: 1; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: bold;
   color: #94A3B8; cursor: pointer; text-align: center; background: transparent; border: none;
+  transition: all 0.2s;
 }
-.shop-tab.active { background: #2563EB; color: #FFF; }
+.shop-tab.active {
+  background: linear-gradient(135deg, #F59E0B, #B45309); color: #080B10;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+}
 
 .preview-box {
-  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(15,23,42,0.4));
+  border: 1.5px solid rgba(212, 175, 55, 0.3); border-radius: 14px;
   padding: 12px; display: flex; align-items: center; gap: 14px; margin-bottom: 12px; text-align: left;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
 }
 .preview-card-canvas {
-  width: 60px; height: 86px; border-radius: 8px; flex-shrink: 0;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+  width: 64px; height: 92px; border-radius: 8px; flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6), 0 0 10px rgba(212, 175, 55, 0.2);
 }
 .preview-info { flex: 1; min-width: 0; }
 .preview-coll {
   font-size: 9px; font-weight: 800; color: #FBBF24; text-transform: uppercase;
-  background: rgba(251,191,36,0.15); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 4px;
+  background: rgba(251,191,36,0.12); padding: 2px 7px; border-radius: 4px;
+  display: inline-block; margin-bottom: 4px; letter-spacing: 0.5px;
 }
-.preview-title { font-size: 15px; font-weight: bold; color: #FFF; margin-bottom: 2px; }
+.preview-title { font-size: 15px; font-weight: bold; color: #FFF; margin-bottom: 3px; }
 .preview-desc { font-size: 11px; color: #94A3B8; line-height: 1.3; }
 
 .shop-list {
-  overflow-y: auto; max-height: 220px; text-align: left; display: flex; flex-direction: column; gap: 8px;
+  overflow-y: auto; max-height: 210px; text-align: left; display: flex; flex-direction: column; gap: 8px;
   padding-right: 4px;
 }
+.shop-list::-webkit-scrollbar { width: 5px; }
+.shop-list::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
 .shop-item {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.05); gap: 8px;
+  padding: 10px 12px; border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06); gap: 10px;
+  cursor: pointer; transition: all 0.15s ease;
+}
+.shop-item:hover, .shop-item.selected {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: rgba(212, 175, 55, 0.4);
 }
 .shop-item-info { flex: 1; min-width: 0; }
 .shop-item-name { font-size: 13px; font-weight: bold; color: #F8FAFC; }
 .shop-item-coll { font-size: 9px; color: #FBBF24; text-transform: uppercase; font-weight: bold; }
 .shop-item-desc { font-size: 11px; color: #94A3B8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .shop-item-btn {
-  padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; border: none; cursor: pointer; white-space: nowrap;
+  padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; border: none;
+  cursor: pointer; white-space: nowrap; transition: transform 0.1s;
+}
+.shop-item-btn:active { transform: scale(0.95); }
+
+/* Modal de Simulação de Anúncio Recompensado */
+#modalAdProgress {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+  z-index: 250; align-items: center; justify-content: center; flex-direction: column;
+  padding: 24px; color: #FFF; text-align: center;
+}
+.ad-box {
+  max-width: 340px; width: 100%; background: #111827; border: 1.5px solid #F59E0B;
+  border-radius: 16px; padding: 24px; box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+}
+.ad-progress-bar {
+  width: 100%; height: 8px; background: #374151; border-radius: 4px; overflow: hidden; margin: 16px 0;
+}
+.ad-progress-fill {
+  height: 100%; width: 0%; background: linear-gradient(90deg, #F59E0B, #10B981);
+  transition: width 0.1s linear;
 }
 
 /* Toast */
 #toast {
-  position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
-  background: #10B981; color: #FFF; font-weight: bold; font-size: 13px;
-  padding: 8px 18px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-  display: none; z-index: 200; pointer-events: none;
+  position: fixed; top: 72px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, #10B981, #059669); color: #FFF;
+  font-weight: bold; font-size: 13px; letter-spacing: 0.3px;
+  padding: 9px 22px; border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 12px rgba(16, 185, 129, 0.4);
+  display: none; z-index: 300; pointer-events: none;
+  animation: toastFade 0.2s ease-out;
+}
+@keyframes toastFade {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 </style>
 </head>
 <body>
 
+<!-- HUD Superior -->
 <div id="hud-top">
-  <div class="hud-badge" id="btnAvatarBadge">
-    <span id="lblAvatarEmoji" style="font-size:18px;">🤠</span>
-    <span class="level-badge" id="lblLevel">Nível 1</span>
+  <div class="hud-group">
+    <div class="hud-badge" id="btnLevelBadge" title="Nível da Campanha">
+      <span class="level-badge" id="lblLevel">NÍVEL <span>1</span></span>
+    </div>
+    <div class="hud-badge" id="btnCoinsBadge" title="Abrir Loja de Moedas">
+      <span class="hud-coins">🪙 <span id="lblCoins">0</span></span>
+    </div>
   </div>
-  <div class="hud-badge" id="btnCoinsBadge">
-    <span class="hud-coins">🪙 <span id="lblCoins">0</span></span>
-  </div>
-  <div style="font-size:12px; color:#CBD5E1;">
-    <span id="lblMoves">0 Mov</span> • <span id="lblTime">00:00</span>
+  <div class="hud-stats">
+    <span>⏱️ <strong id="lblTime">00:00</strong></span>
+    <span>•</span>
+    <span>🎯 <strong id="lblMoves">0</strong></span>
+    <span id="btnAudioToggle" style="cursor:pointer; margin-left:4px; font-size:14px;" title="Ativar/Desativar Som">🔊</span>
   </div>
 </div>
 
 <canvas id="gameCanvas"></canvas>
 
+<!-- Medalhão do Avatar Ativo no Canto Inferior Esquerdo -->
+<div id="avatar-medallion" title="Ver Avatares e Coleções">
+  <div class="avatar-circle" id="hudAvatarIcon">🤠</div>
+  <div class="avatar-meta">
+    <span class="avatar-name" id="hudAvatarName">Aventureiro</span>
+    <span class="avatar-title" id="hudAvatarTitle">O Desbravador</span>
+  </div>
+</div>
+
+<!-- Barra de Controles Inferior -->
 <div id="hud-bottom">
-  <button class="btn-control" id="btnUndo">
+  <button class="btn-control" id="btnUndo" title="Desfazer Última Jogada">
     <svg viewBox="0 0 24 24"><path d="M12.5,8c-2.65,0-5.05,0.99-6.9,2.6L2,7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54,0 6.55,2.31 7.6,5.5l2.37-0.78C21.08,11.03 17.15,8 12.5,8z"/></svg>
     Desfazer
   </button>
-  <button class="btn-control" id="btnAuto">
+  <button class="btn-control" id="btnAuto" title="Completar Movimentos Obvios">
     <svg viewBox="0 0 24 24"><path d="M7.5,5.6L5,7l1.4-2.5L5,2l2.5,1.4L10,2L8.6,4.5L10,7L7.5,5.6z M19,9l1.25-2.25L22.5,5.5L20.25,4.25L19,2l-1.25,2.25L15.5,5.5l2.25,1.25L19,9z M19,15l-1.25,2.25L15.5,18.5l2.25,1.25L19,22l1.25-2.25L22.5,18.5l-2.25-1.25L19,15z M11.5,9.5L9,4L6.5,9.5L1,12l5.5,2.5L9,20l2.5-5.5L17,12L11.5,9.5z"/></svg>
     Auto
   </button>
-  <button class="btn-control" id="btnRestart">
+  <button class="btn-control" id="btnRestart" title="Reiniciar Partida">
     <svg viewBox="0 0 24 24"><path d="M17.65,6.35C16.2,4.9 14.21,4 12,4c-4.42,0-7.99,3.58-7.99,8s3.57,8 7.99,8c3.73,0 6.84-2.55 7.73-6h-2.08c-0.82,2.33-3.04,4-5.65,4-3.31,0-6-2.69-6-6s2.69-6 6-6c1.66,0 3.14,0.69 4.22,1.78L13,11h7V4l-2.35,2.35z"/></svg>
     Reiniciar
   </button>
-  <button class="btn-control" id="btnScenery">
+  <button class="btn-control" id="btnScenery" title="Alternar Cenário Visual">
     <svg viewBox="0 0 24 24"><path d="M14,6l-3.75,5 2.85,3.8 -1.6,1.2C9.81,13.75 7,10 7,10l-6,8h22L14,6z"/></svg>
     Cenários
   </button>
-  <button class="btn-control" id="btnShop">
+  <button class="btn-control" id="btnShop" title="Galeria de Coleções e Skins">
     <svg viewBox="0 0 24 24"><path d="M20,4H4V2h16V4z M21,6H3l-1,7v1h2v8h10v-8h4v8h2v-8h2v-1L21,6z M12,18H6v-6h6V18z"/></svg>
     Loja
   </button>
 </div>
 
-<!-- Modal Loja Premium -->
+<!-- Modal Galeria / Loja de Personalização Premium -->
 <div class="modal" id="modalShop">
   <div class="modal-content">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <h2>Galeria de Coleções</h2>
-      <div class="hud-coins" style="font-size:14px; background:rgba(251,191,36,0.15); padding:4px 8px; border-radius:12px;">🪙 <span id="lblShopCoins">0</span></div>
-    </div>
-    
-    <!-- Botão Anúncio Recompensado -->
-    <button class="modal-btn btn-gold" id="btnWatchAd" style="margin-top:0; margin-bottom:10px; display:flex; align-items:center; justify-content:center; gap:6px;">
-      <span>🎬</span> Assistir Vídeo (+3 Moedas)
-    </button>
-
-    <!-- Prévia Ampliada -->
-    <div class="preview-box">
-      <canvas id="previewCanvas" class="preview-card-canvas" width="120" height="172"></canvas>
-      <div class="preview-info">
-        <span class="preview-coll" id="prevColl">COLEÇÃO: TRADIÇÃO</span>
-        <div class="preview-title" id="prevTitle">Skin Clássica</div>
-        <div class="preview-desc" id="prevDesc">Aparência atemporal e elegante</div>
+      <div class="hud-coins" style="font-size:14px; background:rgba(251,191,36,0.15); padding:5px 10px; border-radius:14px;">
+        🪙 <span id="lblShopCoins">0</span>
       </div>
     </div>
 
-    <!-- Abas -->
+    <!-- Botão de Vídeo Recompensado -->
+    <button class="modal-btn btn-gold" id="btnWatchAd" style="margin-top:0; margin-bottom:12px; display:flex; align-items:center; justify-content:center; gap:8px;">
+      <span style="font-size:16px;">🎬</span> ASSISTIR VÍDEO — GANHAR 3 MOEDAS
+    </button>
+
+    <!-- Painel de Prévia Ampliada -->
+    <div class="preview-box">
+      <canvas id="previewCanvas" class="preview-card-canvas" width="128" height="184"></canvas>
+      <div class="preview-info">
+        <span class="preview-coll" id="prevColl">COLEÇÃO: TRADIÇÃO</span>
+        <div class="preview-title" id="prevTitle">Skin Clássica</div>
+        <div class="preview-desc" id="prevDesc">Aparência atemporal com filigranas de safira</div>
+      </div>
+    </div>
+
+    <!-- Abas de Navegação -->
     <div class="shop-tabs">
-      <button class="shop-tab active" id="tabSkins">Skins de Cartas</button>
-      <button class="shop-tab" id="tabAvatars">Avatares</button>
+      <button class="shop-tab active" id="tabSkins">Versos de Cartas (8)</button>
+      <button class="shop-tab" id="tabAvatars">Avatares (8)</button>
     </div>
 
     <!-- Lista de Itens -->
     <div class="shop-list" id="shopListContainer"></div>
 
-    <button class="modal-btn btn-gray" id="btnCloseShop" style="margin-top:12px;">Fechar</button>
+    <button class="modal-btn btn-gray" id="btnCloseShop" style="margin-top:14px;">Fechar Galeria</button>
   </div>
 </div>
 
-<!-- Modal Vitória -->
+<!-- Modal de Simulação de Anúncio Recompensado -->
+<div id="modalAdProgress">
+  <div class="ad-box">
+    <div style="font-size:36px; margin-bottom:8px;">🎬</div>
+    <h3 style="color:#FBBF24; margin-bottom:6px;">Exibindo Vídeo Recompensado...</h3>
+    <p style="font-size:12px; color:#94A3B8;">Aguarde a conclusão da transmissão oficial para receber +3 moedas.</p>
+    <div class="ad-progress-bar">
+      <div class="ad-progress-fill" id="adProgressFill"></div>
+    </div>
+    <span style="font-size:13px; font-weight:bold; color:#CBD5E1;" id="adCountDown">Concluindo em 3s...</span>
+  </div>
+</div>
+
+<!-- Modal de Vitória Gloriosa -->
 <div class="modal" id="modalVictory">
   <div class="modal-content">
-    <div style="font-size:44px; margin-bottom:4px;">🏆</div>
+    <div style="font-size:48px; margin-bottom:6px; filter:drop-shadow(0 0 16px rgba(251,191,36,0.6));">🏆</div>
     <h2>Vitória Gloriosa!</h2>
-    <p id="vicMessage">Você concluiu o nível com maestria!</p>
-    
-    <div id="vicSceneryUnlock" style="display:none; color:#38BDF8; margin-bottom:10px; font-weight:bold; font-size:14px; background:rgba(56,189,248,0.15); padding:6px; border-radius:8px;"></div>
-    
-    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:10px; margin-bottom:12px; font-size:13px; line-height:1.6;" id="vicStats"></div>
-    
-    <button class="modal-btn btn-gold" id="btnNextLevel">Próximo Nível</button>
-    <button class="modal-btn btn-blue" id="btnPlayAgain">Jogar Novamente</button>
+    <p id="vicMessage">Você dominou o baralho com maestria lendária!</p>
+
+    <div id="vicSceneryUnlock" style="display:none; color:#38BDF8; margin-bottom:12px; font-weight:bold; font-size:13px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.3); padding:8px; border-radius:10px;"></div>
+
+    <div style="background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08); padding:12px; border-radius:12px; margin-bottom:14px; font-size:13px; line-height:1.7;" id="vicStats"></div>
+
+    <button class="modal-btn btn-gold" id="btnNextLevel">Próximo Nível ➔</button>
+    <button class="modal-btn btn-blue" id="btnPlayAgain">Jogar Este Nível Novamente</button>
   </div>
 </div>
 
-<!-- Modal Cenários -->
+<!-- Modal de Seleção de Cenários -->
 <div class="modal" id="modalScenery">
   <div class="modal-content">
-    <h2>Selecionar Cenário</h2>
-    <p>Desbloqueie novos reinos avançando nos níveis</p>
-    <div id="sceneryList" style="text-align:left; max-height:260px; overflow-y:auto; margin-bottom:12px;"></div>
+    <h2>Reinos & Cenários</h2>
+    <p>Conquiste novos reinos visuais ao progredir pelos níveis</p>
+    <div id="sceneryList" style="text-align:left; max-height:260px; overflow-y:auto; margin-bottom:14px;"></div>
     <button class="modal-btn btn-gray" id="btnCloseScenery">Fechar</button>
   </div>
 </div>
@@ -234,13 +389,25 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: #0B0F19; f
 <div id="toast"></div>
 
 <script>
-// --- SISTEMA DE ÁUDIO NATIVO (Sintetizador Web Audio API) ---
+// --- MOTOR DE ÁUDIO SINTETIZADO (Web Audio API) ---
 let audioCtx = null;
+let soundEnabled = (localStorage.getItem('pac_sound') !== 'false');
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  localStorage.setItem('pac_sound', soundEnabled);
+  document.getElementById('btnAudioToggle').innerText = soundEnabled ? '🔊' : '🔇';
+  showToast(soundEnabled ? 'Som Ativado' : 'Som Desativado');
+}
+document.getElementById('btnAudioToggle').innerText = soundEnabled ? '🔊' : '🔇';
+document.getElementById('btnAudioToggle').addEventListener('click', toggleSound);
+
 function playSound(type) {
+  if (!soundEnabled) return;
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    
+
     const now = audioCtx.currentTime;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -248,46 +415,69 @@ function playSound(type) {
     gain.connect(audioCtx.destination);
 
     if (type === 'touch') {
-      osc.frequency.setValueAtTime(440, now);
-      osc.frequency.exponentialRampToValueAtTime(320, now + 0.06);
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(320, now);
+      osc.frequency.exponentialRampToValueAtTime(480, now + 0.05);
       gain.gain.setValueAtTime(0.08, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-      osc.start(now); osc.stop(now + 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+      osc.start(now); osc.stop(now + 0.05);
     } else if (type === 'place') {
-      osc.frequency.setValueAtTime(520, now);
-      osc.frequency.exponentialRampToValueAtTime(680, now + 0.08);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(560, now);
+      osc.frequency.exponentialRampToValueAtTime(740, now + 0.07);
       gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-      osc.start(now); osc.stop(now + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+      osc.start(now); osc.stop(now + 0.07);
     } else if (type === 'invalid') {
       osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(140, now);
+      osc.frequency.setValueAtTime(160, now);
       osc.frequency.linearRampToValueAtTime(90, now + 0.12);
       gain.gain.setValueAtTime(0.12, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
       osc.start(now); osc.stop(now + 0.12);
+    } else if (type === 'column') {
+      [659.25, 830.61, 987.77, 1318.51].forEach((freq, idx) => {
+        const no = audioCtx.createOscillator();
+        const ng = audioCtx.createGain();
+        no.type = 'sine';
+        no.connect(ng); ng.connect(audioCtx.destination);
+        no.frequency.setValueAtTime(freq, now + idx * 0.06);
+        ng.gain.setValueAtTime(0.12, now + idx * 0.06);
+        ng.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.25);
+        no.start(now + idx * 0.06); no.stop(now + idx * 0.06 + 0.25);
+      });
+    } else if (type === 'coin') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(987.77, now);
+      osc.frequency.setValueAtTime(1318.51, now + 0.08);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+      osc.start(now); osc.stop(now + 0.25);
     } else if (type === 'victory') {
-      [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+      const fanfare = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+      fanfare.forEach((freq, idx) => {
         const noteOsc = audioCtx.createOscillator();
         const noteGain = audioCtx.createGain();
+        noteOsc.type = 'triangle';
         noteOsc.connect(noteGain);
         noteGain.connect(audioCtx.destination);
-        noteOsc.frequency.setValueAtTime(freq, now + idx * 0.1);
-        noteGain.gain.setValueAtTime(0.15, now + idx * 0.1);
-        noteGain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.35);
-        noteOsc.start(now + idx * 0.1); noteOsc.stop(now + idx * 0.1 + 0.35);
+        noteOsc.frequency.setValueAtTime(freq, now + idx * 0.12);
+        noteGain.gain.setValueAtTime(0.18, now + idx * 0.12);
+        noteGain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.4);
+        noteOsc.start(now + idx * 0.12); noteOsc.stop(now + idx * 0.12 + 0.4);
       });
     }
   } catch(e) {}
 }
 
-// --- DADOS DO JOGO ---
+// --- DADOS DO JOGO (BARALHO & COLEÇÕES) ---
 const SUITS = [
+  { name: 'SPADES', symbol: '♠', isRed: false },
   { name: 'HEARTS', symbol: '♥', isRed: true },
-  { name: 'DIAMONDS', symbol: '♦', isRed: true },
   { name: 'CLUBS', symbol: '♣', isRed: false },
-  { name: 'SPADES', symbol: '♠', isRed: false }
+  { name: 'DIAMONDS', symbol: '♦', isRed: true }
 ];
+
 const RANKS = [
   { val: 1, label: 'A' }, { val: 2, label: '2' }, { val: 3, label: '3' },
   { val: 4, label: '4' }, { val: 5, label: '5' }, { val: 6, label: '6' },
@@ -297,36 +487,36 @@ const RANKS = [
 ];
 
 const SCENERIES = [
-  { id: 'forest', name: 'Floresta Encantada', minLevel: 1, accent: '#34D399', bgTop: '#0D281A', bgBot: '#04120A' },
-  { id: 'frozen', name: 'Montanhas Geladas', minLevel: 11, accent: '#7DD3FC', bgTop: '#122233', bgBot: '#081018' },
-  { id: 'desert', name: 'Deserto Dourado', minLevel: 21, accent: '#F59E0B', bgTop: '#381404', bgBot: '#160B03' },
-  { id: 'medieval', name: 'Reino Medieval', minLevel: 31, accent: '#C084FC', bgTop: '#270E43', bgBot: '#0B0414' },
-  { id: 'cosmic', name: 'Noite Cósmica', minLevel: 41, accent: '#818CF8', bgTop: '#0D0824', bgBot: '#010004' }
+  { id: 'forest', name: 'Floresta Encantada', minLevel: 1, accent: '#34D399', bgTop: '#081D13', bgBot: '#020C07', desc: 'Névoa mística, folhas ao vento e vaga-lumes dourados' },
+  { id: 'frozen', name: 'Montanhas Geladas', minLevel: 11, accent: '#7DD3FC', bgTop: '#0C1B2B', bgBot: '#040A10', desc: 'Picos nevados, aurora boreal polar e flocos de neve' },
+  { id: 'desert', name: 'Deserto Dourado', minLevel: 21, accent: '#F59E0B', bgTop: '#2C1004', bgBot: '#100501', desc: 'Dunas douradas, miragem solar e poeira brilhante' },
+  { id: 'medieval', name: 'Reino Medieval', minLevel: 31, accent: '#C084FC', bgTop: '#210B39', bgBot: '#07020E', desc: 'Torres góticas, tochas ardentes e flâmulas reais' },
+  { id: 'cosmic', name: 'Noite Cósmica', minLevel: 41, accent: '#818CF8', bgTop: '#0B0621', bgBot: '#010006', desc: 'Nebulosas cósmicas, poeira estelar e meteoros' }
 ];
 
 const SKINS = [
-  { id: 'skin_classic', name: 'Clássica', collection: 'Tradição', desc: 'Aparência clássica e atemporal', price: 0, p1: '#1E3A8A', p2: '#0F172A', acc: '#60A5FA', pattern: 'classic' },
-  { id: 'skin_golden', name: 'Dourada', collection: 'Relíquias Douradas', desc: 'Filigranas douradas reluzentes', price: 30, p1: '#78350F', p2: '#451A03', acc: '#FBBF24', pattern: 'golden' },
-  { id: 'skin_arcane', name: 'Arcana', collection: 'Arcano', desc: 'Runas e símbolos mágicos ancestrais', price: 60, p1: '#4C1D95', p2: '#2E1065', acc: '#A78BFA', pattern: 'arcane' },
-  { id: 'skin_shadow', name: 'Sombria', collection: 'Sombras & Mistério', desc: 'Acabamento escuro com toques carmesim', price: 60, p1: '#18181B', p2: '#09090B', acc: '#E11D48', pattern: 'shadow' },
-  { id: 'skin_nature', name: 'Natureza', collection: 'Natureza', desc: 'Folhagens místicas e ramos esmeralda', price: 100, p1: '#064E3B', p2: '#022C22', acc: '#34D399', pattern: 'nature' },
-  { id: 'skin_ice', name: 'Gelo', collection: 'Gelo', desc: 'Cristais polares e fractais gélidos', price: 100, p1: '#0C4A6E', p2: '#082F49', acc: '#38BDF8', pattern: 'ice' },
-  { id: 'skin_cosmic', name: 'Cósmica', collection: 'Cósmico', desc: 'Nebulosas e constelações celestes', price: 150, p1: '#311042', p2: '#150524', acc: '#E879F9', pattern: 'cosmic' },
-  { id: 'skin_royal', name: 'Real', collection: 'Reino Medieval', desc: 'Coroa imperial com filigranas de ouro', price: 150, p1: '#831843', p2: '#500724', acc: '#F59E0B', pattern: 'royal' }
+  { id: 'skin_classic', name: 'Clássica', collection: 'Tradição', desc: 'Safira imperial com arabescos de prata', price: 0, p1: '#1E3A8A', p2: '#0F172A', acc: '#60A5FA', pattern: 'classic' },
+  { id: 'skin_golden', name: 'Dourada', collection: 'Relíquias Douradas', desc: 'Mogno envelhecido com filigranas de ouro 24k', price: 30, p1: '#78350F', p2: '#451A03', acc: '#FBBF24', pattern: 'golden' },
+  { id: 'skin_arcane', name: 'Arcana', collection: 'Arcano', desc: 'Ametista mística e runas ancestrais luminescentes', price: 60, p1: '#4C1D95', p2: '#2E1065', acc: '#A78BFA', pattern: 'arcane' },
+  { id: 'skin_shadow', name: 'Sombria', collection: 'Sombras & Mistério', desc: 'Obsidiana com toques de aço escuro e carmesim', price: 60, p1: '#18181B', p2: '#09090B', acc: '#E11D48', pattern: 'shadow' },
+  { id: 'skin_nature', name: 'Natureza', collection: 'Natureza', desc: 'Esmeralda silvestre com vinhas élficas e nós celtas', price: 100, p1: '#064E3B', p2: '#022C22', acc: '#34D399', pattern: 'nature' },
+  { id: 'skin_ice', name: 'Gelo', collection: 'Gelo', desc: 'Cristal glacial com fractais polares de geada', price: 100, p1: '#0C4A6E', p2: '#082F49', acc: '#38BDF8', pattern: 'ice' },
+  { id: 'skin_cosmic', name: 'Cósmica', collection: 'Cósmico', desc: 'Espaço profundo com constelações astrais', price: 150, p1: '#311042', p2: '#150524', acc: '#E879F9', pattern: 'cosmic' },
+  { id: 'skin_royal', name: 'Real', collection: 'Reino Medieval', desc: 'Veludo rubi imperial com coroa dourada', price: 150, p1: '#831843', p2: '#500724', acc: '#F59E0B', pattern: 'royal' }
 ];
 
 const AVATARS = [
-  { id: 'avatar_adventurer', name: 'Aventureiro', collection: 'Desbravadores', title: 'O Desbravador', emoji: '🤠', border: '#FBBF24', bg: '#78350F', price: 0 },
-  { id: 'avatar_wizard', name: 'Mago', collection: 'Mestres Arcanos', title: 'O Conjurador', emoji: '🧙', border: '#A78BFA', bg: '#3B0764', price: 40 },
-  { id: 'avatar_knight', name: 'Cavaleiro', collection: 'Reino Medieval', title: 'O Guardião', emoji: '🛡️', border: '#94A3B8', bg: '#1E293B', price: 40 },
-  { id: 'avatar_forest_guardian', name: 'Guardião', collection: 'Natureza', title: 'O Protetor Verde', emoji: '🏹', border: '#34D399', bg: '#064E3B', price: 70 },
-  { id: 'avatar_ice_spirit', name: 'Espírito do Gelo', collection: 'Gelo', title: 'O Andarilho Gelado', emoji: '❄️', border: '#38BDF8', bg: '#0C4A6E', price: 70 },
-  { id: 'avatar_desert_wanderer', name: 'Viajante', collection: 'Relíquias Douradas', title: 'O Andarilho Solar', emoji: '🐪', border: '#F59E0B', bg: '#451A03', price: 90 },
-  { id: 'avatar_medieval_king', name: 'Rei Medieval', collection: 'Reino Medieval', title: 'Sua Majestade', emoji: '👑', border: '#EAB308', bg: '#713F12', price: 120 },
-  { id: 'avatar_cosmic_explorer', name: 'Explorador', collection: 'Cósmico', title: 'O Viajante Estelar', emoji: '🚀', border: '#E879F9', bg: '#3B0764', price: 150 }
+  { id: 'avatar_adventurer', name: 'Aventureiro', collection: 'Desbravadores', title: 'O Desbravador', emoji: '🤠', price: 0 },
+  { id: 'avatar_wizard', name: 'Mago', collection: 'Mestres Arcanos', title: 'O Conjurador', emoji: '🧙', price: 40 },
+  { id: 'avatar_knight', name: 'Cavaleiro', collection: 'Reino Medieval', title: 'O Guardião Real', emoji: '🛡️', price: 40 },
+  { id: 'avatar_forest_guardian', name: 'Guardião', collection: 'Natureza', title: 'O Protetor Verde', emoji: '🏹', price: 70 },
+  { id: 'avatar_ice_spirit', name: 'Espírito do Gelo', collection: 'Gelo', title: 'O Andarilho Polar', emoji: '❄️', price: 70 },
+  { id: 'avatar_desert_wanderer', name: 'Viajante', collection: 'Relíquias Douradas', title: 'O Nômade Solar', emoji: '🐪', price: 90 },
+  { id: 'avatar_medieval_king', name: 'Rei Medieval', collection: 'Reino Medieval', title: 'Sua Majestade', emoji: '👑', price: 120 },
+  { id: 'avatar_cosmic_explorer', name: 'Explorador', collection: 'Cósmico', title: 'O Viajante Estelar', emoji: '🚀', price: 150 }
 ];
 
-// --- PERSISTÊNCIA ---
+// --- PERSISTÊNCIA LOCAL ---
 let coinsBalance = parseInt(localStorage.getItem('pac_coins') || '0');
 let highestLevel = parseInt(localStorage.getItem('pac_high_lvl') || '1');
 let currentLevel = parseInt(localStorage.getItem('pac_cur_lvl') || '1');
@@ -341,31 +531,69 @@ let currentScenery = SCENERIES.find(s => s.id === currentSceneryId) || SCENERIES
 let currentSkin = SKINS.find(s => s.id === equippedSkinId) || SKINS[0];
 let currentAvatar = AVATARS.find(a => a.id === equippedAvatarId) || AVATARS[0];
 
+// Estado da Mesa
 let stock = [], waste = [], foundations = [[], [], [], []], tableaus = [[], [], [], [], [], [], []];
 let undoStack = [];
 let moves = 0, seconds = 0, timerInterval = null, isWon = false;
 
-// Estado Visual e Efeitos
-let invalidShakeTime = 0, invalidShakeCol = -1;
+// Efeitos Visuais & Partículas
 let sparkParticles = [];
-let columnGlows = []; // col, start
+let ambientParticles = [];
+let columnGlows = [];
+let invalidShakeCol = -1, invalidShakeTime = 0;
 let activePreviewItem = currentSkin;
 
-// Layout
+// Inicializa Partículas Ambientais Específicas
+function initAmbientParticles() {
+  ambientParticles = [];
+  const count = 35;
+  for (let i = 0; i < count; i++) {
+    ambientParticles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: Math.random() * 0.6 + 0.2,
+      size: Math.random() * 3 + 1.5,
+      rot: Math.random() * Math.PI * 2,
+      vrot: (Math.random() - 0.5) * 0.04,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+}
+initAmbientParticles();
+
+// Layout & Canvas
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 let cw = 0, ch = 0, gap = 0, topY = 0, tabY = 0;
 let stockRect = {}, wasteRect = {}, fRects = [], tRects = [];
 
-// Drag
+// Arraste (Drag and Drop)
 let isDragging = false, dragCards = [], dragSource = null;
-let touchDownX = 0, touchDownY = 0, dragCurX = 0, dragCurY = 0, dragOffX = 0, dragOffY = 0;
+let touchStartX = 0, touchStartY = 0, dragCurX = 0, dragCurY = 0, dragOffX = 0, dragOffY = 0;
 
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.innerText = msg;
   t.style.display = 'block';
   setTimeout(() => { t.style.display = 'none'; }, 2200);
+}
+
+function updateAvatarHud() {
+  document.getElementById('hudAvatarIcon').innerText = currentAvatar.emoji;
+  document.getElementById('hudAvatarName').innerText = currentAvatar.name;
+  document.getElementById('hudAvatarTitle').innerText = currentAvatar.title;
+}
+
+function updateHud() {
+  document.getElementById('lblLevel').innerHTML = `NÍVEL <span>${currentLevel}</span>`;
+  document.getElementById('lblCoins').innerText = coinsBalance;
+  document.getElementById('lblShopCoins').innerText = coinsBalance;
+  document.getElementById('lblMoves').innerText = moves;
+  let m = Math.floor(seconds / 60).toString().padStart(2, '0');
+  let s = (seconds % 60).toString().padStart(2, '0');
+  document.getElementById('lblTime').innerText = `${m}:${s}`;
+  updateAvatarHud();
 }
 
 function resize() {
@@ -378,10 +606,10 @@ function resize() {
   canvas.style.height = h + 'px';
   ctx.scale(dpr, dpr);
 
-  gap = w * 0.02;
+  gap = w * 0.022;
   cw = (w - (8 * gap)) / 7;
   ch = cw * 1.42;
-  topY = 64;
+  topY = 66;
   tabY = topY + ch + 18;
 
   stockRect = { x: gap, y: topY, w: cw, h: ch };
@@ -392,20 +620,16 @@ function resize() {
   }
   tRects = [];
   for (let i = 0; i < 7; i++) {
-    tRects.push({ x: gap + i * (cw + gap), y: tabY, w: cw, h: h - tabY - 70 });
+    tRects.push({ x: gap + i * (cw + gap), y: tabY, w: cw, h: h - tabY - 80 });
   }
 }
 window.addEventListener('resize', resize);
 
-function updateHud() {
-  document.getElementById('lblLevel').innerText = `Nível ${currentLevel}`;
-  document.getElementById('lblCoins').innerText = coinsBalance;
-  document.getElementById('lblShopCoins').innerText = coinsBalance;
-  document.getElementById('lblMoves').innerText = `${moves} Mov`;
-  document.getElementById('lblAvatarEmoji').innerText = currentAvatar.emoji;
-  let m = Math.floor(seconds / 60).toString().padStart(2, '0');
-  let s = (seconds % 60).toString().padStart(2, '0');
-  document.getElementById('lblTime').innerText = `${m}:${s}`;
+function setScenery(scenery) {
+  currentScenery = scenery;
+  currentSceneryId = scenery.id;
+  localStorage.setItem('pac_scenery', scenery.id);
+  initAmbientParticles();
 }
 
 function startLevel(lvl) {
@@ -416,11 +640,11 @@ function startLevel(lvl) {
   clearInterval(timerInterval);
   timerInterval = setInterval(() => { seconds++; updateHud(); }, 1000);
 
-  // Auto scenery unlock
+  // Desbloqueio e Aplicação Automática do Tema pelo Nível
   const autoTheme = SCENERIES.slice().reverse().find(s => lvl >= s.minLevel) || SCENERIES[0];
   setScenery(autoTheme);
 
-  // Criar Baralho
+  // Baralho Completo de 52 Cartas
   let deck = [];
   let id = 0;
   SUITS.forEach(s => {
@@ -429,7 +653,7 @@ function startLevel(lvl) {
     });
   });
 
-  // Embaralhamento determinístico pelo Nível
+  // Embaralhamento Determinístico por Nível (Rejogabilidade perfeita)
   let seed = 10007 * lvl + 99991;
   for (let i = deck.length - 1; i > 0; i--) {
     seed = (seed * 9301 + 49297) % 233280;
@@ -457,141 +681,135 @@ function startLevel(lvl) {
   updateHud();
 }
 
-function setScenery(s) {
-  currentScenery = s;
-  currentSceneryId = s.id;
-  localStorage.setItem('pac_scenery', s.id);
-}
-
-// --- RENDERIZAÇÃO DOS CENÁRIOS VIVOS (Procedural Canvas) ---
+// --- DESENHO DOS 5 CENÁRIOS CINEMATOGRÁFICOS ---
 function drawLiveBackground(w, h, now) {
-  // Gradiente vertical do céu
-  let bg = ctx.createLinearGradient(0, 0, 0, h);
-  bg.addColorStop(0, currentScenery.bgTop);
-  bg.addColorStop(1, currentScenery.bgBot);
-  ctx.fillStyle = bg;
+  // Gradiente de Fundo
+  let bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+  bgGrad.addColorStop(0, currentScenery.bgTop);
+  bgGrad.addColorStop(1, currentScenery.bgBot);
+  ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, w, h);
 
+  // Efeitos Específicos por Cenário
   if (currentScenery.id === 'forest') {
-    // Floresta Encantada: raios de sol, árvores e vaga-lumes pulsantes
-    let rayOffset = Math.sin(now * 0.0008) * (w * 0.04);
-    let rayG = ctx.createLinearGradient(0, 0, w * 0.7 + rayOffset, h * 0.7);
-    rayG.addColorStop(0, 'rgba(167, 243, 208, 0.15)');
-    rayG.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = rayG;
-    ctx.beginPath();
-    ctx.moveTo(0, 0); ctx.lineTo(w * 0.35, 0);
-    ctx.lineTo(w * 0.85 + rayOffset, h * 0.85); ctx.lineTo(w * 0.25 + rayOffset, h * 0.85);
-    ctx.closePath(); ctx.fill();
+    // Floresta Encantada: Raios crepusculares, névoa e vaga-lumes
+    let beamG = ctx.createLinearGradient(0, 0, w, h * 0.7);
+    beamG.addColorStop(0, 'rgba(52, 211, 153, 0.12)');
+    beamG.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = beamG;
+    ctx.fillRect(0, 0, w, h * 0.7);
 
-    // Silhuetas de árvores
-    ctx.fillStyle = 'rgba(2, 11, 5, 0.25)';
-    ctx.beginPath();
-    ctx.moveTo(0, h);
-    let distBase = h * 0.80;
-    ctx.lineTo(0, distBase);
-    let step = w / 7;
-    for (let curX = 0; curX < w; curX += step) {
-      ctx.lineTo(curX + step * 0.5, distBase - 45);
-      ctx.lineTo(curX + step, distBase);
-    }
-    ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
-
-    // Vaga-lumes luminosos pulsantes
-    const fireflies = [
-      [w * 0.15, h * 0.62, 0.0], [w * 0.42, h * 0.52, 1.8],
-      [w * 0.78, h * 0.58, 3.2], [w * 0.88, h * 0.72, 4.5], [w * 0.28, h * 0.76, 2.4]
-    ];
-    fireflies.forEach(ff => {
-      let fx = ff[0] + Math.sin(now * 0.001 + ff[2]) * 10;
-      let fy = ff[1] + Math.cos(now * 0.0015 + ff[2]) * 6;
-      let pulse = Math.sin(now * 0.003 + ff[2]) * 0.5 + 0.5;
+    // Vaga-lumes Bioluminescentes Pulsantes
+    ambientParticles.forEach(p => {
+      p.x += Math.sin(now * 0.001 + p.phase) * 0.6;
+      p.y -= 0.4;
+      if (p.y < 0) p.y = h;
+      let pulse = Math.sin(now * 0.004 + p.phase) * 0.5 + 0.5;
       ctx.fillStyle = `rgba(52, 211, 153, ${pulse * 0.45})`;
-      ctx.beginPath(); ctx.arc(fx, fy, 12 * pulse + 4, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = `rgba(253, 224, 71, ${pulse * 0.9 + 0.1})`;
-      ctx.beginPath(); ctx.arc(fx, fy, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 3 * pulse + 2, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = `rgba(253, 224, 71, ${pulse * 0.8 + 0.2})`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
     });
   } else if (currentScenery.id === 'frozen') {
-    // Montanhas Geladas: aurora boreal e picos nevados
-    let aShift = Math.sin(now * 0.0006) * 30;
+    // Montanhas Geladas: Aurora Boreal ondulante e picos glaciais
+    let aShift = Math.sin(now * 0.0008) * 40;
     let aG = ctx.createLinearGradient(w * 0.2 + aShift, 0, w * 0.8 - aShift, h * 0.45);
-    aG.addColorStop(0, 'rgba(56, 189, 248, 0.2)');
+    aG.addColorStop(0, 'rgba(56, 189, 248, 0.22)');
+    aG.addColorStop(0.5, 'rgba(167, 139, 250, 0.15)');
     aG.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = aG;
     ctx.fillRect(0, 0, w, h * 0.5);
 
-    // Picos de Montanhas
-    ctx.fillStyle = 'rgba(12, 27, 43, 0.4)';
+    // Cordilheira recortada
+    ctx.fillStyle = 'rgba(8, 20, 32, 0.5)';
     ctx.beginPath();
-    ctx.moveTo(0, h); ctx.lineTo(0, h * 0.72);
-    ctx.lineTo(w * 0.2, h * 0.62); ctx.lineTo(w * 0.45, h * 0.74);
-    ctx.lineTo(w * 0.7, h * 0.58); ctx.lineTo(w, h * 0.70);
+    ctx.moveTo(0, h); ctx.lineTo(0, h * 0.76);
+    ctx.lineTo(w * 0.2, h * 0.65); ctx.lineTo(w * 0.48, h * 0.78);
+    ctx.lineTo(w * 0.75, h * 0.62); ctx.lineTo(w, h * 0.74);
     ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+    // Flocos de Neve
+    ambientParticles.forEach(p => {
+      p.y += p.vy * 1.5;
+      p.x += Math.sin(now * 0.001 + p.phase) * 0.7;
+      if (p.y > h) p.y = 0;
+      ctx.fillStyle = 'rgba(224, 242, 254, 0.7)';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+    });
   } else if (currentScenery.id === 'desert') {
-    // Deserto Dourado: miragem solar e dunas com crista iluminada
-    let sunP = Math.sin(now * 0.001) * 0.08 + 1.0;
-    let sG = ctx.createRadialGradient(w * 0.5, h * 0.62, 5, w * 0.5, h * 0.62, w * 0.5 * sunP);
-    sG.addColorStop(0, 'rgba(251, 191, 36, 0.25)');
+    // Deserto Dourado: Sol Poente radiante, miragem e dunas
+    let sunP = Math.sin(now * 0.001) * 0.06 + 1.0;
+    let sG = ctx.createRadialGradient(w * 0.5, h * 0.65, 8, w * 0.5, h * 0.65, w * 0.55 * sunP);
+    sG.addColorStop(0, 'rgba(251, 191, 36, 0.3)');
     sG.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = sG;
-    ctx.beginPath(); ctx.arc(w * 0.5, h * 0.62, w * 0.5 * sunP, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(w * 0.5, h * 0.65, w * 0.55 * sunP, 0, Math.PI * 2); ctx.fill();
 
-    // Duna frontal
-    ctx.fillStyle = 'rgba(24, 10, 4, 0.45)';
+    // Dunas com Cristas
+    ctx.fillStyle = 'rgba(26, 10, 4, 0.55)';
     ctx.beginPath();
-    ctx.moveTo(0, h); ctx.lineTo(0, h * 0.80);
-    ctx.quadraticCurveTo(w * 0.35, h * 0.84, w * 0.70, h * 0.76);
-    ctx.quadraticCurveTo(w * 0.88, h * 0.73, w, h * 0.77);
+    ctx.moveTo(0, h); ctx.lineTo(0, h * 0.82);
+    ctx.quadraticCurveTo(w * 0.4, h * 0.86, w * 0.72, h * 0.78);
+    ctx.quadraticCurveTo(w * 0.88, h * 0.75, w, h * 0.79);
     ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+    // Poeira Dourada
+    ambientParticles.forEach(p => {
+      p.x += 0.8; p.y += Math.sin(now * 0.002 + p.phase) * 0.4;
+      if (p.x > w) p.x = 0;
+      ctx.fillStyle = 'rgba(251, 191, 36, 0.55)';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.9, 0, Math.PI * 2); ctx.fill();
+    });
   } else if (currentScenery.id === 'medieval') {
-    // Reino Medieval: silhueta do castelo e tochas dinâmicas
-    ctx.fillStyle = 'rgba(8, 2, 16, 0.45)';
+    // Reino Medieval: Fortaleza Gótica, janelas iluminadas e tochas
+    ctx.fillStyle = 'rgba(10, 3, 18, 0.6)';
     ctx.beginPath();
-    let cY = h * 0.80;
+    let cY = h * 0.82;
     ctx.moveTo(0, h); ctx.lineTo(0, cY);
-    ctx.lineTo(w * 0.14, cY); ctx.lineTo(w * 0.14, cY - 60); ctx.lineTo(w * 0.22, cY - 60); ctx.lineTo(w * 0.22, cY - 20);
-    ctx.lineTo(w * 0.62, cY - 20); ctx.lineTo(w * 0.62, cY - 85); ctx.lineTo(w * 0.74, cY - 85); ctx.lineTo(w * 0.74, cY);
+    ctx.lineTo(w * 0.15, cY); ctx.lineTo(w * 0.15, cY - 55); ctx.lineTo(w * 0.24, cY - 55); ctx.lineTo(w * 0.24, cY - 18);
+    ctx.lineTo(w * 0.65, cY - 18); ctx.lineTo(w * 0.65, cY - 80); ctx.lineTo(w * 0.78, cY - 80); ctx.lineTo(w * 0.78, cY);
     ctx.lineTo(w, cY); ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
 
-    // Janelas iluminadas por velas
-    ctx.fillStyle = 'rgba(253, 224, 71, 0.6)';
-    ctx.fillRect(w * 0.16, cY - 45, 12, 18);
-    ctx.fillRect(w * 0.66, cY - 65, 16, 22);
+    // Janelas Iluminadas
+    ctx.fillStyle = 'rgba(253, 224, 71, 0.75)';
+    ctx.fillRect(w * 0.18, cY - 42, 10, 16);
+    ctx.fillRect(w * 0.70, cY - 62, 14, 20);
 
-    // Tochas crepitantes
-    let t1 = Math.sin(now * 0.008) * 0.15 + 0.85;
-    let tG = ctx.createRadialGradient(w * 0.20, cY - 55, 2, w * 0.20, cY - 55, 22 * t1);
-    tG.addColorStop(0, 'rgba(249, 115, 22, 0.55)');
+    // Tochas Crepitantes
+    let tP = Math.sin(now * 0.009) * 0.15 + 0.85;
+    let tG = ctx.createRadialGradient(w * 0.21, cY - 50, 2, w * 0.21, cY - 50, 24 * tP);
+    tG.addColorStop(0, 'rgba(249, 115, 22, 0.6)');
     tG.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = tG;
-    ctx.beginPath(); ctx.arc(w * 0.20, cY - 55, 22 * t1, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(w * 0.21, cY - 50, 24 * tP, 0, Math.PI * 2); ctx.fill();
   } else if (currentScenery.id === 'cosmic') {
-    // Noite Cósmica: nebulosas e estrelas cintilantes
-    let nG1 = ctx.createRadialGradient(w * 0.35, h * 0.35, 10, w * 0.35, h * 0.35, w * 0.55);
-    nG1.addColorStop(0, 'rgba(99, 102, 241, 0.25)');
+    // Noite Cósmica: Nebulosas profundas e constelações astrais
+    let nG1 = ctx.createRadialGradient(w * 0.4, h * 0.35, 12, w * 0.4, h * 0.35, w * 0.6);
+    nG1.addColorStop(0, 'rgba(129, 140, 248, 0.25)');
+    nG1.addColorStop(0.6, 'rgba(192, 132, 252, 0.15)');
     nG1.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = nG1;
-    ctx.beginPath(); ctx.arc(w * 0.35, h * 0.35, w * 0.55, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(w * 0.4, h * 0.35, w * 0.6, 0, Math.PI * 2); ctx.fill();
 
-    // Estrelas proeminentes
-    [[w*0.15, h*0.2, 0], [w*0.8, h*0.25, 2], [w*0.3, h*0.5, 4], [w*0.7, h*0.7, 1.5]].forEach(st => {
-      let tw = Math.sin(now * 0.003 + st[2]) * 0.5 + 0.5;
+    // Estrelas Cintilantes com Pontas de Brilho
+    ambientParticles.forEach(p => {
+      let tw = Math.sin(now * 0.003 + p.phase) * 0.5 + 0.5;
       ctx.fillStyle = `rgba(224, 231, 255, ${tw * 0.8 + 0.2})`;
-      ctx.beginPath(); ctx.arc(st[0], st[1], 2 * tw + 1, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * (0.8 + tw * 0.6), 0, Math.PI * 2); ctx.fill();
     });
   }
 }
 
-// --- RENDERIZAÇÃO DO TABULEIRO DE CARTAS ---
+// --- RENDERIZADOR PRINCIPAL DO JOGO ---
 function render(now) {
   const w = window.innerWidth;
   const h = window.innerHeight;
   ctx.clearRect(0, 0, w, h);
 
-  // 1. Fundo Dinâmico
+  // 1. Cenário e Atmosfera
   drawLiveBackground(w, h, now);
 
-  // 2. Slots Vazios
+  // 2. Slots Vazios (Mesa)
   drawSlot(stockRect.x, stockRect.y, '↺');
   drawSlot(wasteRect.x, wasteRect.y);
   fRects.forEach((r, idx) => {
@@ -599,16 +817,16 @@ function render(now) {
   });
   tRects.forEach(r => drawSlot(r.x, r.y));
 
-  // 3. Stock
+  // 3. Monte de Compra (Stock)
   if (stock.length > 0) drawCard(stock[stock.length - 1], stockRect.x, stockRect.y);
 
-  // 4. Waste
+  // 4. Monte de Descarte (Waste)
   if (waste.length > 0) {
     let top = (isDragging && dragSource === 'waste') ? waste[waste.length - 2] : waste[waste.length - 1];
     if (top) drawCard(top, wasteRect.x, wasteRect.y);
   }
 
-  // 5. Foundations
+  // 5. Quatro Fundações
   foundations.forEach((f, idx) => {
     if (f.length > 0) {
       let top = (isDragging && dragSource === `f_${idx}`) ? f[f.length - 2] : f[f.length - 1];
@@ -616,17 +834,27 @@ function render(now) {
     }
   });
 
-  // 6. Tableaus
+  // 6. Sete Colunas (Tableaus)
   tableaus.forEach((t, col) => {
     let r = tRects[col];
     let curY = r.y;
     let limit = (isDragging && dragSource === `t_${col}`) ? t.length - dragCards.length : t.length;
-    
-    // Shake para jogada inválida
+
+    // Resposta de Jogada Inválida (Shake Físico)
     let shakeOffset = 0;
     if (invalidShakeCol === col && (now - invalidShakeTime) < 250) {
       let prog = (now - invalidShakeTime) / 250;
-      shakeOffset = Math.sin(prog * Math.PI * 4) * 6 * (1 - prog);
+      shakeOffset = Math.sin(prog * Math.PI * 4) * 7 * (1 - prog);
+    }
+
+    // Efeito Visual de Coluna Completa (Aura Dourada)
+    if (columnGlows[col] && (now - columnGlows[col]) < 1000) {
+      let glowProg = (now - columnGlows[col]) / 1000;
+      let alpha = (1 - glowProg) * 0.6;
+      ctx.strokeStyle = `rgba(251, 191, 36, ${alpha})`;
+      ctx.lineWidth = 4;
+      roundRect(ctx, r.x - 3, r.y - 3, cw + 6, h - r.y - 80, 10);
+      ctx.stroke();
     }
 
     for (let i = 0; i < limit; i++) {
@@ -670,7 +898,7 @@ function render(now) {
     });
   }
 
-  // 8. Cartas em Arraste (Floating Cards com Sombra 3D)
+  // 8. Cartas Flutuando em Arraste com Sombra 3D
   if (isDragging && dragCards.length > 0) {
     let curX = dragCurX - dragOffX;
     let curY = dragCurY - dragOffY;
@@ -680,10 +908,10 @@ function render(now) {
     });
   }
 
-  // 9. Faíscas e Partículas Luminosas
+  // 9. Faíscas e Partículas de Celebração
   for (let i = sparkParticles.length - 1; i >= 0; i--) {
     let p = sparkParticles[i];
-    p.x += p.vx; p.y += p.vy; p.alpha -= 0.02;
+    p.x += p.vx; p.y += p.vy; p.alpha -= 0.025;
     if (p.alpha <= 0) {
       sparkParticles.splice(i, 1);
     } else {
@@ -692,9 +920,9 @@ function render(now) {
     }
   }
 
-  // 10. Cascata de Vitória
-  if (isWon && Math.random() < 0.2) {
-    addSparkle(Math.random() * w, h * 0.15, Math.random() < 0.5 ? '#FBBF24' : '#34D399', 5);
+  // 10. Cascata Especial de Vitória
+  if (isWon && Math.random() < 0.25) {
+    addSparkle(Math.random() * w, h * 0.15, Math.random() < 0.5 ? '#FBBF24' : '#34D399', 6);
   }
 
   requestAnimationFrame(render);
@@ -704,8 +932,8 @@ function addSparkle(x, y, color = '#FBBF24', count = 8) {
   for (let i = 0; i < count; i++) {
     sparkParticles.push({
       x: x, y: y,
-      vx: (Math.random() - 0.5) * 4,
-      vy: -(Math.random() * 3 + 1),
+      vx: (Math.random() - 0.5) * 4.5,
+      vy: -(Math.random() * 3.5 + 1),
       size: Math.random() * 3 + 2,
       alpha: 1.0,
       color: color
@@ -716,92 +944,93 @@ function addSparkle(x, y, color = '#FBBF24', count = 8) {
 function drawSlot(x, y, watermark) {
   ctx.strokeStyle = currentScenery.accent + '33';
   ctx.lineWidth = 1.5;
-  ctx.fillStyle = 'rgba(0,0,0,0.25)';
-  roundRect(ctx, x, y, cw, ch, 6);
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  roundRect(ctx, x, y, cw, ch, 7);
   ctx.fill(); ctx.stroke();
   if (watermark) {
     ctx.fillStyle = currentScenery.accent + '44';
-    ctx.font = `${cw * 0.35}px sans-serif`;
+    ctx.font = `bold ${cw * 0.36}px serif`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(watermark, x + cw / 2, y + ch / 2);
   }
 }
 
-// Renderiza a Carta (com a skin ativa, moldura nobre e corte 3D)
+// --- RENDERIZAÇÃO ARTÍSTICA DA CARTA ---
 function drawCard(card, x, y, isElevated) {
   ctx.save();
   if (isElevated) {
-    ctx.shadowColor = 'rgba(0,0,0,0.55)';
-    ctx.shadowBlur = 16; ctx.shadowOffsetY = 10;
+    ctx.shadowColor = 'rgba(0,0,0,0.65)';
+    ctx.shadowBlur = 18; ctx.shadowOffsetY = 12;
   }
+
   if (!card.faceUp) {
-    // Verso com gradiente da Skin
+    // Verso da Carta com a Skin Ativa
     let g = ctx.createLinearGradient(x, y, x + cw, y + ch);
     g.addColorStop(0, currentSkin.p1);
     g.addColorStop(1, currentSkin.p2);
     ctx.fillStyle = g;
-    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
     ctx.lineWidth = 1.2;
-    roundRect(ctx, x, y, cw, ch, 6);
+    roundRect(ctx, x, y, cw, ch, 7);
     ctx.fill(); ctx.stroke();
 
-    // Moldura interna ornamental
-    ctx.strokeStyle = currentSkin.acc + '88';
-    roundRect(ctx, x + 4, y + 4, cw - 8, ch - 8, 4);
+    // Moldura Interna em Ouro/Acento
+    ctx.strokeStyle = currentSkin.acc + '99';
+    roundRect(ctx, x + 4, y + 4, cw - 8, ch - 8, 5);
     ctx.stroke();
 
-    // Padrão geométrico da skin
+    // Padrão Geométrico Exclusivo da Skin
     drawSkinPattern(ctx, currentSkin.pattern, x + cw / 2, y + ch / 2, cw * 0.28, currentSkin.acc);
   } else {
-    // Face frontal em pergaminho marfim suave
-    let fg = ctx.createLinearGradient(x, y, x, y + ch);
-    fg.addColorStop(0, '#FFFDF9');
-    fg.addColorStop(1, '#F3EFE6');
-    ctx.fillStyle = fg;
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.22)';
-    ctx.lineWidth = 1.2;
-    roundRect(ctx, x, y, cw, ch, 6);
+    // Face Frontal com Tom Pergaminho Nobre e Bisel
+    let parchmentG = ctx.createLinearGradient(x, y, x + cw, y + ch);
+    parchmentG.addColorStop(0, '#FFFFFF');
+    parchmentG.addColorStop(1, '#F8FAFC');
+    ctx.fillStyle = parchmentG;
+    ctx.strokeStyle = '#D1D5DB';
+    ctx.lineWidth = 1;
+    roundRect(ctx, x, y, cw, ch, 7);
     ctx.fill(); ctx.stroke();
 
-    // Moldura interna de filigrana dourada
+    // Moldura Interna Delicada
     ctx.strokeStyle = 'rgba(212, 175, 55, 0.25)';
-    ctx.lineWidth = 1;
-    roundRect(ctx, x + 3, y + 3, cw - 6, ch - 6, 4);
+    roundRect(ctx, x + 2.5, y + 2.5, cw - 5, ch - 5, 5);
     ctx.stroke();
 
-    ctx.fillStyle = card.suit.isRed ? '#E11D48' : '#0F172A';
-    ctx.font = `bold ${cw * 0.22}px sans-serif`;
+    // Índices da Carta (Valor & Naipe)
+    ctx.fillStyle = card.suit.isRed ? '#DC2626' : '#0F172A';
+    ctx.font = `bold ${cw * 0.24}px -apple-system, serif`;
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText(card.rank.label, x + 5, y + 5);
 
-    ctx.font = `${cw * 0.16}px sans-serif`;
-    ctx.fillText(card.suit.symbol, x + 5, y + 5 + cw * 0.22);
+    ctx.font = `${cw * 0.17}px sans-serif`;
+    ctx.fillText(card.suit.symbol, x + 5, y + 5 + cw * 0.23);
 
-    // Centro
+    // Ilustração Central Nobre
     if (card.rank.val > 10) {
-      // Borda nobre dourada nas figuras J, Q, K
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
-      ctx.lineWidth = 1.6;
+      // Figuras da Corte (Valete, Rainha, Rei) com Brasão Imperial
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
+      ctx.lineWidth = 1.5;
       roundRect(ctx, x + cw * 0.2, y + ch * 0.26, cw * 0.6, ch * 0.48, 5);
       ctx.stroke();
 
-      // Marca d'água heráldica sutil
-      ctx.fillStyle = card.suit.isRed ? 'rgba(225, 29, 72, 0.12)' : 'rgba(15, 23, 42, 0.12)';
-      ctx.font = `${cw * 0.38}px sans-serif`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2 - 2);
+      ctx.fillStyle = 'rgba(251, 191, 36, 0.12)';
+      ctx.fill();
 
-      ctx.fillStyle = card.suit.isRed ? '#E11D48' : '#0F172A';
-      ctx.font = `serif bold ${cw * 0.36}px`;
+      ctx.fillStyle = card.suit.isRed ? '#DC2626' : '#0F172A';
+      ctx.font = `serif bold ${cw * 0.38}px`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(card.rank.label, x + cw / 2, y + ch / 2 - 2);
-      ctx.font = `${cw * 0.16}px sans-serif`;
-      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch * 0.65);
+
+      ctx.font = `${cw * 0.18}px sans-serif`;
+      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch * 0.66);
     } else if (card.rank.val === 1) {
-      ctx.font = `${cw * 0.42}px sans-serif`;
+      // Ás Majestoso com Brasão Central
+      ctx.font = `${cw * 0.44}px sans-serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2);
     } else {
-      ctx.font = `${cw * 0.34}px sans-serif`;
+      ctx.font = `${cw * 0.35}px sans-serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2);
     }
@@ -817,7 +1046,10 @@ function drawSkinPattern(c, pattern, cx, cy, size, acc) {
   c.beginPath();
   if (pattern === 'classic' || pattern === 'golden') {
     c.moveTo(cx, cy - size); c.lineTo(cx + size, cy); c.lineTo(cx, cy + size); c.lineTo(cx - size, cy); c.closePath();
-    c.stroke(); if (pattern === 'golden') { c.arc(cx, cy, size * 0.4, 0, Math.PI * 2); c.stroke(); }
+    c.stroke();
+    if (pattern === 'golden') {
+      c.arc(cx, cy, size * 0.4, 0, Math.PI * 2); c.stroke();
+    }
   } else if (pattern === 'arcane') {
     c.arc(cx, cy, size * 0.8, 0, Math.PI * 2); c.stroke();
     c.moveTo(cx, cy - size * 0.7); c.lineTo(cx + size * 0.7, cy); c.lineTo(cx, cy + size * 0.7); c.lineTo(cx - size * 0.7, cy); c.closePath(); c.stroke();
@@ -854,7 +1086,7 @@ function roundRect(c, x, y, w, h, r) {
   c.closePath();
 }
 
-// --- REGRAS DO KLONDIKE ---
+// --- REGRAS DO KLONDIKE & MECÂNICAS ---
 function canMoveToTableau(card, target) {
   if (target.length === 0) return card.rank.val === 13;
   let top = target[target.length - 1];
@@ -873,7 +1105,6 @@ function checkWin() {
     clearInterval(timerInterval);
     playSound('victory');
 
-    // Conceder moedas uma única vez por fase
     let coinsEarned = 0;
     if (!rewardedLevels.includes(currentLevel)) {
       coinsEarned = 10;
@@ -892,16 +1123,16 @@ function checkWin() {
     let uDiv = document.getElementById('vicSceneryUnlock');
     if (newlyUnlocked) {
       uDiv.style.display = 'block';
-      uDiv.innerText = `✨ Novo Cenário Desbloqueado: ${newlyUnlocked.name}!`;
+      uDiv.innerText = `✨ Novo Cenário Conquistado: ${newlyUnlocked.name}!`;
     } else {
       uDiv.style.display = 'none';
     }
 
     document.getElementById('vicMessage').innerText = `Você concluiu a fase ${currentLevel} com perfeição!`;
     document.getElementById('vicStats').innerHTML = `
-      <div><strong>Avatar:</strong> ${currentAvatar.emoji} ${currentAvatar.name}</div>
-      <div><strong>Recompensa:</strong> ${coinsEarned > 0 ? '+10 Moedas 🪙' : 'Fase já premiada'}</div>
-      <div><strong>Saldo Atual:</strong> ${coinsBalance} Moedas 🪙</div>
+      <div><strong>Avatar Ativo:</strong> ${currentAvatar.emoji} ${currentAvatar.name} (${currentAvatar.title})</div>
+      <div><strong>Recompensa de Fase:</strong> ${coinsEarned > 0 ? '+10 Moedas de Ouro 🪙' : 'Fase já premiada anteriormente'}</div>
+      <div><strong>Saldo Total:</strong> ${coinsBalance} Moedas 🪙</div>
       <div><strong>Movimentos:</strong> ${moves} • <strong>Tempo:</strong> ${Math.floor(seconds/60)}m ${seconds%60}s</div>
     `;
 
@@ -910,8 +1141,7 @@ function checkWin() {
   }
 }
 
-// --- SISTEMA DE DESFAZER (UNDO) ---
-
+// --- DESFAZER (UNDO) ---
 function saveState() {
   const snapshot = {
     stock: stock.map(c => ({...c})),
@@ -921,470 +1151,580 @@ function saveState() {
     moves: moves
   };
   undoStack.push(snapshot);
-  if (undoStack.length > 50) undoStack.shift();
+  if (undoStack.length > 30) undoStack.shift();
 }
 
-function undo() {
+function performUndo() {
   if (undoStack.length === 0) {
-    playSound('invalid');
-    showToast('Nenhum movimento para desfazer.');
+    showToast('Nenhum movimento para desfazer');
     return;
   }
-  const prev = undoStack.pop();
-  stock = prev.stock;
-  waste = prev.waste;
-  foundations = prev.foundations;
-  tableaus = prev.tableaus;
-  moves = prev.moves;
+  const snap = undoStack.pop();
+  stock = snap.stock;
+  waste = snap.waste;
+  foundations = snap.foundations;
+  tableaus = snap.tableaus;
+  moves = snap.moves;
   playSound('touch');
   updateHud();
-  showToast('Jogada desfeita!');
 }
 
-// --- INTERAÇÕES DE TOQUE / ARRASTAR E SOLTAR ---
-function getTouchPos(e) {
-  let t = (e.touches && e.touches.length > 0)
-    ? e.touches[0]
-    : ((e.changedTouches && e.changedTouches.length > 0) ? e.changedTouches[0] : e);
-  return { x: t.clientX, y: t.clientY };
-}
-
-function onTouchStart(e) {
-  let pos = getTouchPos(e);
-  touchDownX = pos.x; touchDownY = pos.y;
-  dragCurX = pos.x; dragCurY = pos.y;
-  isDragging = false; dragCards = []; dragSource = null;
-
-  // 1. Stock
-  if (pos.x >= stockRect.x && pos.x <= stockRect.x + cw && pos.y >= stockRect.y && pos.y <= stockRect.y + ch) {
-    if (stock.length > 0) {
+// --- JOGADA INTELIGENTE POR TOQUE (TAP-TO-MOVE) ---
+function handleSmartTap(card, source) {
+  // 1. Tentar mover para Fundação
+  for (let i = 0; i < 4; i++) {
+    if (canMoveToFoundation(card, foundations[i])) {
       saveState();
-      let c = stock.pop(); c.faceUp = true; waste.push(c);
-      playSound('touch'); moves++; updateHud();
-    } else if (waste.length > 0) {
-      saveState();
-      while (waste.length > 0) {
-        let c = waste.pop(); c.faceUp = false; stock.push(c);
-      }
-      playSound('touch'); moves++; updateHud();
+      removeCardFromSource(card, source);
+      foundations[i].push(card);
+      moves++;
+      playSound('place');
+      addSparkle(fRects[i].x + cw/2, fRects[i].y + ch/2, '#FBBF24', 8);
+      revealTopTableauCard(source);
+      updateHud();
+      checkWin();
+      return true;
     }
+  }
+
+  // 2. Tentar mover para Tableau Válido
+  for (let c = 0; c < 7; c++) {
+    if (source !== `t_${c}` && canMoveToTableau(card, tableaus[c])) {
+      saveState();
+      let movingCards = getSubsequentCards(card, source);
+      removeCardFromSource(card, source, movingCards.length);
+      tableaus[c].push(...movingCards);
+      moves++;
+      playSound('place');
+      revealTopTableauCard(source);
+      updateHud();
+      checkColumnCompletion(c);
+      return true;
+    }
+  }
+  return false;
+}
+
+function getSubsequentCards(card, source) {
+  if (!source.startsWith('t_')) return [card];
+  let col = parseInt(source.split('_')[1]);
+  let idx = tableaus[col].findIndex(c => c.id === card.id);
+  return tableaus[col].slice(idx);
+}
+
+function removeCardFromSource(card, source, count = 1) {
+  if (source === 'waste') waste.pop();
+  else if (source.startsWith('f_')) {
+    let fIdx = parseInt(source.split('_')[1]);
+    foundations[fIdx].pop();
+  } else if (source.startsWith('t_')) {
+    let col = parseInt(source.split('_')[1]);
+    tableaus[col].splice(tableaus[col].length - count, count);
+  }
+}
+
+function revealTopTableauCard(source) {
+  if (source.startsWith('t_')) {
+    let col = parseInt(source.split('_')[1]);
+    let t = tableaus[col];
+    if (t.length > 0 && !t[t.length - 1].faceUp) {
+      t[t.length - 1].faceUp = true;
+      addSparkle(tRects[col].x + cw/2, tRects[col].y + (t.length - 1) * ch * 0.28, '#34D399', 6);
+    }
+  }
+}
+
+function checkColumnCompletion(col) {
+  let t = tableaus[col];
+  if (t.length > 0 && t.every(c => c.faceUp)) {
+    // Efeito de Coluna Completa
+    columnGlows[col] = performance.now();
+    playSound('column');
+    addSparkle(tRects[col].x + cw/2, tRects[col].y + t.length * ch * 0.2, '#FBBF24', 16);
+  }
+}
+
+// Auto-Move
+function autoMoveStep() {
+  // Move cartas disponíveis do waste ou tableaus para fundações
+  if (waste.length > 0) {
+    let top = waste[waste.length - 1];
+    for (let i = 0; i < 4; i++) {
+      if (canMoveToFoundation(top, foundations[i])) {
+        handleSmartTap(top, 'waste');
+        return true;
+      }
+    }
+  }
+  for (let c = 0; c < 7; c++) {
+    let t = tableaus[c];
+    if (t.length > 0) {
+      let top = t[t.length - 1];
+      if (top.faceUp) {
+        for (let i = 0; i < 4; i++) {
+          if (canMoveToFoundation(top, foundations[i])) {
+            handleSmartTap(top, `t_${c}`);
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
+// --- TRATAMENTO DE TOQUE E ARRASTE (TOUCH & MOUSE) ---
+function getPointerPos(e) {
+  let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return { x: clientX, y: clientY };
+}
+
+canvas.addEventListener('pointerdown', (e) => {
+  const pos = getPointerPos(e);
+  touchStartX = pos.x; touchStartY = pos.y;
+  dragCurX = pos.x; dragCurY = pos.y;
+
+  // 1. Toque no Stock (Monte de Compra)
+  if (pos.x >= stockRect.x && pos.x <= stockRect.x + stockRect.w &&
+      pos.y >= stockRect.y && pos.y <= stockRect.y + stockRect.h) {
+    saveState();
+    if (stock.length > 0) {
+      let c = stock.pop();
+      c.faceUp = true;
+      waste.push(c);
+      playSound('touch');
+    } else {
+      while (waste.length > 0) {
+        let c = waste.pop();
+        c.faceUp = false;
+        stock.push(c);
+      }
+      playSound('place');
+    }
+    moves++;
+    updateHud();
     return;
   }
 
-  // 2. Waste
-  if (waste.length > 0 && pos.x >= wasteRect.x && pos.x <= wasteRect.x + cw && pos.y >= wasteRect.y && pos.y <= wasteRect.y + ch) {
-    isDragging = true; dragSource = 'waste'; dragCards = [waste[waste.length - 1]];
-    dragOffX = pos.x - wasteRect.x; dragOffY = pos.y - wasteRect.y;
+  // 2. Toque no Waste (Descarte)
+  if (waste.length > 0 &&
+      pos.x >= wasteRect.x && pos.x <= wasteRect.x + wasteRect.w &&
+      pos.y >= wasteRect.y && pos.y <= wasteRect.y + wasteRect.h) {
+    isDragging = true;
+    dragCards = [waste[waste.length - 1]];
+    dragSource = 'waste';
+    dragOffX = pos.x - wasteRect.x;
+    dragOffY = pos.y - wasteRect.y;
     playSound('touch');
     return;
   }
 
-  // 3. Foundations
+  // 3. Toque nas Fundações
   for (let i = 0; i < 4; i++) {
     let r = fRects[i];
-    if (foundations[i].length > 0 && pos.x >= r.x && pos.x <= r.x + cw && pos.y >= r.y && pos.y <= r.y + ch) {
-      isDragging = true; dragSource = `f_${i}`; dragCards = [foundations[i][foundations[i].length - 1]];
-      dragOffX = pos.x - r.x; dragOffY = pos.y - r.y;
+    if (foundations[i].length > 0 &&
+        pos.x >= r.x && pos.x <= r.x + r.w &&
+        pos.y >= r.y && pos.y <= r.y + r.h) {
+      isDragging = true;
+      dragCards = [foundations[i][foundations[i].length - 1]];
+      dragSource = `f_${i}`;
+      dragOffX = pos.x - r.x;
+      dragOffY = pos.y - r.y;
       playSound('touch');
       return;
     }
   }
 
-  // 4. Tableaus
-  for (let col = 0; col < 7; col++) {
-    let r = tRects[col];
-    if (pos.x >= r.x && pos.x <= r.x + cw && pos.y >= r.y) {
-      let t = tableaus[col];
-      if (t.length === 0) continue;
-
-      let curY = r.y;
-      let touchedIdx = -1;
-      for (let i = 0; i < t.length; i++) {
-        let nextY = curY + (t[i].faceUp ? ch * 0.28 : ch * 0.18);
-        if (i === t.length - 1) nextY = curY + ch;
-        if (pos.y >= curY && pos.y <= nextY) { touchedIdx = i; break; }
-        curY += (t[i].faceUp ? ch * 0.28 : ch * 0.18);
-      }
-
-      if (touchedIdx !== -1) {
-        let c = t[touchedIdx];
-        if (!c.faceUp && touchedIdx === t.length - 1) {
-          saveState();
-          c.faceUp = true;
-          playSound('place');
-          addSparkle(pos.x, curY + ch * 0.5, '#34D399', 8);
-          moves++; updateHud();
-          return;
-        }
-        if (c.faceUp) {
-          isDragging = true; dragSource = `t_${col}`;
-          dragCards = t.slice(touchedIdx);
-          dragOffX = pos.x - r.x;
-          dragOffY = pos.y - (r.y + (touchedIdx * (ch * 0.28)));
-          playSound('touch');
-          return;
+  // 4. Toque nos Tableaus
+  for (let c = 0; c < 7; c++) {
+    let r = tRects[c];
+    let t = tableaus[c];
+    if (pos.x >= r.x && pos.x <= r.x + r.w && pos.y >= r.y) {
+      if (t.length > 0) {
+        let cardY = r.y;
+        for (let i = 0; i < t.length; i++) {
+          let nextY = (i === t.length - 1) ? cardY + ch : (cardY + (t[i].faceUp ? ch * 0.28 : ch * 0.18));
+          if (pos.y >= cardY && pos.y <= nextY) {
+            let card = t[i];
+            if (card.faceUp) {
+              isDragging = true;
+              dragCards = t.slice(i);
+              dragSource = `t_${c}`;
+              dragOffX = pos.x - r.x;
+              dragOffY = pos.y - cardY;
+              playSound('touch');
+              return;
+            }
+          }
+          cardY = nextY;
         }
       }
     }
   }
-}
+});
 
-function onTouchMove(e) {
+canvas.addEventListener('pointermove', (e) => {
   if (!isDragging) return;
-  let pos = getTouchPos(e);
+  const pos = getPointerPos(e);
   dragCurX = pos.x; dragCurY = pos.y;
-}
+});
 
-function onTouchEnd(e) {
-  if (!isDragging || dragCards.length === 0) return;
-  let pos = getTouchPos(e);
-  let dist = Math.hypot(pos.x - touchDownX, pos.y - touchDownY);
+canvas.addEventListener('pointerup', (e) => {
+  if (!isDragging) return;
+  isDragging = false;
+  const pos = getPointerPos(e);
+  const dist = Math.hypot(pos.x - touchStartX, pos.y - touchStartY);
 
-  let success = false;
+  // Se foi apenas um toque rápido (Tap), aciona Smart Tap
+  if (dist < 10 && dragCards.length === 1) {
+    if (handleSmartTap(dragCards[0], dragSource)) {
+      dragCards = []; dragSource = null;
+      return;
+    }
+  }
+
+  let dropSuccess = false;
   let first = dragCards[0];
 
-  // Tap-to-move Inteligente
-  if (dist < 12) {
-    if (dragCards.length === 1) {
-      for (let i = 0; i < 4; i++) {
+  // 1. Tentar Soltar em Fundação
+  if (dragCards.length === 1) {
+    for (let i = 0; i < 4; i++) {
+      let r = fRects[i];
+      if (pos.x >= r.x - 10 && pos.x <= r.x + r.w + 10 &&
+          pos.y >= r.y - 10 && pos.y <= r.y + r.h + 10) {
         if (canMoveToFoundation(first, foundations[i])) {
-          removeDragCardsFromSource();
+          saveState();
+          removeCardFromSource(first, dragSource);
           foundations[i].push(first);
-          addSparkle(fRects[i].x + cw / 2, fRects[i].y + ch / 2, '#FBBF24', 10);
-          success = true;
+          moves++;
+          playSound('place');
+          addSparkle(r.x + cw/2, r.y + ch/2, '#FBBF24', 8);
+          revealTopTableauCard(dragSource);
+          dropSuccess = true;
+          checkWin();
           break;
-        }
-      }
-    }
-    if (!success) {
-      for (let col = 0; col < 7; col++) {
-        if (dragSource !== `t_${col}` && canMoveToTableau(first, tableaus[col])) {
-          removeDragCardsFromSource();
-          tableaus[col].push(...dragCards);
-          success = true;
-          break;
-        }
-      }
-    }
-  } else {
-    // Drag and Drop
-    // Verifica Fundações
-    if (dragCards.length === 1) {
-      for (let i = 0; i < 4; i++) {
-        let r = fRects[i];
-        if (pos.x >= r.x - 10 && pos.x <= r.x + cw + 10 && pos.y >= r.y - 10 && pos.y <= r.y + ch + 10) {
-          if (canMoveToFoundation(first, foundations[i])) {
-            removeDragCardsFromSource();
-            foundations[i].push(first);
-            addSparkle(r.x + cw / 2, r.y + ch / 2, '#FBBF24', 10);
-            success = true;
-            break;
-          }
-        }
-      }
-    }
-    // Verifica Tableaus
-    if (!success) {
-      for (let col = 0; col < 7; col++) {
-        let r = tRects[col];
-        if (pos.x >= r.x - 10 && pos.x <= r.x + cw + 10 && pos.y >= r.y && pos.y <= r.y + r.h) {
-          if (dragSource !== `t_${col}` && canMoveToTableau(first, tableaus[col])) {
-            removeDragCardsFromSource();
-            tableaus[col].push(...dragCards);
-            success = true;
-            break;
-          }
         }
       }
     }
   }
 
-  if (success) {
-    playSound('place');
-    moves++;
-    // Se deixou uma carta virada para baixo no topo, vira automaticamente
-    if (dragSource && dragSource.startsWith('t_')) {
-      let cIdx = parseInt(dragSource.split('_')[1]);
-      let t = tableaus[cIdx];
-      if (t.length > 0 && !t[t.length - 1].faceUp) {
-        t[t.length - 1].faceUp = true;
-        addSparkle(tRects[cIdx].x + cw / 2, tRects[cIdx].y + (t.length - 1) * (ch * 0.28) + ch / 2, '#34D399', 6);
+  // 2. Tentar Soltar em Tableau
+  if (!dropSuccess) {
+    for (let c = 0; c < 7; c++) {
+      let r = tRects[c];
+      if (pos.x >= r.x - 10 && pos.x <= r.x + r.w + 10 && pos.y >= r.y - 10) {
+        if (dragSource !== `t_${c}` && canMoveToTableau(first, tableaus[c])) {
+          saveState();
+          removeCardFromSource(first, dragSource, dragCards.length);
+          tableaus[c].push(...dragCards);
+          moves++;
+          playSound('place');
+          revealTopTableauCard(dragSource);
+          checkColumnCompletion(c);
+          dropSuccess = true;
+          break;
+        }
       }
     }
-    updateHud();
-    checkWin();
-  } else {
-    playSound('invalid');
-    if (dragSource && dragSource.startsWith('t_')) {
+  }
+
+  // Feedback de Jogada Inválida
+  if (!dropSuccess) {
+    if (dragSource.startsWith('t_')) {
       invalidShakeCol = parseInt(dragSource.split('_')[1]);
       invalidShakeTime = performance.now();
+      playSound('invalid');
     }
   }
 
-  isDragging = false; dragCards = []; dragSource = null;
+  dragCards = []; dragSource = null;
+  updateHud();
+});
+
+// --- RENDERIZAÇÃO DA PRÉVIA AMPLIADA DA LOJA ---
+function drawPreviewCard(skin) {
+  const pCanvas = document.getElementById('previewCanvas');
+  const pCtx = pCanvas.getContext('2d');
+  const pw = pCanvas.width;
+  const ph = pCanvas.height;
+  pCtx.clearRect(0, 0, pw, ph);
+
+  // Verso da Carta
+  let g = pCtx.createLinearGradient(0, 0, pw, ph);
+  g.addColorStop(0, skin.p1);
+  g.addColorStop(1, skin.p2);
+  pCtx.fillStyle = g;
+  pCtx.strokeStyle = 'rgba(255,255,255,0.4)';
+  pCtx.lineWidth = 2;
+  roundRect(pCtx, 2, 2, pw - 4, ph - 4, 12);
+  pCtx.fill(); pCtx.stroke();
+
+  // Moldura Interna em Ouro
+  pCtx.strokeStyle = skin.acc;
+  roundRect(pCtx, 8, 8, pw - 16, ph - 16, 8);
+  pCtx.stroke();
+
+  // Padrão Central
+  drawSkinPattern(pCtx, skin.pattern, pw / 2, ph / 2, pw * 0.28, skin.acc);
 }
 
-function removeDragCardsFromSource() {
-  saveState();
-  if (dragSource === 'waste') {
-    waste.pop();
-  } else if (dragSource.startsWith('f_')) {
-    let idx = parseInt(dragSource.split('_')[1]);
-    foundations[idx].pop();
-  } else if (dragSource.startsWith('t_')) {
-    let col = parseInt(dragSource.split('_')[1]);
-    tableaus[col].splice(tableaus[col].length - dragCards.length);
-  }
-}
+// --- INTERFACE DA LOJA & GALERIA ---
+let activeShopTab = 'skins';
 
-// Event Listeners
-canvas.addEventListener('touchstart', onTouchStart, { passive: false });
-canvas.addEventListener('touchmove', onTouchMove, { passive: false });
-canvas.addEventListener('touchend', onTouchEnd, { passive: false });
-canvas.addEventListener('mousedown', onTouchStart);
-canvas.addEventListener('mousemove', onTouchMove);
-canvas.addEventListener('mouseup', onTouchEnd);
-
-// --- MODAL DE LOJA PREMIUM & PRÉVIA ---
-function updatePreview(item, isAvatar = false) {
-  const prevCanvas = document.getElementById('previewCanvas');
-  const pctx = prevCanvas.getContext('2d');
-  const pw = prevCanvas.width, ph = prevCanvas.height;
-  pctx.clearRect(0, 0, pw, ph);
-
-  document.getElementById('prevColl').innerText = `COLEÇÃO: ${item.collection.toUpperCase()}`;
-  document.getElementById('prevTitle').innerText = isAvatar ? `${item.emoji} ${item.name}` : item.name;
-  document.getElementById('prevDesc').innerText = isAvatar ? `${item.title} • ${item.desc}` : item.desc;
-
-  if (isAvatar) {
-    pctx.fillStyle = item.bg;
-    pctx.beginPath(); pctx.arc(pw/2, ph/2, pw*0.4, 0, Math.PI*2); pctx.fill();
-    pctx.strokeStyle = item.border; pctx.lineWidth = 4; pctx.stroke();
-    pctx.font = `${pw * 0.45}px sans-serif`; pctx.textAlign = 'center'; pctx.textBaseline = 'middle';
-    pctx.fillText(item.emoji, pw/2, ph/2 + 2);
-  } else {
-    let g = pctx.createLinearGradient(6, 6, pw - 6, ph - 6);
-    g.addColorStop(0, item.p1); g.addColorStop(1, item.p2);
-    pctx.fillStyle = g;
-    roundRect(pctx, 6, 6, pw - 12, ph - 12, 10);
-    pctx.fill();
-    pctx.strokeStyle = item.acc; pctx.lineWidth = 2.5; pctx.stroke();
-    drawSkinPattern(pctx, item.pattern, pw/2, ph/2, pw * 0.28, item.acc);
-  }
-}
-
-let activeTab = 'skins';
 function renderShopList() {
   const container = document.getElementById('shopListContainer');
   container.innerHTML = '';
 
-  if (activeTab === 'skins') {
-    SKINS.forEach(s => {
-      const isEquipped = s.id === currentSkin.id;
-      const isUnlocked = unlockedSkins.includes(s.id);
-      
-      const itemEl = document.createElement('div');
-      itemEl.className = 'shop-item';
-      itemEl.innerHTML = `
-        <div class="shop-item-info">
-          <div class="shop-item-coll">${s.collection}</div>
-          <div class="shop-item-name">${s.name}</div>
-          <div class="shop-item-desc">${s.desc}</div>
-        </div>
-        <button class="shop-item-btn" style="background:rgba(255,255,255,0.1); color:#FFF; margin-right:4px;">👁️</button>
-        <button class="shop-item-btn action-btn">${isEquipped ? 'Equipado' : isUnlocked ? 'Equipar' : `Comprar (${s.price} 🪙)`}</button>
-      `;
+  if (activeShopTab === 'skins') {
+    SKINS.forEach(skin => {
+      let isUnlocked = unlockedSkins.includes(skin.id);
+      let isEquipped = (equippedSkinId === skin.id);
 
-      // Visualizar
-      itemEl.children[1].onclick = () => updatePreview(s, false);
-      itemEl.onclick = (e) => { if (e.target.tagName !== 'BUTTON') updatePreview(s, false); };
+      let item = document.createElement('div');
+      item.className = `shop-item ${activePreviewItem.id === skin.id ? 'selected' : ''}`;
+      item.onclick = () => {
+        activePreviewItem = skin;
+        document.getElementById('prevColl').innerText = `COLEÇÃO: ${skin.collection}`;
+        document.getElementById('prevTitle').innerText = skin.name;
+        document.getElementById('prevDesc').innerText = skin.desc;
+        drawPreviewCard(skin);
+        renderShopList();
+      };
 
-      // Ação
-      const actBtn = itemEl.querySelector('.action-btn');
+      let btnHtml = '';
       if (isEquipped) {
-        actBtn.style.background = '#374151'; actBtn.style.color = '#94A3B8';
+        btnHtml = `<button class="shop-item-btn" style="background:#10B981; color:#FFF;" disabled>Equipado ✓</button>`;
       } else if (isUnlocked) {
-        actBtn.style.background = '#2563EB'; actBtn.style.color = '#FFF';
-        actBtn.onclick = () => {
-          currentSkin = s; equippedSkinId = s.id;
-          localStorage.setItem('pac_skin', s.id);
-          showToast(`Skin ${s.name} equipada!`);
-          updatePreview(s, false);
-          renderShopList();
-        };
+        btnHtml = `<button class="shop-item-btn btn-blue" onclick="equipSkin('${skin.id}')">Equipar</button>`;
       } else {
-        actBtn.style.background = '#FBBF24'; actBtn.style.color = '#000';
-        actBtn.onclick = () => {
-          if (coinsBalance >= s.price) {
-            coinsBalance -= s.price;
-            unlockedSkins.push(s.id);
-            currentSkin = s; equippedSkinId = s.id;
-            localStorage.setItem('pac_coins', coinsBalance);
-            localStorage.setItem('pac_unlocked_skins', JSON.stringify(unlockedSkins));
-            localStorage.setItem('pac_skin', s.id);
-            playSound('victory');
-            showToast(`✨ Nova Skin Descoberta: ${s.name}! ✨`);
-            updatePreview(s, false);
-            updateHud();
-            renderShopList();
-          } else {
-            playSound('invalid');
-            showToast(`Moedas insuficientes! Faltam ${s.price - coinsBalance} moedas.`);
-          }
-        };
+        btnHtml = `<button class="shop-item-btn btn-gold" onclick="buySkin('${skin.id}', ${skin.price})">🪙 ${skin.price}</button>`;
       }
 
-      container.appendChild(itemEl);
+      item.innerHTML = `
+        <div class="shop-item-info">
+          <div class="shop-item-coll">${skin.collection}</div>
+          <div class="shop-item-name">${skin.name}</div>
+          <div class="shop-item-desc">${skin.desc}</div>
+        </div>
+        ${btnHtml}
+      `;
+      container.appendChild(item);
     });
   } else {
-    AVATARS.forEach(a => {
-      const isEquipped = a.id === currentAvatar.id;
-      const isUnlocked = unlockedAvatars.includes(a.id);
+    AVATARS.forEach(avatar => {
+      let isUnlocked = unlockedAvatars.includes(avatar.id);
+      let isEquipped = (equippedAvatarId === avatar.id);
 
-      const itemEl = document.createElement('div');
-      itemEl.className = 'shop-item';
-      itemEl.innerHTML = `
-        <div style="font-size:24px; margin-right:6px;">${a.emoji}</div>
-        <div class="shop-item-info">
-          <div class="shop-item-coll">${a.collection}</div>
-          <div class="shop-item-name">${a.name}</div>
-          <div class="shop-item-desc">${a.title}</div>
-        </div>
-        <button class="shop-item-btn" style="background:rgba(255,255,255,0.1); color:#FFF; margin-right:4px;">👁️</button>
-        <button class="shop-item-btn action-btn">${isEquipped ? 'Equipado' : isUnlocked ? 'Equipar' : `Comprar (${a.price} 🪙)`}</button>
-      `;
+      let item = document.createElement('div');
+      item.className = 'shop-item';
 
-      itemEl.children[2].onclick = () => updatePreview(a, true);
-      itemEl.onclick = (e) => { if (e.target.tagName !== 'BUTTON') updatePreview(a, true); };
-
-      const actBtn = itemEl.querySelector('.action-btn');
+      let btnHtml = '';
       if (isEquipped) {
-        actBtn.style.background = '#374151'; actBtn.style.color = '#94A3B8';
+        btnHtml = `<button class="shop-item-btn" style="background:#10B981; color:#FFF;" disabled>Equipado ✓</button>`;
       } else if (isUnlocked) {
-        actBtn.style.background = '#2563EB'; actBtn.style.color = '#FFF';
-        actBtn.onclick = () => {
-          currentAvatar = a; equippedAvatarId = a.id;
-          localStorage.setItem('pac_avatar', a.id);
-          showToast(`Avatar ${a.name} equipado!`);
-          updatePreview(a, true);
-          updateHud();
-          renderShopList();
-        };
+        btnHtml = `<button class="shop-item-btn btn-blue" onclick="equipAvatar('${avatar.id}')">Equipar</button>`;
       } else {
-        actBtn.style.background = '#FBBF24'; actBtn.style.color = '#000';
-        actBtn.onclick = () => {
-          if (coinsBalance >= a.price) {
-            coinsBalance -= a.price;
-            unlockedAvatars.push(a.id);
-            currentAvatar = a; equippedAvatarId = a.id;
-            localStorage.setItem('pac_coins', coinsBalance);
-            localStorage.setItem('pac_unlocked_avatars', JSON.stringify(unlockedAvatars));
-            localStorage.setItem('pac_avatar', a.id);
-            playSound('victory');
-            showToast(`✨ Novo Avatar Descoberto: ${a.name}! ✨`);
-            updatePreview(a, true);
-            updateHud();
-            renderShopList();
-          } else {
-            playSound('invalid');
-            showToast(`Moedas insuficientes! Faltam ${a.price - coinsBalance} moedas.`);
-          }
-        };
+        btnHtml = `<button class="shop-item-btn btn-gold" onclick="buyAvatar('${avatar.id}', ${avatar.price})">🪙 ${avatar.price}</button>`;
       }
 
-      container.appendChild(itemEl);
+      item.innerHTML = `
+        <div style="font-size:28px; margin-right:8px;">${avatar.emoji}</div>
+        <div class="shop-item-info">
+          <div class="shop-item-coll">${avatar.collection}</div>
+          <div class="shop-item-name">${avatar.name}</div>
+          <div class="shop-item-desc">${avatar.title}</div>
+        </div>
+        ${btnHtml}
+      `;
+      container.appendChild(item);
     });
   }
 }
 
-// Botão Assistir Vídeo Recompensado
-document.getElementById('btnWatchAd').onclick = () => {
-  const btn = document.getElementById('btnWatchAd');
-  btn.disabled = true;
-  btn.innerText = 'Assistindo anúncio... (3s)';
-  setTimeout(() => {
-    btn.innerText = 'Assistindo anúncio... (1s)';
-    setTimeout(() => {
+function buySkin(id, price) {
+  if (coinsBalance < price) {
+    showToast(`Moedas insuficientes! Faltam ${price - coinsBalance} moedas 🪙`);
+    return;
+  }
+  coinsBalance -= price;
+  unlockedSkins.push(id);
+  equippedSkinId = id;
+  currentSkin = SKINS.find(s => s.id === id);
+  localStorage.setItem('pac_coins', coinsBalance);
+  localStorage.setItem('pac_unlocked_skins', JSON.stringify(unlockedSkins));
+  localStorage.setItem('pac_skin', id);
+  playSound('coin');
+  showToast(`Nova Skin ${currentSkin.name} desbloqueada e equipada!`);
+  updateHud();
+  renderShopList();
+}
+
+function equipSkin(id) {
+  equippedSkinId = id;
+  currentSkin = SKINS.find(s => s.id === id);
+  localStorage.setItem('pac_skin', id);
+  playSound('touch');
+  showToast(`Skin ${currentSkin.name} equipada com sucesso!`);
+  renderShopList();
+}
+
+function buyAvatar(id, price) {
+  if (coinsBalance < price) {
+    showToast(`Moedas insuficientes! Faltam ${price - coinsBalance} moedas 🪙`);
+    return;
+  }
+  coinsBalance -= price;
+  unlockedAvatars.push(id);
+  equippedAvatarId = id;
+  currentAvatar = AVATARS.find(a => a.id === id);
+  localStorage.setItem('pac_coins', coinsBalance);
+  localStorage.setItem('pac_unlocked_avatars', JSON.stringify(unlockedAvatars));
+  localStorage.setItem('pac_avatar', id);
+  playSound('coin');
+  showToast(`Avatar ${currentAvatar.name} desbloqueado e equipado!`);
+  updateHud();
+  renderShopList();
+}
+
+function equipAvatar(id) {
+  equippedAvatarId = id;
+  currentAvatar = AVATARS.find(a => a.id === id);
+  localStorage.setItem('pac_avatar', id);
+  playSound('touch');
+  showToast(`Avatar ${currentAvatar.name} equipado com sucesso!`);
+  updateHud();
+  renderShopList();
+}
+
+// --- VÍDEO RECOMPENSADO (SIMULAÇÃO ADMOB) ---
+let isWatchingAd = false;
+document.getElementById('btnWatchAd').addEventListener('click', () => {
+  if (isWatchingAd) return;
+  isWatchingAd = true;
+  const modal = document.getElementById('modalAdProgress');
+  const fill = document.getElementById('adProgressFill');
+  const count = document.getElementById('adCountDown');
+  modal.style.display = 'flex';
+  fill.style.width = '0%';
+
+  let secondsLeft = 3;
+  count.innerText = `Concluindo em ${secondsLeft}s...`;
+
+  const interval = setInterval(() => {
+    secondsLeft--;
+    fill.style.width = `${((3 - secondsLeft) / 3) * 100}%`;
+    if (secondsLeft > 0) {
+      count.innerText = `Concluindo em ${secondsLeft}s...`;
+    } else {
+      clearInterval(interval);
+      modal.style.display = 'none';
+      isWatchingAd = false;
       coinsBalance += 3;
       localStorage.setItem('pac_coins', coinsBalance);
-      playSound('victory');
-      showToast('🎉 Recompensa recebida: +3 Moedas!');
-      btn.disabled = false;
-      btn.innerHTML = '<span>🎬</span> Assistir Vídeo (+3 Moedas)';
+      playSound('coin');
+      addSparkle(window.innerWidth / 2, window.innerHeight / 2, '#FBBF24', 20);
+      showToast('Recompensa concedida: +3 Moedas de Ouro! 🪙');
       updateHud();
       renderShopList();
-    }, 1000);
-  }, 1500);
-};
+    }
+  }, 1000);
+});
 
-// Controles de Abas da Loja
+// --- CENÁRIOS MODAL ---
+function renderSceneryList() {
+  const container = document.getElementById('sceneryList');
+  container.innerHTML = '';
+  SCENERIES.forEach(s => {
+    let isUnlocked = currentLevel >= s.minLevel;
+    let isActive = (currentSceneryId === s.id);
+
+    let item = document.createElement('div');
+    item.className = 'shop-item';
+    item.style.marginBottom = '8px';
+
+    let btnHtml = '';
+    if (isActive) {
+      btnHtml = `<button class="shop-item-btn" style="background:#10B981; color:#FFF;" disabled>Ativo ✓</button>`;
+    } else if (isUnlocked) {
+      btnHtml = `<button class="shop-item-btn btn-blue" onclick="selectScenery('${s.id}')">Selecionar</button>`;
+    } else {
+      btnHtml = `<button class="shop-item-btn btn-gray" disabled>Nível ${s.minLevel}+</button>`;
+    }
+
+    item.innerHTML = `
+      <div class="shop-item-info">
+        <div class="shop-item-coll">NÍVEL ${s.minLevel}+</div>
+        <div class="shop-item-name" style="color:${s.accent};">${s.name}</div>
+        <div class="shop-item-desc">${s.desc}</div>
+      </div>
+      ${btnHtml}
+    `;
+    container.appendChild(item);
+  });
+}
+
+function selectScenery(id) {
+  let s = SCENERIES.find(x => x.id === id);
+  if (s) {
+    setScenery(s);
+    playSound('touch');
+    showToast(`Cenário alterado para: ${s.name}`);
+    document.getElementById('modalScenery').style.display = 'none';
+  }
+}
+
+// --- EVENTOS DE MODAIS & BOTÕES ---
 document.getElementById('tabSkins').onclick = () => {
-  activeTab = 'skins';
+  activeShopTab = 'skins';
   document.getElementById('tabSkins').className = 'shop-tab active';
   document.getElementById('tabAvatars').className = 'shop-tab';
-  updatePreview(currentSkin, false);
-  renderShopList();
-};
-document.getElementById('tabAvatars').onclick = () => {
-  activeTab = 'avatars';
-  document.getElementById('tabAvatars').className = 'shop-tab active';
-  document.getElementById('tabSkins').className = 'shop-tab';
-  updatePreview(currentAvatar, true);
   renderShopList();
 };
 
-// Botões do HUD
+document.getElementById('tabAvatars').onclick = () => {
+  activeShopTab = 'avatars';
+  document.getElementById('tabAvatars').className = 'shop-tab active';
+  document.getElementById('tabSkins').className = 'shop-tab';
+  renderShopList();
+};
+
 document.getElementById('btnShop').onclick = () => {
-  updatePreview(currentSkin, false);
+  drawPreviewCard(activePreviewItem);
   renderShopList();
   document.getElementById('modalShop').style.display = 'flex';
 };
 document.getElementById('btnCoinsBadge').onclick = () => {
   document.getElementById('btnShop').click();
 };
-document.getElementById('btnAvatarBadge').onclick = () => {
-  activeTab = 'avatars';
-  document.getElementById('tabAvatars').className = 'shop-tab active';
-  document.getElementById('tabSkins').className = 'shop-tab';
-  updatePreview(currentAvatar, true);
-  renderShopList();
-  document.getElementById('modalShop').style.display = 'flex';
+document.getElementById('avatar-medallion').onclick = () => {
+  document.getElementById('tabAvatars').click();
+  document.getElementById('btnShop').click();
 };
 document.getElementById('btnCloseShop').onclick = () => {
   document.getElementById('modalShop').style.display = 'none';
 };
 
-// Modal Cenários
 document.getElementById('btnScenery').onclick = () => {
-  const list = document.getElementById('sceneryList');
-  list.innerHTML = '';
-  SCENERIES.forEach(s => {
-    const isUnlocked = currentLevel >= s.minLevel;
-    const isSel = currentScenery.id === s.id;
-    const item = document.createElement('div');
-    item.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 12px; margin-bottom:8px; border-radius:10px; background:rgba(255,255,255,0.06); cursor:pointer;';
-    item.innerHTML = `
-      <div>
-        <div style="font-weight:bold; color:${isSel ? '#FBBF24' : '#FFF'};">${s.name} ${isSel ? '✓' : ''}</div>
-        <div style="font-size:11px; color:#94A3B8;">${isUnlocked ? 'Desbloqueado' : `Liberado no nível ${s.minLevel}`}</div>
-      </div>
-      <div>${isUnlocked ? '🌟' : '🔒'}</div>
-    `;
-    if (isUnlocked) {
-      item.onclick = () => {
-        setScenery(s);
-        document.getElementById('modalScenery').style.display = 'none';
-      };
-    }
-    list.appendChild(item);
-  });
+  renderSceneryList();
   document.getElementById('modalScenery').style.display = 'flex';
 };
 document.getElementById('btnCloseScenery').onclick = () => {
   document.getElementById('modalScenery').style.display = 'none';
 };
 
-// Modal Vitória
+document.getElementById('btnUndo').onclick = performUndo;
+document.getElementById('btnAuto').onclick = () => {
+  let steps = 0;
+  while (autoMoveStep() && steps < 20) {
+    steps++;
+  }
+  if (steps === 0) showToast('Nenhum movimento automático seguro disponível');
+};
+document.getElementById('btnRestart').onclick = () => {
+  if (confirm('Deseja reiniciar a partida atual?')) startLevel(currentLevel);
+};
+
 document.getElementById('btnNextLevel').onclick = () => {
   document.getElementById('modalVictory').style.display = 'none';
   startLevel(currentLevel + 1);
@@ -1394,67 +1734,10 @@ document.getElementById('btnPlayAgain').onclick = () => {
   startLevel(currentLevel);
 };
 
-// Botão Reiniciar
-document.getElementById('btnRestart').onclick = () => {
-  if (confirm('Deseja reiniciar a partida atual?')) {
-    startLevel(currentLevel);
-  }
-};
-
-// Botão Desfazer (Undo)
-document.getElementById('btnUndo').onclick = () => {
-  undo();
-};
-
-// Botão Auto (Auto-completar jogadas possíveis para as Fundações)
-document.getElementById('btnAuto').onclick = () => {
-  // 1. Tenta mover do descarte (waste) para as fundações
-  if (waste.length > 0) {
-    let c = waste[waste.length - 1];
-    for (let f = 0; f < 4; f++) {
-      if (canMoveToFoundation(c, foundations[f])) {
-        saveState();
-        waste.pop();
-        foundations[f].push(c);
-        playSound('place');
-        addSparkle(fRects[f].x + cw / 2, fRects[f].y + ch / 2, '#FBBF24', 8);
-        moves++; updateHud(); checkWin();
-        return;
-      }
-    }
-  }
-
-  // 2. Tenta mover das colunas (tableaus) para as fundações
-  for (let col = 0; col < 7; col++) {
-    let t = tableaus[col];
-    if (t.length > 0) {
-      let c = t[t.length - 1];
-      if (c.faceUp) {
-        for (let f = 0; f < 4; f++) {
-          if (canMoveToFoundation(c, foundations[f])) {
-            saveState();
-            t.pop();
-            foundations[f].push(c);
-            if (t.length > 0 && !t[t.length - 1].faceUp) {
-              t[t.length - 1].faceUp = true;
-            }
-            playSound('place');
-            addSparkle(fRects[f].x + cw / 2, fRects[f].y + ch / 2, '#FBBF24', 8);
-            moves++; updateHud(); checkWin();
-            return;
-          }
-        }
-      }
-    }
-  }
-
-  playSound('invalid');
-  showToast('Nenhuma carta pode subir no momento.');
-};
-
-// Inicialização
+// --- INICIALIZAÇÃO ---
 resize();
 startLevel(currentLevel);
+drawPreviewCard(currentSkin);
 requestAnimationFrame(render);
 </script>
 </body>

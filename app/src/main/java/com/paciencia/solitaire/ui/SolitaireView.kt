@@ -93,6 +93,15 @@ class SolitaireView @JvmOverloads constructor(
         color = 0xFFEF4444.toInt()
     }
 
+    // Realce de Dica (Hint Mágico com aura dourada)
+    private var activeHint: com.paciencia.solitaire.engine.HintMove? = null
+    private var hintStartTime: Long = 0L
+    private val hintGlowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 5f
+        color = 0xFFF59E0B.toInt()
+    }
+
     // Dimensões calculadas proporcionalmente
     private var cardWidth: Float = 0f
     private var cardHeight: Float = 0f
@@ -353,7 +362,25 @@ class SolitaireView @JvmOverloads constructor(
             }
         }
 
-        // 11. Efeito contínuo de comemoração após vitória
+        // 11. Realce de Dica Ativa (Aura mágica dourada pulsante)
+        val hintElapsed = now - hintStartTime
+        val currentHint = activeHint
+        if (currentHint != null && hintElapsed < 3000L) {
+            val pulse = (Math.sin(hintElapsed * 0.008) * 0.35 + 0.65).toFloat()
+            hintGlowPaint.alpha = (pulse * 240).toInt()
+            hintGlowPaint.strokeWidth = 3.5f + pulse * 2.5f
+
+            val srcRect = getRectForPile(currentHint.from)
+            if (srcRect != null) {
+                canvas.drawRoundRect(srcRect.left - 3f, srcRect.top - 3f, srcRect.right + 3f, srcRect.bottom + 3f, cardWidth * 0.1f, cardWidth * 0.1f, hintGlowPaint)
+            }
+            val destRect = getRectForPile(currentHint.to)
+            if (destRect != null) {
+                canvas.drawRoundRect(destRect.left - 3f, destRect.top - 3f, destRect.right + 3f, destRect.bottom + 3f, cardWidth * 0.1f, cardWidth * 0.1f, hintGlowPaint)
+            }
+        }
+
+        // 12. Efeito contínuo de comemoração após vitória
         if (eng.isWon && isParticlesEnabled && !isPowerSaveMode && Math.random() < 0.25) {
             particleSystem.addParticle(
                 Particle(
@@ -369,8 +396,8 @@ class SolitaireView @JvmOverloads constructor(
             )
         }
 
-        // Mantém a animação suave a 60 FPS se houver partículas ativas, efeitos em andamento ou arraste
-        if ((isParticlesEnabled && !isPowerSaveMode) || activeColumnEffects.isNotEmpty() || invalidElapsed < 260 || isDragging || eng.isWon) {
+        // Mantém a animação suave a 60 FPS se houver partículas ativas, efeitos em andamento, dica ou arraste
+        if ((isParticlesEnabled && !isPowerSaveMode) || activeColumnEffects.isNotEmpty() || invalidElapsed < 260 || (currentHint != null && hintElapsed < 3000L) || isDragging || eng.isWon) {
             postInvalidateOnAnimation()
         }
     }
@@ -703,5 +730,35 @@ class SolitaireView @JvmOverloads constructor(
             offset += if (cards[i].isFaceUp) cardOverlapFaceUp else cardOverlapFaceDown
         }
         return offset
+    }
+
+    /**
+     * Retorna a área retangular de uma pilha para destaque e efeitos.
+     */
+    fun getRectForPile(type: PileType): RectF? {
+        val eng = engine ?: return null
+        return when (type) {
+            is PileType.Stock -> stockRect
+            is PileType.Waste -> wasteRect
+            is PileType.Foundation -> if (type.index in 0 until 4) foundationRects[type.index] else null
+            is PileType.Tableau -> {
+                if (type.col in 0 until 7) {
+                    val r = tableauRects[type.col]
+                    val pile = eng.tableauPiles[type.col]
+                    val topY = if (pile.isEmpty) r.top else r.top + calculateCardYOffset(pile.cards, pile.cards.size - 1)
+                    RectF(r.left, topY, r.right, topY + cardHeight)
+                } else null
+            }
+        }
+    }
+
+    /**
+     * Exibe o efeito de dica visual destacando as pilhas de origem e destino.
+     */
+    fun showHint(hint: com.paciencia.solitaire.engine.HintMove) {
+        activeHint = hint
+        hintStartTime = System.currentTimeMillis()
+        soundFeedback?.cardPicked(this)
+        invalidate()
     }
 }

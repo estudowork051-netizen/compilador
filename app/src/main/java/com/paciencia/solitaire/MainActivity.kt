@@ -122,6 +122,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Botão Dica (Hint Mágico)
+        binding.btnHint.setOnClickListener {
+            val hint = engine.findHint()
+            if (hint != null) {
+                binding.solitaireView.showHint(hint)
+                soundFeedback.cardTouch(binding.solitaireView)
+                Toast.makeText(this, R.string.hint_found, Toast.LENGTH_SHORT).show()
+            } else {
+                binding.solitaireView.triggerInvalidMove(null)
+                Toast.makeText(this, R.string.hint_no_moves, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         // Botão Reiniciar
         binding.btnRestart.setOnClickListener {
             showRestartConfirmation()
