@@ -1,0 +1,55 @@
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    
+    <!-- Cores base do App -->
+    <color name="primary">#1E293B</color>
+    <color name="primary_dark">#0F172A</color>
+    <color name="accent">#38BDF8</color>
+    <color name="gold">#FBBF24</color>
+    
+    <!-- Cartas -->
+    <color name="card_face">#FFFFFF</color>
+    <color name="card_border">#D1D5DB</color>
+    <color name="card_red">#DC2626</color>
+    <color name="card_black">#111827</color>
+    <color name="card_slot_border">#4B5563</color>
+    <color name="card_slot_bg">#20FFFFFF</color>
+    
+    <!-- HUD e Diálogos -->
+    <color name="hud_background">#CC0F172A</color>
+    <color name="hud_text_primary">#F8FAFC</color>
+    <color name="hud_text_secondary">#94A3B8</color>
+    <color name="dialog_bg">#1E293B</color>
+    <color name="dialog_stroke">#334155</color>
+    <color name="button_bg">#2563EB</color>
+    <color name="button_bg_gold">#D97706</color>
+    <color name="button_pressed">#1D4ED8</color>
+    
+    <!-- Paletas dos 5 Cenários -->
+    <!-- 1. Floresta Encantada -->
+    <color name="forest_sky">#0F2E1E</color>
+    <color name="forest_ground">#05180E</color>
+    <color name="forest_accent">#34D399</color>
+    
+    <!-- 2. Montanhas Geladas -->
+    <color name="frozen_sky">#1A2E40</color>
+    <color name="frozen_ground">#0D1924</color>
+    <color name="frozen_accent">#7DD3FC</color>
+    
+    <!-- 3. Deserto Dourado -->
+    <color name="desert_sky">#3D2411</color>
+    <color name="desert_ground">#1F1106</color>
+    <color name="desert_accent">#F59E0B</color>
+    
+    <!-- 4. Reino Medieval -->
+    <color name="medieval_sky">#261536</color>
+    <color name="medieval_ground">#12091C</color>
+    <color name="medieval_accent">#C084FC</color>
+    
+    <!-- 5. Noite Cósmica -->
+    <color name="cosmic_sky">#0C0728</color>
+    <color name="cosmic_ground">#03020A</color>
+    <color name="cosmic_accent">#818CF8</color>
+</resources>

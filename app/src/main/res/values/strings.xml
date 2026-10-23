@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Paciência</string>
+    <string name="level_label">Nível %d</string>
+    <string name="score_label">Pontos: %d</string>
+    <string name="moves_label">Movimentos: %d</string>
+    <string name="time_label">Tempo: %s</string>
+    <string name="btn_undo">Desfazer</string>
+    <string name="btn_restart">Reiniciar</string>
+    <string name="btn_scenery">Cenários</string>
+    <string name="btn_settings">Configurações</string>
+    <string name="btn_next_level">Próximo Nível</string>
+    <string name="btn_play_again">Jogar Novamente</string>
+    <string name="btn_close">Fechar</string>
+    
+    <!-- Cenários -->
+    <string name="scenery_enchanted_forest">Floresta Encantada</string>
+    <string name="scenery_frozen_mountains">Montanhas Geladas</string>
+    <string name="scenery_golden_desert">Deserto Dourado</string>
+    <string name="scenery_medieval_kingdom">Reino Medieval</string>
+    <string name="scenery_cosmic_night">Noite Cósmica</string>
+    <string name="scenery_unlocked_at">Desbloqueia no Nível %d</string>
+    <string name="scenery_selected">Selecionado</string>
+    <string name="scenery_select">Selecionar</string>
+
+    <!-- Diálogo de Vitória -->
+    <string name="victory_title">Parabéns! Vitória!</string>
+    <string name="victory_message">Você concluiu o Nível %d com sucesso!</string>
+    <string name="victory_unlocked_scenery">Novo cenário desbloqueado: %s!</string>
+    <string name="victory_stats_time">Tempo: %s</string>
+    <string name="victory_stats_moves">Movimentos: %d</string>
+
+    <!-- Diálogo de Configurações -->
+    <string name="settings_title">Configurações</string>
+    <string name="setting_particles">Efeitos Ambientais e Partículas</string>
+    <string name="setting_particles_desc">Ativar folhas, neve, poeira estelar flutuantes</string>
+    <string name="setting_haptic">Vibração e Resposta Tátil</string>
+    <string name="setting_haptic_desc">Feedback ao encaixar e mover cartas</string>
+    <string name="setting_power_save">Modo de Economia de Bateria</string>
+    <string name="setting_power_save_desc">Reduz taxa de partículas para economizar carga</string>
+    <string name="setting_auto_finish">Auto-completar inteligente</string>
+    <string name="setting_auto_finish_desc">Movimenta cartas para a fundação quando liberadas</string>
+
+    <!-- Diálogo de Reiniciar -->
+    <string name="restart_confirm_title">Reiniciar Partida?</string>
+    <string name="restart_confirm_message">Deseja reiniciar a partida atual? Seu progresso neste nível não será perdido.</string>
+    <string name="restart_confirm_yes">Reiniciar</string>
+    <string name="restart_confirm_no">Cancelar</string>
+</resources>

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0F172A">
+<title>Paciência Klondike</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+body, html { width: 100%; height: 100%; overflow: hidden; background: #0F172A; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; touch-action: none; }
+#hud-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 50px;
+  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; color: #F8FAFC; z-index: 10; font-size: 14px;
+}
+#hud-top .level { color: #FBBF24; font-weight: bold; font-size: 16px; }
+#hud-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: space-around;
+  padding: 0 8px; z-index: 10;
+}
+.btn-control {
+  background: none; border: none; color: #94A3B8; font-size: 11px;
+  display: flex; flex-direction: column; align-items: center; cursor: pointer;
+}
+.btn-control svg { width: 22px; height: 22px; fill: #F8FAFC; margin-bottom: 2px; }
+.btn-control:active svg { fill: #38BDF8; }
+#gameCanvas { display: block; width: 100%; height: 100%; }
+.modal {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+  z-index: 100; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-content {
+  background: #1E293B; border: 2px solid #334155; border-radius: 16px;
+  max-width: 360px; width: 100%; padding: 24px; color: #F8FAFC; text-align: center;
+}
+.modal h2 { color: #FBBF24; margin-bottom: 8px; font-size: 22px; }
+.modal p { color: #94A3B8; margin-bottom: 16px; font-size: 14px; line-height: 1.4; }
+.modal-btn {
+  width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold;
+  font-size: 15px; margin-top: 8px; cursor: pointer;
+}
+.btn-gold { background: #D97706; color: #000; }
+.btn-blue { background: #2563EB; color: #FFF; }
+.scenery-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; margin-bottom: 8px; border-radius: 8px; background: rgba(255,255,255,0.05);
+  cursor: pointer; text-align: left;
+}
+</style>
+</head>
+<body>
+
+<div id="hud-top">
+  <div class="level" id="lblLevel">Nível 1</div>
+  <div id="lblMoves">Movimentos: 0</div>
+  <div id="lblTime">Tempo: 00:00</div>
+</div>
+
+<canvas id="gameCanvas"></canvas>
+
+<div id="hud-bottom">
+  <button class="btn-control" id="btnUndo">
+    <svg viewBox="0 0 24 24"><path d="M12.5,8c-2.65,0-5.05,0.99-6.9,2.6L2,7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54,0 6.55,2.31 7.6,5.5l2.37-0.78C21.08,11.03 17.15,8 12.5,8z"/></svg>
+    Desfazer
+  </button>
+  <button class="btn-control" id="btnRestart">
+    <svg viewBox="0 0 24 24"><path d="M17.65,6.35C16.2,4.9 14.21,4 12,4c-4.42,0-7.99,3.58-7.99,8s3.57,8 7.99,8c3.73,0 6.84-2.55 7.73-6h-2.08c-0.82,2.33-3.04,4-5.65,4-3.31,0-6-2.69-6-6s2.69-6 6-6c1.66,0 3.14,0.69 4.22,1.78L13,11h7V4l-2.35,2.35z"/></svg>
+    Reiniciar
+  </button>
+  <button class="btn-control" id="btnScenery">
+    <svg viewBox="0 0 24 24"><path d="M14,6l-3.75,5 2.85,3.8 -1.6,1.2C9.81,13.75 7,10 7,10l-6,8h22L14,6z"/></svg>
+    Cenários
+  </button>
+</div>
+
+<!-- Modal Vitória -->
+<div class="modal" id="modalVictory">
+  <div class="modal-content">
+    <h2>🏆 Parabéns! Vitória!</h2>
+    <p id="vicMessage">Você concluiu o nível com sucesso!</p>
+    <div id="vicSceneryUnlock" style="display:none; color:#38BDF8; margin-bottom:12px; font-weight:bold;"></div>
+    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; margin-bottom:14px; font-size:13px;" id="vicStats"></div>
+    <button class="modal-btn btn-gold" id="btnNextLevel">Próximo Nível</button>
+    <button class="modal-btn btn-blue" id="btnPlayAgain">Jogar Novamente</button>
+  </div>
+</div>
+
+<!-- Modal Cenários -->
+<div class="modal" id="modalScenery">
+  <div class="modal-content">
+    <h2 style="font-size:18px; color:#FFF;">Selecionar Cenário</h2>
+    <p style="margin-bottom:10px;">Desbloqueie novos temas ao vencer os níveis</p>
+    <div id="sceneryList" style="text-align:left; max-height:260px; overflow-y:auto; margin-bottom:12px;"></div>
+    <button class="modal-btn btn-blue" id="btnCloseScenery">Fechar</button>
+  </div>
+</div>
+
+<script>
+const SUITS = [
+  { name: 'HEARTS', symbol: '♥', isRed: true },
+  { name: 'DIAMONDS', symbol: '♦', isRed: true },
+  { name: 'CLUBS', symbol: '♣', isRed: false },
+  { name: 'SPADES', symbol: '♠', isRed: false }
+];
+const RANKS = [
+  { val: 1, label: 'A' }, { val: 2, label: '2' }, { val: 3, label: '3' },
+  { val: 4, label: '4' }, { val: 5, label: '5' }, { val: 6, label: '6' },
+  { val: 7, label: '7' }, { val: 8, label: '8' }, { val: 9, label: '9' },
+  { val: 10, label: '10' }, { val: 11, label: 'J' }, { val: 12, label: 'Q' },
+  { val: 13, label: 'K' }
+];
+
+const SCENERIES = [
+  { id: 'forest', name: 'Floresta Encantada', minLevel: 1, bgTop: '#0F2E1E', bgBot: '#05180E', accent: '#34D399', cardBack: ['#0F3824', '#05180E'], pColor: '#4ADE80' },
+  { id: 'frozen', name: 'Montanhas Geladas', minLevel: 11, bgTop: '#1A2E40', bgBot: '#0D1924', accent: '#7DD3FC', cardBack: ['#1E3A5F', '#0D1924'], pColor: '#F0F9FF' },
+  { id: 'desert', name: 'Deserto Dourado', minLevel: 21, bgTop: '#451A03', bgBot: '#1F1106', accent: '#F59E0B', cardBack: ['#78350F', '#1F1106'], pColor: '#FDE68A' },
+  { id: 'medieval', name: 'Reino Medieval', minLevel: 31, bgTop: '#2E1065', bgBot: '#0F061E', accent: '#C084FC', cardBack: ['#3B1D54', '#12091C'], pColor: '#FB923C' },
+  { id: 'cosmic', name: 'Noite Cósmica', minLevel: 41, bgTop: '#0F0C29', bgBot: '#020005', accent: '#818CF8', cardBack: ['#1E1038', '#050212'], pColor: '#A5B4FC' }
+];
+
+let highestLevel = parseInt(localStorage.getItem('pac_high_lvl') || '1');
+let currentLevel = parseInt(localStorage.getItem('pac_cur_lvl') || '1');
+let currentSceneryId = localStorage.getItem('pac_scenery') || 'forest';
+
+let currentScenery = SCENERIES.find(s => s.id === currentSceneryId) || SCENERIES[0];
+let stock = [], waste = [], foundations = [[], [], [], []], tableaus = [[], [], [], [], [], [], []];
+let undoStack = [];
+let moves = 0, seconds = 0, timerInterval = null, isWon = false;
+
+// Layout
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+let cw = 0, ch = 0, gap = 0, topY = 0, tabY = 0;
+let stockRect = {}, wasteRect = {}, fRects = [], tRects = [];
+let particles = [];
+
+// Drag
+let isDragging = false, dragCards = [], dragSource = null;
+let touchDownX = 0, touchDownY = 0, dragCurX = 0, dragCurY = 0, dragOffX = 0, dragOffY = 0;
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.scale(dpr, dpr);
+
+  gap = w * 0.02;
+  cw = (w - (8 * gap)) / 7;
+  ch = cw * 1.42;
+  topY = 60;
+  tabY = topY + ch + 16;
+
+  stockRect = { x: gap, y: topY, w: cw, h: ch };
+  wasteRect = { x: gap * 2 + cw, y: topY, w: cw, h: ch };
+  fRects = [];
+  for (let i = 0; i < 4; i++) {
+    fRects.push({ x: gap + (3 + i) * (cw + gap), y: topY, w: cw, h: ch });
+  }
+  tRects = [];
+  for (let i = 0; i < 7; i++) {
+    tRects.push({ x: gap + i * (cw + gap), y: tabY, w: cw, h: h - tabY - 70 });
+  }
+  initParticles(w, h);
+}
+window.addEventListener('resize', resize);
+
+function initParticles(w, h) {
+  particles = [];
+  for (let i = 0; i < 30; i++) {
+    particles.push({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.8, vy: Math.random() * 0.8 + 0.3,
+      size: Math.random() * 3 + 2, alpha: Math.random() * 0.6 + 0.3
+    });
+  }
+}
+
+function startLevel(lvl) {
+  currentLevel = lvl;
+  localStorage.setItem('pac_cur_lvl', lvl);
+  document.getElementById('lblLevel').innerText = `Nível ${lvl}`;
+  moves = 0; seconds = 0; isWon = false;
+  undoStack = [];
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => { seconds++; updateHud(); }, 1000);
+
+  // Auto theme
+  const autoTheme = SCENERIES.slice().reverse().find(s => lvl >= s.minLevel) || SCENERIES[0];
+  setScenery(autoTheme);
+
+  // Deck
+  let deck = [];
+  let id = 0;
+  SUITS.forEach(s => {
+    RANKS.forEach(r => {
+      deck.push({ id: id++, suit: s, rank: r, faceUp: false });
+    });
+  });
+
+  // Seeded shuffle
+  let seed = 10007 * lvl + 99991;
+  for (let i = deck.length - 1; i > 0; i--) {
+    seed = (seed * 9301 + 49297) % 233280;
+    let j = Math.floor((seed / 233280) * (i + 1));
+    let t = deck[i]; deck[i] = deck[j]; deck[j] = t;
+  }
+
+  stock = []; waste = [];
+  foundations = [[], [], [], []];
+  tableaus = [[], [], [], [], [], [], []];
+
+  let cIdx = 0;
+  for (let col = 0; col < 7; col++) {
+    for (let row = 0; row <= col; row++) {
+      let c = deck[cIdx++];
+      c.faceUp = (row === col);
+      tableaus[col].push(c);
+    }
+  }
+  while (cIdx < deck.length) {
+    let c = deck[cIdx++];
+    c.faceUp = false;
+    stock.push(c);
+  }
+  updateHud();
+}
+
+function setScenery(s) {
+  currentScenery = s;
+  currentSceneryId = s.id;
+  localStorage.setItem('pac_scenery', s.id);
+  initParticles(window.innerWidth, window.innerHeight);
+}
+
+function updateHud() {
+  document.getElementById('lblMoves').innerText = `Movimentos: ${moves}`;
+  let m = Math.floor(seconds / 60).toString().padStart(2, '0');
+  let s = (seconds % 60).toString().padStart(2, '0');
+  document.getElementById('lblTime').innerText = `Tempo: ${m}:${s}`;
+}
+
+// Rules
+function canMoveToTableau(card, target) {
+  if (target.length === 0) return card.rank.val === 13;
+  let top = target[target.length - 1];
+  return top.faceUp && (card.suit.isRed !== top.suit.isRed) && (card.rank.val === top.rank.val - 1);
+}
+
+function canMoveToFoundation(card, fPile) {
+  if (fPile.length === 0) return card.rank.val === 1;
+  let top = fPile[fPile.length - 1];
+  return (card.suit.name === top.suit.name) && (card.rank.val === top.rank.val + 1);
+}
+
+function checkWin() {
+  if (foundations.every(f => f.length === 13)) {
+    isWon = true;
+    clearInterval(timerInterval);
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 200]);
+
+    if (currentLevel >= highestLevel) {
+      highestLevel = currentLevel + 1;
+      localStorage.setItem('pac_high_lvl', highestLevel);
+    }
+
+    let newlyUnlocked = SCENERIES.find(s => s.minLevel === currentLevel + 1);
+    let uDiv = document.getElementById('vicSceneryUnlock');
+    if (newlyUnlocked) {
+      uDiv.style.display = 'block';
+      uDiv.innerText = `Novo Cenário Desbloqueado: ${newlyUnlocked.name}!`;
+    } else {
+      uDiv.style.display = 'none';
+    }
+
+    document.getElementById('vicMessage').innerText = `Você concluiu o Nível ${currentLevel} com sucesso!`;
+    document.getElementById('vicStats').innerText = `Tempo: ${document.getElementById('lblTime').innerText.replace('Tempo: ','')} | Movimentos: ${moves}`;
+    document.getElementById('modalVictory').style.display = 'flex';
+  }
+}
+
+// Draw Loop
+function render() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  // Background
+  let grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, currentScenery.bgTop);
+  grad.addColorStop(1, currentScenery.bgBot);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+
+  // Particles
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.y > h + 10) p.y = -10;
+    if (p.x > w + 10) p.x = -10;
+    if (p.x < -10) p.x = w + 10;
+    ctx.fillStyle = currentScenery.pColor;
+    ctx.globalAlpha = p.alpha;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+
+  // Slots
+  drawSlot(stockRect.x, stockRect.y);
+  drawSlot(wasteRect.x, wasteRect.y);
+  fRects.forEach((r, idx) => {
+    drawSlot(r.x, r.y, ['♠','♥','♣','♦'][idx]);
+  });
+  tRects.forEach(r => drawSlot(r.x, r.y));
+
+  // Stock
+  if (stock.length > 0) drawCard(stock[stock.length - 1], stockRect.x, stockRect.y);
+
+  // Waste
+  if (waste.length > 0) {
+    let top = (isDragging && dragSource === 'waste') ? waste[waste.length - 2] : waste[waste.length - 1];
+    if (top) drawCard(top, wasteRect.x, wasteRect.y);
+  }
+
+  // Foundations
+  foundations.forEach((f, idx) => {
+    if (f.length > 0) {
+      let top = (isDragging && dragSource === `f_${idx}`) ? f[f.length - 2] : f[f.length - 1];
+      if (top) drawCard(top, fRects[idx].x, fRects[idx].y);
+    }
+  });
+
+  // Tableaus
+  tableaus.forEach((t, col) => {
+    let r = tRects[col];
+    let curY = r.y;
+    let limit = (isDragging && dragSource === `t_${col}`) ? t.length - dragCards.length : t.length;
+    for (let i = 0; i < limit; i++) {
+      let c = t[i];
+      drawCard(c, r.x, curY);
+      curY += c.faceUp ? ch * 0.28 : ch * 0.18;
+    }
+  });
+
+  // Dragging cards
+  if (isDragging && dragCards.length > 0) {
+    let curX = dragCurX - dragOffX;
+    let curY = dragCurY - dragOffY;
+    dragCards.forEach(c => {
+      drawCard(c, curX, curY, true);
+      curY += ch * 0.28;
+    });
+  }
+
+  requestAnimationFrame(render);
+}
+
+function drawSlot(x, y, watermark) {
+  ctx.strokeStyle = currentScenery.accent + '44';
+  ctx.lineWidth = 1.5;
+  ctx.fillStyle = 'rgba(0,0,0,0.2)';
+  roundRect(ctx, x, y, cw, ch, 6);
+  ctx.fill(); ctx.stroke();
+  if (watermark) {
+    ctx.fillStyle = currentScenery.accent + '44';
+    ctx.font = `${cw * 0.35}px sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(watermark, x + cw / 2, y + ch / 2);
+  }
+}
+
+function drawCard(card, x, y, isElevated) {
+  ctx.save();
+  if (isElevated) {
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 12; ctx.shadowOffsetY = 6;
+  }
+  if (!card.faceUp) {
+    let g = ctx.createLinearGradient(x, y, x + cw, y + ch);
+    g.addColorStop(0, currentScenery.cardBack[0]);
+    g.addColorStop(1, currentScenery.cardBack[1]);
+    ctx.fillStyle = g;
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, x, y, cw, ch, 6);
+    ctx.fill(); ctx.stroke();
+    // Inner border
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    roundRect(ctx, x + 4, y + 4, cw - 8, ch - 8, 4);
+    ctx.stroke();
+  } else {
+    ctx.fillStyle = '#FFFFFF';
+    ctx.strokeStyle = '#D1D5DB';
+    ctx.lineWidth = 1;
+    roundRect(ctx, x, y, cw, ch, 6);
+    ctx.fill(); ctx.stroke();
+
+    ctx.fillStyle = card.suit.isRed ? '#DC2626' : '#111827';
+    ctx.font = `bold ${cw * 0.22}px sans-serif`;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(card.rank.label, x + 5, y + 5);
+
+    ctx.font = `${cw * 0.16}px sans-serif`;
+    ctx.fillText(card.suit.symbol, x + 5, y + 5 + cw * 0.22);
+
+    // Center
+    ctx.font = `${cw * 0.38}px sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(card.rank.val > 10 ? card.rank.label : card.suit.symbol, x + cw / 2, y + ch / 2);
+  }
+  ctx.restore();
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+// Touch Handling
+function getTouchPos(e) {
+  let t = e.touches ? e.touches[0] : e;
+  return { x: t.clientX, y: t.clientY };
+}
+
+function onTouchStart(e) {
+  if (isWon) return;
+  let p = getTouchPos(e);
+  touchDownX = p.x; touchDownY = p.y;
+  dragCurX = p.x; dragCurY = p.y;
+  isDragging = false; dragCards = []; dragSource = null;
+
+  // Stock tap
+  if (p.x >= stockRect.x && p.x <= stockRect.x + cw && p.y >= stockRect.y && p.y <= stockRect.y + ch) {
+    if (stock.length > 0) {
+      let c = stock.pop(); c.faceUp = true; waste.push(c);
+      undoStack.push({ type: 'draw' });
+      moves++; updateHud();
+      if (navigator.vibrate) navigator.vibrate(15);
+    } else if (waste.length > 0) {
+      while (waste.length) { let c = waste.pop(); c.faceUp = false; stock.push(c); }
+      undoStack.push({ type: 'recycle' });
+      moves++; updateHud();
+      if (navigator.vibrate) navigator.vibrate(15);
+    }
+    return;
+  }
+
+  // Waste
+  if (p.x >= wasteRect.x && p.x <= wasteRect.x + cw && p.y >= wasteRect.y && p.y <= wasteRect.y + ch && waste.length > 0) {
+    isDragging = true; dragSource = 'waste';
+    dragCards = [waste[waste.length - 1]];
+    dragOffX = p.x - wasteRect.x; dragOffY = p.y - wasteRect.y;
+    return;
+  }
+
+  // Tableaus
+  for (let col = 0; col < 7; col++) {
+    let t = tableaus[col];
+    let r = tRects[col];
+    if (p.x >= r.x && p.x <= r.x + cw && p.y >= r.y && t.length > 0) {
+      let curY = r.y;
+      for (let i = 0; i < t.length; i++) {
+        let isLast = (i === t.length - 1);
+        let b = isLast ? curY + ch : curY + (t[i].faceUp ? ch * 0.28 : ch * 0.18);
+        if (p.y >= curY && p.y <= b && t[i].faceUp) {
+          isDragging = true; dragSource = `t_${col}`;
+          dragCards = t.slice(i);
+          dragOffX = p.x - r.x; dragOffY = p.y - curY;
+          return;
+        }
+        curY = b;
+      }
+    }
+  }
+}
+
+function onTouchMove(e) {
+  if (!isDragging) return;
+  let p = getTouchPos(e);
+  dragCurX = p.x; dragCurY = p.y;
+}
+
+function onTouchEnd(e) {
+  if (!isDragging) return;
+  let dist = Math.hypot(dragCurX - touchDownX, dragCurY - touchDownY);
+
+  // TAP TO MOVE (Smart Auto Move)
+  if (dist < 14) {
+    let card = dragCards[0];
+    let moved = false;
+    // Try foundations
+    if (dragCards.length === 1) {
+      for (let f = 0; f < 4; f++) {
+        if (canMoveToFoundation(card, foundations[f])) {
+          executeMove(dragSource, `f_${f}`, 1);
+          moved = true; break;
+        }
+      }
+    }
+    // Try tableaus
+    if (!moved) {
+      for (let col = 0; col < 7; col++) {
+        if (`t_${col}` !== dragSource && canMoveToTableau(card, tableaus[col])) {
+          executeMove(dragSource, `t_${col}`, dragCards.length);
+          moved = true; break;
+        }
+      }
+    }
+  } else {
+    // DRAG AND DROP
+    let target = null;
+    fRects.forEach((r, idx) => {
+      if (dragCurX >= r.x && dragCurX <= r.x + cw && dragCurY >= r.y && dragCurY <= r.y + ch) target = `f_${idx}`;
+    });
+    tRects.forEach((r, col) => {
+      if (dragCurX >= r.x && dragCurX <= r.x + cw && dragCurY >= r.y) target = `t_${col}`;
+    });
+
+    if (target && target !== dragSource) {
+      if (target.startsWith('f_') && dragCards.length === 1) {
+        let fIdx = parseInt(target[2]);
+        if (canMoveToFoundation(dragCards[0], foundations[fIdx])) executeMove(dragSource, target, 1);
+      } else if (target.startsWith('t_')) {
+        let col = parseInt(target[2]);
+        if (canMoveToTableau(dragCards[0], tableaus[col])) executeMove(dragSource, target, dragCards.length);
+      }
+    }
+  }
+
+  isDragging = false; dragCards = []; dragSource = null;
+}
+
+function executeMove(src, dst, count) {
+  let popped = [];
+  let flipped = false;
+
+  if (src === 'waste') popped = [waste.pop()];
+  else if (src.startsWith('t_')) {
+    let col = parseInt(src[2]);
+    popped = tableaus[col].splice(tableaus[col].length - count, count);
+    if (tableaus[col].length > 0 && !tableaus[col][tableaus[col].length - 1].faceUp) {
+      tableaus[col][tableaus[col].length - 1].faceUp = true;
+      flipped = true;
+    }
+  }
+
+  if (dst.startsWith('f_')) foundations[parseInt(dst[2])].push(...popped);
+  else if (dst.startsWith('t_')) tableaus[parseInt(dst[2])].push(...popped);
+
+  undoStack.push({ type: 'move', src, dst, cards: popped, flipped });
+  moves++; updateHud();
+  if (navigator.vibrate) navigator.vibrate(20);
+  checkWin();
+}
+
+// Undo
+document.getElementById('btnUndo').addEventListener('click', () => {
+  if (undoStack.length === 0) return;
+  let a = undoStack.pop();
+  if (a.type === 'draw') {
+    let c = waste.pop(); c.faceUp = false; stock.push(c);
+  } else if (a.type === 'recycle') {
+    while (stock.length) { let c = stock.pop(); c.faceUp = true; waste.push(c); }
+  } else if (a.type === 'move') {
+    let cards = [];
+    if (a.dst.startsWith('f_')) cards = foundations[parseInt(a.dst[2])].splice(-a.cards.length);
+    else if (a.dst.startsWith('t_')) cards = tableaus[parseInt(a.dst[2])].splice(-a.cards.length);
+
+    if (a.src === 'waste') waste.push(...cards);
+    else if (a.src.startsWith('t_')) {
+      let col = parseInt(a.src[2]);
+      if (a.flipped) tableaus[col][tableaus[col].length - 1].faceUp = false;
+      tableaus[col].push(...cards);
+    }
+  }
+  if (moves > 0) moves--; updateHud();
+});
+
+// Restart
+document.getElementById('btnRestart').addEventListener('click', () => {
+  if (confirm('Deseja reiniciar a partida atual?')) startLevel(currentLevel);
+});
+
+// Scenery Select Modal
+document.getElementById('btnScenery').addEventListener('click', () => {
+  let list = document.getElementById('sceneryList');
+  list.innerHTML = '';
+  SCENERIES.forEach(s => {
+    let isUnlocked = highestLevel >= s.minLevel;
+    let isCur = currentScenery.id === s.id;
+    let div = document.createElement('div');
+    div.className = 'scenery-item';
+    div.innerHTML = `
+      <div>
+        <div style="font-weight:bold; color:#FFF;">${s.name}</div>
+        <div style="font-size:12px; color:${isUnlocked ? s.accent : '#94A3B8'};">
+          ${isUnlocked ? (isCur ? '✓ Ativo' : 'Desbloqueado') : `Desbloqueia no Nível ${s.minLevel}`}
+        </div>
+      </div>
+      <div style="width:14px; height:14px; border-radius:50%; background:${s.accent};"></div>
+    `;
+    if (isUnlocked) {
+      div.onclick = () => { setScenery(s); document.getElementById('modalScenery').style.display = 'none'; };
+    } else {
+      div.style.opacity = '0.5';
+    }
+    list.appendChild(div);
+  });
+  document.getElementById('modalScenery').style.display = 'flex';
+});
+document.getElementById('btnCloseScenery').addEventListener('click', () => {
+  document.getElementById('modalScenery').style.display = 'none';
+});
+
+// Victory buttons
+document.getElementById('btnNextLevel').addEventListener('click', () => {
+  document.getElementById('modalVictory').style.display = 'none';
+  startLevel(currentLevel + 1);
+});
+document.getElementById('btnPlayAgain').addEventListener('click', () => {
+  document.getElementById('modalVictory').style.display = 'none';
+  startLevel(currentLevel);
+});
+
+// Events
+window.addEventListener('mousedown', onTouchStart);
+window.addEventListener('mousemove', onTouchMove);
+window.addEventListener('mouseup', onTouchEnd);
+canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+canvas.addEventListener('touchend', onTouchEnd, { passive: false });
+
+resize();
+startLevel(currentLevel);
+render();
+</script>
+</body>
+</html>
