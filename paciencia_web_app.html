@@ -291,9 +291,9 @@ body, html {
     <svg viewBox="0 0 24 24"><path d="M12.5,8c-2.65,0-5.05,0.99-6.9,2.6L2,7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54,0 6.55,2.31 7.6,5.5l2.37-0.78C21.08,11.03 17.15,8 12.5,8z"/></svg>
     Desfazer
   </button>
-  <button class="btn-control" id="btnAuto" title="Completar Movimentos Obvios">
-    <svg viewBox="0 0 24 24"><path d="M7.5,5.6L5,7l1.4-2.5L5,2l2.5,1.4L10,2L8.6,4.5L10,7L7.5,5.6z M19,9l1.25-2.25L22.5,5.5L20.25,4.25L19,2l-1.25,2.25L15.5,5.5l2.25,1.25L19,9z M19,15l-1.25,2.25L15.5,18.5l2.25,1.25L19,22l1.25-2.25L22.5,18.5l-2.25-1.25L19,15z M11.5,9.5L9,4L6.5,9.5L1,12l5.5,2.5L9,20l2.5-5.5L17,12L11.5,9.5z"/></svg>
-    Auto
+  <button class="btn-control" id="btnHint" title="Dica Mágica de Jogada">
+    <svg viewBox="0 0 24 24"><path d="M9,21c0,0.55 0.45,1 1,1h4c0.55,0 1,-0.45 1,-1v-1H9v1zM12,2C8.14,2 5,5.14 5,9c0,2.38 1.19,4.47 3,5.74V17c0,0.55 0.45,1 1,1h6c0.55,0 1,-0.45 1,-1v-2.26c1.81,-1.27 3,-3.36 3,-5.74 0,-3.86 -3.14,-7 -7,-7zm2.85,11.1l-0.85,0.6V16h-4v-2.3l-0.85,-0.6C7.8,12.16 7,10.63 7,9c0,-2.76 2.24,-5 5,-5s5,2.24 5,5c0,1.63 -0.8,3.16 -2.15,4.1z"/></svg>
+    Dica
   </button>
   <button class="btn-control" id="btnRestart" title="Reiniciar Partida">
     <svg viewBox="0 0 24 24"><path d="M17.65,6.35C16.2,4.9 14.21,4 12,4c-4.42,0-7.99,3.58-7.99,8s3.57,8 7.99,8c3.73,0 6.84-2.55 7.73-6h-2.08c-0.82,2.33-3.04,4-5.65,4-3.31,0-6-2.69-6-6s2.69-6 6-6c1.66,0 3.14,0.69 4.22,1.78L13,11h7V4l-2.35,2.35z"/></svg>
@@ -908,6 +908,22 @@ function render(now) {
     });
   }
 
+  // 8.5. Efeito Visual de Dica Mágica Pulsante
+  if (hintEffect && (now - hintEffect.startTime) < 3200) {
+    let elapsed = now - hintEffect.startTime;
+    let pulse = Math.sin(elapsed * 0.008) * 0.35 + 0.65;
+    ctx.save();
+    ctx.strokeStyle = `rgba(245, 158, 11, ${pulse})`;
+    ctx.lineWidth = 4;
+    ctx.shadowColor = 'rgba(245, 158, 11, 0.7)';
+    ctx.shadowBlur = 12;
+    roundRect(ctx, hintEffect.fromRect.x - 3, hintEffect.fromRect.y - 3, hintEffect.fromRect.w + 6, hintEffect.fromRect.h + 6, 8);
+    ctx.stroke();
+    roundRect(ctx, hintEffect.toRect.x - 3, hintEffect.toRect.y - 3, hintEffect.toRect.w + 6, hintEffect.toRect.h + 6, 8);
+    ctx.stroke();
+    ctx.restore();
+  }
+
   // 9. Faíscas e Partículas de Celebração
   for (let i = sparkParticles.length - 1; i >= 0; i--) {
     let p = sparkParticles[i];
@@ -942,25 +958,37 @@ function addSparkle(x, y, color = '#FBBF24', count = 8) {
 }
 
 function drawSlot(x, y, watermark) {
-  ctx.strokeStyle = currentScenery.accent + '33';
+  ctx.save();
+  ctx.strokeStyle = currentScenery.accent + '3a';
   ctx.lineWidth = 1.5;
-  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.fillStyle = 'rgba(0,0,0,0.38)';
   roundRect(ctx, x, y, cw, ch, 7);
   ctx.fill(); ctx.stroke();
+
+  // Moldura interna da cavidade mágica
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, x + 3, y + 3, cw - 6, ch - 6, 5);
+  ctx.stroke();
+
   if (watermark) {
-    ctx.fillStyle = currentScenery.accent + '44';
+    ctx.fillStyle = currentScenery.accent + '55';
     ctx.font = `bold ${cw * 0.36}px serif`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(watermark, x + cw / 2, y + ch / 2);
   }
+  ctx.restore();
 }
 
 // --- RENDERIZAÇÃO ARTÍSTICA DA CARTA ---
 function drawCard(card, x, y, isElevated) {
   ctx.save();
   if (isElevated) {
-    ctx.shadowColor = 'rgba(0,0,0,0.65)';
-    ctx.shadowBlur = 18; ctx.shadowOffsetY = 12;
+    ctx.shadowColor = 'rgba(0,0,0,0.7)';
+    ctx.shadowBlur = 20; ctx.shadowOffsetY = 14;
+  } else {
+    ctx.shadowColor = 'rgba(0,0,0,0.35)';
+    ctx.shadowBlur = 6; ctx.shadowOffsetY = 3;
   }
 
   if (!card.faceUp) {
@@ -969,36 +997,46 @@ function drawCard(card, x, y, isElevated) {
     g.addColorStop(0, currentSkin.p1);
     g.addColorStop(1, currentSkin.p2);
     ctx.fillStyle = g;
-    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
     ctx.lineWidth = 1.2;
     roundRect(ctx, x, y, cw, ch, 7);
     ctx.fill(); ctx.stroke();
 
     // Moldura Interna em Ouro/Acento
-    ctx.strokeStyle = currentSkin.acc + '99';
+    ctx.strokeStyle = currentSkin.acc + 'aa';
     roundRect(ctx, x + 4, y + 4, cw - 8, ch - 8, 5);
     ctx.stroke();
 
     // Padrão Geométrico Exclusivo da Skin
     drawSkinPattern(ctx, currentSkin.pattern, x + cw / 2, y + ch / 2, cw * 0.28, currentSkin.acc);
   } else {
-    // Face Frontal com Tom Pergaminho Nobre e Bisel
+    // Face Frontal com Tom Pergaminho Nobre Marfim e Bisel
     let parchmentG = ctx.createLinearGradient(x, y, x + cw, y + ch);
-    parchmentG.addColorStop(0, '#FFFFFF');
-    parchmentG.addColorStop(1, '#F8FAFC');
+    parchmentG.addColorStop(0, '#FFFDF8');
+    parchmentG.addColorStop(0.5, '#FAF6EC');
+    parchmentG.addColorStop(1, '#F3ECE0');
     ctx.fillStyle = parchmentG;
     ctx.strokeStyle = '#D1D5DB';
     ctx.lineWidth = 1;
     roundRect(ctx, x, y, cw, ch, 7);
     ctx.fill(); ctx.stroke();
 
-    // Moldura Interna Delicada
-    ctx.strokeStyle = 'rgba(212, 175, 55, 0.25)';
-    roundRect(ctx, x + 2.5, y + 2.5, cw - 5, ch - 5, 5);
+    // Moldura Interna Delicada de Filigrana
+    ctx.strokeStyle = 'rgba(180, 140, 60, 0.35)';
+    roundRect(ctx, x + 3, y + 3, cw - 6, ch - 6, 5);
     ctx.stroke();
 
+    // Pequenos pontos ornamentais nos 4 cantos
+    ctx.fillStyle = 'rgba(180, 140, 60, 0.5)';
+    ctx.beginPath();
+    ctx.arc(x + 5.5, y + 5.5, 1.2, 0, Math.PI * 2);
+    ctx.arc(x + cw - 5.5, y + 5.5, 1.2, 0, Math.PI * 2);
+    ctx.arc(x + 5.5, y + ch - 5.5, 1.2, 0, Math.PI * 2);
+    ctx.arc(x + cw - 5.5, y + ch - 5.5, 1.2, 0, Math.PI * 2);
+    ctx.fill();
+
     // Índices da Carta (Valor & Naipe)
-    ctx.fillStyle = card.suit.isRed ? '#DC2626' : '#0F172A';
+    ctx.fillStyle = card.suit.isRed ? '#C41E3A' : '#111827';
     ctx.font = `bold ${cw * 0.24}px -apple-system, serif`;
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText(card.rank.label, x + 5, y + 5);
@@ -1009,15 +1047,15 @@ function drawCard(card, x, y, isElevated) {
     // Ilustração Central Nobre
     if (card.rank.val > 10) {
       // Figuras da Corte (Valete, Rainha, Rei) com Brasão Imperial
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.55)';
       ctx.lineWidth = 1.5;
       roundRect(ctx, x + cw * 0.2, y + ch * 0.26, cw * 0.6, ch * 0.48, 5);
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(251, 191, 36, 0.12)';
+      ctx.fillStyle = 'rgba(251, 191, 36, 0.15)';
       ctx.fill();
 
-      ctx.fillStyle = card.suit.isRed ? '#DC2626' : '#0F172A';
+      ctx.fillStyle = card.suit.isRed ? '#C41E3A' : '#111827';
       ctx.font = `serif bold ${cw * 0.38}px`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(card.rank.label, x + cw / 2, y + ch / 2 - 2);
@@ -1044,30 +1082,51 @@ function drawSkinPattern(c, pattern, cx, cy, size, acc) {
   c.fillStyle = acc + '33';
   c.lineWidth = 1.5;
   c.beginPath();
-  if (pattern === 'classic' || pattern === 'golden') {
+  if (pattern === 'classic') {
     c.moveTo(cx, cy - size); c.lineTo(cx + size, cy); c.lineTo(cx, cy + size); c.lineTo(cx - size, cy); c.closePath();
     c.stroke();
-    if (pattern === 'golden') {
-      c.arc(cx, cy, size * 0.4, 0, Math.PI * 2); c.stroke();
-    }
+    c.arc(cx, cy, size * 0.35, 0, Math.PI * 2); c.stroke();
+  } else if (pattern === 'golden') {
+    c.moveTo(cx, cy - size); c.lineTo(cx + size, cy); c.lineTo(cx, cy + size); c.lineTo(cx - size, cy); c.closePath();
+    c.stroke();
+    c.arc(cx, cy, size * 0.45, 0, Math.PI * 2); c.stroke();
+    // Raios radiantes
+    c.moveTo(cx - size * 0.7, cy); c.lineTo(cx + size * 0.7, cy);
+    c.moveTo(cx, cy - size * 0.7); c.lineTo(cx, cy + size * 0.7);
+    c.stroke();
   } else if (pattern === 'arcane') {
-    c.arc(cx, cy, size * 0.8, 0, Math.PI * 2); c.stroke();
-    c.moveTo(cx, cy - size * 0.7); c.lineTo(cx + size * 0.7, cy); c.lineTo(cx, cy + size * 0.7); c.lineTo(cx - size * 0.7, cy); c.closePath(); c.stroke();
+    c.arc(cx, cy, size * 0.85, 0, Math.PI * 2); c.stroke();
+    // Estrela de 8 pontas mística
+    c.moveTo(cx, cy - size * 0.75); c.lineTo(cx + size * 0.75, cy); c.lineTo(cx, cy + size * 0.75); c.lineTo(cx - size * 0.75, cy); c.closePath(); c.stroke();
+    c.moveTo(cx - size * 0.5, cy - size * 0.5); c.lineTo(cx + size * 0.5, cy - size * 0.5);
+    c.lineTo(cx + size * 0.5, cy + size * 0.5); c.lineTo(cx - size * 0.5, cy + size * 0.5); c.closePath(); c.stroke();
   } else if (pattern === 'shadow') {
-    c.moveTo(cx - size * 0.6, cy - size * 0.6); c.lineTo(cx + size * 0.6, cy - size * 0.6);
-    c.lineTo(cx, cy + size * 0.9); c.closePath(); c.stroke(); c.fill();
+    c.moveTo(cx - size * 0.65, cy - size * 0.65); c.lineTo(cx + size * 0.65, cy - size * 0.65);
+    c.lineTo(cx + size * 0.65, cy); c.lineTo(cx, cy + size * 0.95); c.lineTo(cx - size * 0.65, cy); c.closePath(); c.stroke(); c.fill();
+    // Cruz gótica interna
+    c.moveTo(cx, cy - size * 0.4); c.lineTo(cx, cy + size * 0.5);
+    c.moveTo(cx - size * 0.3, cy - size * 0.1); c.lineTo(cx + size * 0.3, cy - size * 0.1); c.stroke();
   } else if (pattern === 'nature') {
-    c.ellipse(cx, cy, size * 0.5, size * 0.9, 0, 0, Math.PI * 2); c.stroke();
+    c.ellipse(cx, cy, size * 0.55, size * 0.9, 0, 0, Math.PI * 2); c.stroke();
+    c.ellipse(cx, cy, size * 0.9, size * 0.55, 0, 0, Math.PI * 2); c.stroke();
+    c.arc(cx, cy, size * 0.25, 0, Math.PI * 2); c.fill();
   } else if (pattern === 'ice') {
-    c.moveTo(cx, cy - size); c.lineTo(cx, cy + size); c.moveTo(cx - size, cy); c.lineTo(cx + size, cy);
+    c.moveTo(cx, cy - size); c.lineTo(cx, cy + size);
+    c.moveTo(cx - size, cy); c.lineTo(cx + size, cy);
     c.moveTo(cx - size * 0.7, cy - size * 0.7); c.lineTo(cx + size * 0.7, cy + size * 0.7);
-    c.moveTo(cx - size * 0.7, cy + size * 0.7); c.lineTo(cx + size * 0.7, cy - size * 0.7); c.stroke();
+    c.moveTo(cx - size * 0.7, cy + size * 0.7); c.lineTo(cx + size * 0.7, cy - size * 0.7);
+    c.stroke();
+    c.arc(cx, cy, size * 0.3, 0, Math.PI * 2); c.stroke();
   } else if (pattern === 'cosmic') {
-    c.arc(cx, cy, size * 0.5, 0, Math.PI * 2); c.stroke();
-    c.arc(cx, cy, size * 0.9, 0, Math.PI * 2); c.stroke();
+    c.arc(cx, cy, size * 0.35, 0, Math.PI * 2); c.fill();
+    c.ellipse(cx, cy, size * 0.95, size * 0.45, Math.PI / 4, 0, Math.PI * 2); c.stroke();
+    c.ellipse(cx, cy, size * 0.95, size * 0.45, -Math.PI / 4, 0, Math.PI * 2); c.stroke();
   } else if (pattern === 'royal') {
-    c.moveTo(cx - size * 0.8, cy + size * 0.4); c.lineTo(cx + size * 0.8, cy + size * 0.4);
-    c.lineTo(cx + size * 0.6, cy - size * 0.4); c.lineTo(cx, cy); c.lineTo(cx - size * 0.6, cy - size * 0.4); c.closePath(); c.stroke();
+    // Coroa imperial nobre
+    c.moveTo(cx - size * 0.8, cy + size * 0.45); c.lineTo(cx + size * 0.8, cy + size * 0.45);
+    c.lineTo(cx + size * 0.7, cy - size * 0.4); c.lineTo(cx + size * 0.35, cy);
+    c.lineTo(cx, cy - size * 0.65); c.lineTo(cx - size * 0.35, cy);
+    c.lineTo(cx - size * 0.7, cy - size * 0.4); c.closePath(); c.stroke(); c.fill();
   }
   c.restore();
 }
@@ -1713,13 +1772,94 @@ document.getElementById('btnCloseScenery').onclick = () => {
   document.getElementById('modalScenery').style.display = 'none';
 };
 
-document.getElementById('btnUndo').onclick = performUndo;
-document.getElementById('btnAuto').onclick = () => {
-  let steps = 0;
-  while (autoMoveStep() && steps < 20) {
-    steps++;
+let hintEffect = null;
+
+function findHint() {
+  // 1. Descarte para Fundação
+  if (waste.length > 0) {
+    let top = waste[waste.length - 1];
+    for (let f = 0; f < 4; f++) {
+      if (canMoveToFoundation(top, foundations[f])) {
+        return { fromRect: wasteRect, toRect: fRects[f], desc: 'Mover ' + top.rank.label + top.suit.symbol + ' para Fundação' };
+      }
+    }
   }
-  if (steps === 0) showToast('Nenhum movimento automático seguro disponível');
+
+  // 2. Coluna para Fundação
+  for (let c = 0; c < 7; c++) {
+    let t = tableaus[c];
+    if (t.length > 0) {
+      let top = t[t.length - 1];
+      if (top.faceUp) {
+        for (let f = 0; f < 4; f++) {
+          if (canMoveToFoundation(top, foundations[f])) {
+            let y = tRects[c].y + (t.length - 1) * (ch * 0.28);
+            return { fromRect: { x: tRects[c].x, y: y, w: cw, h: ch }, toRect: fRects[f], desc: 'Mover ' + top.rank.label + top.suit.symbol + ' para Fundação' };
+          }
+        }
+      }
+    }
+  }
+
+  // 3. Descarte para Coluna
+  if (waste.length > 0) {
+    let top = waste[waste.length - 1];
+    for (let c = 0; c < 7; c++) {
+      let t = tableaus[c];
+      if (canMoveToTableau(top, t)) {
+        let y = t.length === 0 ? tRects[c].y : tRects[c].y + (t.length - 1) * (ch * 0.28);
+        return { fromRect: wasteRect, toRect: { x: tRects[c].x, y: y, w: cw, h: ch }, desc: 'Mover ' + top.rank.label + top.suit.symbol + ' para Coluna ' + (c + 1) };
+      }
+    }
+  }
+
+  // 4. Sequência entre Colunas
+  for (let c1 = 0; c1 < 7; c1++) {
+    let t1 = tableaus[c1];
+    for (let i = 0; i < t1.length; i++) {
+      if (!t1[i].faceUp) continue;
+      let card = t1[i];
+      for (let c2 = 0; c2 < 7; c2++) {
+        if (c1 === c2) continue;
+        let t2 = tableaus[c2];
+        if (canMoveToTableau(card, t2)) {
+          if (card.rank.val === 13 && i === 0 && t2.length === 0) continue;
+          let y1 = tRects[c1].y + i * (ch * 0.28);
+          let y2 = t2.length === 0 ? tRects[c2].y : tRects[c2].y + (t2.length - 1) * (ch * 0.28);
+          return { fromRect: { x: tRects[c1].x, y: y1, w: cw, h: ch }, toRect: { x: tRects[c2].x, y: y2, w: cw, h: ch }, desc: 'Mover sequência para Coluna ' + (c2 + 1) };
+        }
+      }
+    }
+  }
+
+  // 5. Comprar do monte
+  if (stock.length > 0) {
+    return { fromRect: stockRect, toRect: wasteRect, desc: 'Comprar carta do monte' };
+  } else if (waste.length > 0) {
+    return { fromRect: wasteRect, toRect: stockRect, desc: 'Reciclar cartas do descarte' };
+  }
+
+  return null;
+}
+
+document.getElementById('btnUndo').onclick = performUndo;
+document.getElementById('btnHint').onclick = () => {
+  let hint = findHint();
+  if (hint) {
+    hintEffect = { fromRect: hint.fromRect, toRect: hint.toRect, startTime: performance.now() };
+    playSound('touch');
+    showToast('Dica: ' + hint.desc);
+    addSparkle(hint.fromRect.x + cw / 2, hint.fromRect.y + ch / 2, '#F59E0B', 8);
+  } else {
+    let steps = 0;
+    while (autoMoveStep() && steps < 20) { steps++; }
+    if (steps > 0) {
+      showToast('Movimentos automáticos seguros realizados!');
+    } else {
+      playSound('invalid');
+      showToast('Nenhum movimento evidente encontrado. Compre uma carta!');
+    }
+  }
 };
 document.getElementById('btnRestart').onclick = () => {
   if (confirm('Deseja reiniciar a partida atual?')) startLevel(currentLevel);
