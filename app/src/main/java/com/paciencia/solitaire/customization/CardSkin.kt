@@ -15,11 +15,12 @@ enum class SkinPattern {
 }
 
 /**
- * Modelo de skin de personalização de cartas.
+ * Modelo de skin de personalização de cartas com coleções temáticas.
  */
 data class CardSkin(
     val id: String,
     val name: String,
+    val collection: String = "Coleção Clássica",
     val description: String,
     val price: Int,
     val pattern: SkinPattern,
@@ -32,6 +33,7 @@ data class CardSkin(
         val CLASSIC = CardSkin(
             id = "skin_classic",
             name = "Clássica",
+            collection = "Tradição",
             description = "Aparência clássica e atemporal de baralho",
             price = 0,
             pattern = SkinPattern.CLASSIC,
@@ -44,6 +46,7 @@ data class CardSkin(
         val GOLDEN = CardSkin(
             id = "skin_golden",
             name = "Dourada",
+            collection = "Relíquias Douradas",
             description = "Elegantes filigranas douradas com brilho nobre",
             price = 30,
             pattern = SkinPattern.GOLDEN,
@@ -55,6 +58,7 @@ data class CardSkin(
         val ARCANE = CardSkin(
             id = "skin_arcane",
             name = "Arcana",
+            collection = "Arcano",
             description = "Símbolos mágicos e runas de poder antigo",
             price = 60,
             pattern = SkinPattern.ARCANE,
@@ -66,6 +70,7 @@ data class CardSkin(
         val SHADOW = CardSkin(
             id = "skin_shadow",
             name = "Sombria",
+            collection = "Sombras & Mistério",
             description = "Acabamento escuro sofisticado com toques carmesim",
             price = 60,
             pattern = SkinPattern.SHADOW,
@@ -77,6 +82,7 @@ data class CardSkin(
         val NATURE = CardSkin(
             id = "skin_nature",
             name = "Natureza",
+            collection = "Natureza",
             description = "Ramos esmeralda e folhagens místicas",
             price = 100,
             pattern = SkinPattern.NATURE,
@@ -88,6 +94,7 @@ data class CardSkin(
         val ICE = CardSkin(
             id = "skin_ice",
             name = "Gelo",
+            collection = "Gelo",
             description = "Cristais gélidos e fractais azuis reluzentes",
             price = 100,
             pattern = SkinPattern.ICE,
@@ -99,6 +106,7 @@ data class CardSkin(
         val COSMIC = CardSkin(
             id = "skin_cosmic",
             name = "Cósmica",
+            collection = "Cósmico",
             description = "Nebulosas profundas com constelações estelares",
             price = 150,
             pattern = SkinPattern.COSMIC,
@@ -110,6 +118,7 @@ data class CardSkin(
         val ROYAL = CardSkin(
             id = "skin_royal",
             name = "Real",
+            collection = "Reino Medieval",
             description = "Ornamento de coroa imperial com detalhes em ouro",
             price = 150,
             pattern = SkinPattern.ROYAL,

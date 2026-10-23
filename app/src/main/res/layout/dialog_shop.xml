@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="16dp">
 
     <!-- Header: Título e Saldo de Moedas -->
     <LinearLayout
@@ -55,8 +54,8 @@
     <Button
         android:id="@+id/btnWatchRewardedAd"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginTop="14dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/button_gold"
         android:drawableStart="@drawable/ic_video"
         android:drawablePadding="8dp"
@@ -68,11 +67,70 @@
         android:textColor="@color/black"
         android:textSize="13sp" />
 
+    <!-- Painel de Prévia Ampliada Premium (Galeria) -->
+    <LinearLayout
+        android:id="@+id/layoutShopPreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#25000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <com.paciencia.solitaire.ui.SkinPreviewView
+            android:id="@+id/shopSkinPreviewView"
+            android:layout_width="60dp"
+            android:layout_height="86dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPreviewCollection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#30FBBF24"
+                android:fontFamily="sans-serif-black"
+                android:paddingStart="6dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="6dp"
+                android:paddingBottom="2dp"
+                android:text="COLEÇÃO: TRADIÇÃO"
+                android:textColor="@color/gold"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/tvPreviewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:fontFamily="sans-serif-bold"
+                android:text="Skin Clássica"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvPreviewDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif"
+                android:text="Aparência clássica e atemporal de baralho"
+                android:textColor="@color/hud_text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
     <!-- Abas: Skins de Cartas e Avatares -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="14dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="10dp"
         android:background="#15FFFFFF"
         android:orientation="horizontal"
         android:padding="3dp">
@@ -104,8 +162,8 @@
     <!-- Lista de Itens Rolável -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="8dp"
         android:fadeScrollbars="false">
 
         <LinearLayout
@@ -119,8 +177,8 @@
     <Button
         android:id="@+id/btnCloseShop"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/button_primary"
         android:fontFamily="sans-serif"
         android:text="@string/btn_close"

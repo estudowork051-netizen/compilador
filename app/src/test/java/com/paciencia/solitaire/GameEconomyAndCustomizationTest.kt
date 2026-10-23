@@ -40,8 +40,9 @@ class GameEconomyAndCustomizationTest {
         assertTrue(classic.isDefaultUnlocked)
         assertEquals(SkinPattern.CLASSIC, classic.pattern)
 
-        // As demais skins devem ter preços maiores que zero
+        // As demais skins devem ter preços maiores que zero e coleção temática definida
         for (skin in skins) {
+            assertTrue("Coleção da skin ${skin.name} não pode ser vazia", skin.collection.isNotBlank())
             if (skin.id != "skin_classic") {
                 assertTrue("Skin ${skin.name} deve ter preço positivo", skin.price > 0)
                 assertFalse("Skin ${skin.name} não deve vir desbloqueada por padrão", skin.isDefaultUnlocked)
@@ -64,8 +65,9 @@ class GameEconomyAndCustomizationTest {
         assertTrue(adventurer.isDefaultUnlocked)
         assertEquals("🤠", adventurer.iconEmoji)
 
-        // Os demais avatares devem ter preços maiores que zero
+        // Os demais avatares devem ter preços maiores que zero e coleção temática definida
         for (avatar in avatars) {
+            assertTrue("Coleção do avatar ${avatar.name} não pode ser vazia", avatar.collection.isNotBlank())
             if (avatar.id != "avatar_adventurer") {
                 assertTrue("Avatar ${avatar.name} deve ter preço positivo", avatar.price > 0)
                 assertFalse("Avatar ${avatar.name} não deve vir desbloqueado por padrão", avatar.isDefaultUnlocked)

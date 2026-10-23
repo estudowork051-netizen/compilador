@@ -77,6 +77,22 @@ class SolitaireView @JvmOverloads constructor(
         color = 0xFFFBBF24.toInt()
     }
 
+    // Realce de destinos válidos ao arrastar cartas
+    private val validTargetPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 3.5f
+        color = 0xFF34D399.toInt()
+    }
+
+    // Resposta visual para movimentos inválidos (Shake e flash vermelho)
+    private var invalidMoveStartTime: Long = 0L
+    private var invalidMovePileType: PileType? = null
+    private val invalidMoveFlashPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 3.5f
+        color = 0xFFEF4444.toInt()
+    }
+
     // Dimensões calculadas proporcionalmente
     private var cardWidth: Float = 0f
     private var cardHeight: Float = 0f
@@ -263,7 +279,59 @@ class SolitaireView @JvmOverloads constructor(
             }
         }
 
-        // 8. Renderiza as cartas flutuantes que estão sendo arrastadas pelo dedo com destaque e sombra elevada
+        // 8. Realce de destinos válidos quando uma carta estiver sendo arrastada
+        if (isDragging && draggedCards.isNotEmpty()) {
+            val pulse = (Math.sin(now * 0.008) * 0.35 + 0.65).toFloat()
+            validTargetPaint.alpha = (pulse * 220).toInt()
+            val firstDragged = draggedCards.first()
+
+            // Destinos em Fundações
+            if (draggedCards.size == 1) {
+                for (i in 0 until 4) {
+                    val fPile = eng.foundationPiles[i]
+                    if (dragSourcePileType != fPile.type && com.paciencia.solitaire.engine.MoveValidator.canMoveToFoundation(firstDragged, fPile)) {
+                        val r = foundationRects[i]
+                        canvas.drawRoundRect(r.left - 2f, r.top - 2f, r.right + 2f, r.bottom + 2f, cardWidth * 0.08f, cardWidth * 0.08f, validTargetPaint)
+                    }
+                }
+            }
+
+            // Destinos em Colunas do Tableau
+            for (col in 0 until 7) {
+                val tPile = eng.tableauPiles[col]
+                if (dragSourcePileType != tPile.type && com.paciencia.solitaire.engine.MoveValidator.canMoveToTableau(draggedCards, tPile)) {
+                    val r = tableauRects[col]
+                    val topY = if (tPile.isEmpty) r.top else r.top + calculateCardYOffset(tPile.cards, tPile.cards.size - 1)
+                    canvas.drawRoundRect(r.left - 2f, topY - 2f, r.right + 2f, topY + cardHeight + 2f, cardWidth * 0.08f, cardWidth * 0.08f, validTargetPaint)
+                }
+            }
+        }
+
+        // 9. Resposta visual para movimentos inválidos (Flash avermelhado na pilha de origem)
+        val invalidElapsed = now - invalidMoveStartTime
+        if (invalidElapsed < 260 && invalidMovePileType != null) {
+            val progress = invalidElapsed.toFloat() / 260f
+            invalidMoveFlashPaint.alpha = ((1f - progress) * 230).toInt()
+            when (val pType = invalidMovePileType) {
+                is PileType.Tableau -> {
+                    val r = tableauRects[pType.col]
+                    val shake = (Math.sin(progress * Math.PI * 4.0) * 6.0 * (1.0 - progress)).toFloat()
+                    canvas.drawRoundRect(r.left + shake - 2f, r.top - 2f, r.right + shake + 2f, r.bottom + 2f, cardWidth * 0.08f, cardWidth * 0.08f, invalidMoveFlashPaint)
+                }
+                is PileType.Foundation -> {
+                    val r = foundationRects[pType.index]
+                    val shake = (Math.sin(progress * Math.PI * 4.0) * 6.0 * (1.0 - progress)).toFloat()
+                    canvas.drawRoundRect(r.left + shake - 2f, r.top - 2f, r.right + shake + 2f, r.bottom + 2f, cardWidth * 0.08f, cardWidth * 0.08f, invalidMoveFlashPaint)
+                }
+                PileType.Waste -> {
+                    val shake = (Math.sin(progress * Math.PI * 4.0) * 6.0 * (1.0 - progress)).toFloat()
+                    canvas.drawRoundRect(wasteRect.left + shake - 2f, wasteRect.top - 2f, wasteRect.right + shake + 2f, wasteRect.bottom + 2f, cardWidth * 0.08f, cardWidth * 0.08f, invalidMoveFlashPaint)
+                }
+                else -> {}
+            }
+        }
+
+        // 10. Renderiza as cartas flutuantes que estão sendo arrastadas pelo dedo com destaque e sombra elevada
         if (isDragging && draggedCards.isNotEmpty()) {
             var currentY = dragCurrentY - dragTouchOffsetY
             val currentX = dragCurrentX - dragTouchOffsetX
@@ -285,8 +353,24 @@ class SolitaireView @JvmOverloads constructor(
             }
         }
 
-        // Mantém a animação suave a 60 FPS se houver partículas ativas ou efeitos em andamento
-        if ((isParticlesEnabled && !isPowerSaveMode) || activeColumnEffects.isNotEmpty()) {
+        // 11. Efeito contínuo de comemoração após vitória
+        if (eng.isWon && isParticlesEnabled && !isPowerSaveMode && Math.random() < 0.25) {
+            particleSystem.addParticle(
+                Particle(
+                    x = (Math.random() * width).toFloat(),
+                    y = height * 0.15f,
+                    vx = (Math.random().toFloat() - 0.5f) * 4f,
+                    vy = Math.random().toFloat() * 3f + 1f,
+                    size = (Math.random() * 5 + 4).toFloat(),
+                    alpha = 255,
+                    color = if (Math.random() < 0.5) 0xFFFBBF24.toInt() else 0xFF34D399.toInt(),
+                    shape = Particle.Shape.STAR
+                )
+            )
+        }
+
+        // Mantém a animação suave a 60 FPS se houver partículas ativas, efeitos em andamento ou arraste
+        if ((isParticlesEnabled && !isPowerSaveMode) || activeColumnEffects.isNotEmpty() || invalidElapsed < 260 || isDragging || eng.isWon) {
             postInvalidateOnAnimation()
         }
     }
@@ -380,10 +464,28 @@ class SolitaireView @JvmOverloads constructor(
 
                         if (touchedIndex != -1) {
                             val touchedCard = cards[touchedIndex]
-                            // Se a carta do topo estiver virada para baixo, permite revelá-la ao tocar
+                            // Se a carta do topo estiver virada para baixo, permite revelá-la ao tocar com brilho
                             if (!touchedCard.isFaceUp && touchedIndex == cards.size - 1) {
                                 touchedCard.isFaceUp = true
                                 soundFeedback?.cardPlaced(this)
+                                if (isParticlesEnabled && !isPowerSaveMode) {
+                                    val cx = (tRect.left + tRect.right) * 0.5f
+                                    val cy = cardY + cardHeight * 0.5f
+                                    for (p in 0 until 8) {
+                                        particleSystem.addParticle(
+                                            Particle(
+                                                x = cx,
+                                                y = cy,
+                                                vx = (Math.random().toFloat() - 0.5f) * 2.8f,
+                                                vy = -(Math.random().toFloat() * 2.5f + 0.8f),
+                                                size = 4.5f,
+                                                alpha = 220,
+                                                color = 0xFF6EE7B7.toInt(),
+                                                shape = Particle.Shape.SPARK
+                                            )
+                                        )
+                                    }
+                                }
                                 onMoveMade?.invoke()
                                 invalidate()
                                 return true
@@ -419,6 +521,7 @@ class SolitaireView @JvmOverloads constructor(
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 if (isDragging && draggedCards.isNotEmpty()) {
                     val fromType = dragSourcePileType ?: return true
+                    val firstCard = draggedCards.firstOrNull()
                     val moveDistance = hypot((x - touchDownX).toDouble(), (y - touchDownY).toDouble()).toFloat()
 
                     // Se o deslocamento foi muito curto (< 14px), considera como TOQUE (Tap-to-Move Inteligente)
@@ -431,7 +534,7 @@ class SolitaireView @JvmOverloads constructor(
                                 onMoveMade?.invoke()
                                 checkVictory()
                             } else {
-                                soundFeedback?.invalidMove(this)
+                                triggerInvalidMove(fromType)
                             }
                         }
                     } else {
@@ -445,11 +548,14 @@ class SolitaireView @JvmOverloads constructor(
 
                         if (success) {
                             soundFeedback?.cardPlaced(this)
+                            if (targetPileType is PileType.Foundation) {
+                                emitFoundationSparkles(targetPileType.index)
+                            }
                             checkColumnCompletions()
                             onMoveMade?.invoke()
                             checkVictory()
                         } else {
-                            soundFeedback?.invalidMove(this)
+                            triggerInvalidMove(fromType)
                         }
                     }
 
@@ -463,6 +569,42 @@ class SolitaireView @JvmOverloads constructor(
         }
 
         return super.onTouchEvent(event)
+    }
+
+    /**
+     * Resposta visual para movimentos inválidos: shake horizontal e flash carmesim.
+     */
+    fun triggerInvalidMove(pileType: PileType?) {
+        invalidMoveStartTime = System.currentTimeMillis()
+        invalidMovePileType = pileType
+        soundFeedback?.invalidMove(this)
+        invalidate()
+    }
+
+    /**
+     * Efeito comemorativo de faíscas ao mover carta para fundação.
+     */
+    private fun emitFoundationSparkles(index: Int) {
+        if (!isParticlesEnabled || isPowerSaveMode || index !in 0 until 4) return
+        val r = foundationRects[index]
+        val cx = (r.left + r.right) * 0.5f
+        val cy = (r.top + r.bottom) * 0.5f
+        for (i in 0 until 10) {
+            val vx = (Math.random().toFloat() - 0.5f) * 3.5f
+            val vy = -(Math.random().toFloat() * 3f + 1f)
+            particleSystem.addParticle(
+                Particle(
+                    x = cx,
+                    y = cy,
+                    vx = vx,
+                    vy = vy,
+                    size = 5.5f,
+                    alpha = 240,
+                    color = 0xFFFDE047.toInt(),
+                    shape = Particle.Shape.SPARK
+                )
+            )
+        }
     }
 
     /**

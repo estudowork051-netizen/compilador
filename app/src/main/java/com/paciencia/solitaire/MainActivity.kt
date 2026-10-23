@@ -505,7 +505,26 @@ class MainActivity : AppCompatActivity() {
         val layoutItems = dialog.findViewById<LinearLayout>(R.id.layoutShopItems)
         val btnClose = dialog.findViewById<Button>(R.id.btnCloseShop)
 
+        val previewView = dialog.findViewById<com.paciencia.solitaire.ui.SkinPreviewView>(R.id.shopSkinPreviewView)
+        val tvPreviewCollection = dialog.findViewById<TextView>(R.id.tvPreviewCollection)
+        val tvPreviewTitle = dialog.findViewById<TextView>(R.id.tvPreviewTitle)
+        val tvPreviewDesc = dialog.findViewById<TextView>(R.id.tvPreviewDesc)
+
         var currentTab = initialTab // 0 = Skins, 1 = Avatares
+
+        fun showSkinPreview(skin: CardSkin) {
+            previewView?.cardSkin = skin
+            tvPreviewCollection?.text = "COLEÇÃO: ${skin.collection.uppercase(Locale.ROOT)}"
+            tvPreviewTitle?.text = skin.name
+            tvPreviewDesc?.text = skin.description
+        }
+
+        fun showAvatarPreview(avatar: Avatar) {
+            previewView?.avatar = avatar
+            tvPreviewCollection?.text = "COLEÇÃO: ${avatar.collection.uppercase(Locale.ROOT)}"
+            tvPreviewTitle?.text = "${avatar.name} (${avatar.iconEmoji})"
+            tvPreviewDesc?.text = "${avatar.title} • ${avatar.description}"
+        }
 
         fun refreshBalance() {
             tvBalance.text = getString(R.string.coins_label, preferences.coinsBalance)
@@ -525,17 +544,31 @@ class MainActivity : AppCompatActivity() {
                 tabAvatars.setBackgroundColor(colorUnselectedBg)
                 tabAvatars.setTextColor(colorUnselectedText)
 
+                val equippedSkin = CardSkin.getById(preferences.equippedSkinId)
+                showSkinPreview(equippedSkin)
+
                 val equippedSkinId = preferences.equippedSkinId
                 for (skin in CardSkin.ALL_SKINS) {
                     val row = layoutInflater.inflate(R.layout.item_shop_entry, layoutItems, false)
                     val tvIcon = row.findViewById<TextView>(R.id.tvShopItemIcon)
+                    val tvCollection = row.findViewById<TextView>(R.id.tvShopItemCollection)
                     val tvName = row.findViewById<TextView>(R.id.tvShopItemName)
                     val tvDesc = row.findViewById<TextView>(R.id.tvShopItemDesc)
+                    val btnPreview = row.findViewById<Button>(R.id.btnShopItemPreview)
                     val btnAction = row.findViewById<Button>(R.id.btnShopItemAction)
 
                     tvIcon.text = "🃏"
+                    tvCollection.text = "COLEÇÃO: ${skin.collection.uppercase(Locale.ROOT)}"
                     tvName.text = skin.name
                     tvDesc.text = skin.description
+
+                    // Prévia ampliada ao tocar no botão de olho ou na linha
+                    btnPreview.setOnClickListener {
+                        showSkinPreview(skin)
+                    }
+                    row.setOnClickListener {
+                        showSkinPreview(skin)
+                    }
 
                     val isEquipped = skin.id == equippedSkinId
                     val isUnlocked = preferences.isSkinUnlocked(skin.id)
@@ -556,6 +589,7 @@ class MainActivity : AppCompatActivity() {
                                 preferences.equippedSkinId = skin.id
                                 binding.solitaireView.cardSkin = skin
                                 soundFeedback.cardPlaced(binding.solitaireView)
+                                showSkinPreview(skin)
                                 populateList()
                             }
                         }
@@ -571,7 +605,8 @@ class MainActivity : AppCompatActivity() {
                                     preferences.equippedSkinId = skin.id
                                     binding.solitaireView.cardSkin = skin
                                     soundFeedback.victoryCelebration()
-                                    Toast.makeText(this, getString(R.string.shop_buy_success, skin.name), Toast.LENGTH_SHORT).show()
+                                    showSkinPreview(skin)
+                                    Toast.makeText(this, "✨ NOVO ITEM DESCOBERTO: ${skin.name}! ✨", Toast.LENGTH_SHORT).show()
                                     refreshBalance()
                                     populateList()
                                 } else {
@@ -590,17 +625,30 @@ class MainActivity : AppCompatActivity() {
                 tabSkins.setBackgroundColor(colorUnselectedBg)
                 tabSkins.setTextColor(colorUnselectedText)
 
+                val equippedAvatar = Avatar.getById(preferences.equippedAvatarId)
+                showAvatarPreview(equippedAvatar)
+
                 val equippedAvatarId = preferences.equippedAvatarId
                 for (avatar in Avatar.ALL_AVATARS) {
                     val row = layoutInflater.inflate(R.layout.item_shop_entry, layoutItems, false)
                     val tvIcon = row.findViewById<TextView>(R.id.tvShopItemIcon)
+                    val tvCollection = row.findViewById<TextView>(R.id.tvShopItemCollection)
                     val tvName = row.findViewById<TextView>(R.id.tvShopItemName)
                     val tvDesc = row.findViewById<TextView>(R.id.tvShopItemDesc)
+                    val btnPreview = row.findViewById<Button>(R.id.btnShopItemPreview)
                     val btnAction = row.findViewById<Button>(R.id.btnShopItemAction)
 
                     tvIcon.text = avatar.iconEmoji
+                    tvCollection.text = "COLEÇÃO: ${avatar.collection.uppercase(Locale.ROOT)}"
                     tvName.text = avatar.name
                     tvDesc.text = "${avatar.title} • ${avatar.description}"
+
+                    btnPreview.setOnClickListener {
+                        showAvatarPreview(avatar)
+                    }
+                    row.setOnClickListener {
+                        showAvatarPreview(avatar)
+                    }
 
                     val isEquipped = avatar.id == equippedAvatarId
                     val isUnlocked = preferences.isAvatarUnlocked(avatar.id)
@@ -622,6 +670,7 @@ class MainActivity : AppCompatActivity() {
                                 binding.solitaireView.avatar = avatar
                                 updateHud()
                                 soundFeedback.cardPlaced(binding.solitaireView)
+                                showAvatarPreview(avatar)
                                 populateList()
                             }
                         }
@@ -637,7 +686,8 @@ class MainActivity : AppCompatActivity() {
                                     preferences.equippedAvatarId = avatar.id
                                     binding.solitaireView.avatar = avatar
                                     soundFeedback.victoryCelebration()
-                                    Toast.makeText(this, getString(R.string.shop_buy_success, avatar.name), Toast.LENGTH_SHORT).show()
+                                    showAvatarPreview(avatar)
+                                    Toast.makeText(this, "✨ NOVO AVATAR DESCOBERTO: ${avatar.name}! ✨", Toast.LENGTH_SHORT).show()
                                     refreshBalance()
                                     populateList()
                                 } else {
