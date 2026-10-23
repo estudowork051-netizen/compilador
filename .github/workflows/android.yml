@@ -20,23 +20,41 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: 3. Configurar Gradle Cache
-      uses: gradle/actions/setup-gradle@v3
-
-    - name: 4. Aceitar Licencas do Android SDK
-      run: |
-        # O Android SDK ja vem pre-instalado no runner do GitHub em /usr/local/lib/android/sdk
-        # NOTA: NUNCA use 'android-actions/setup-android' pois ela tenta baixar 'tools' que nao existe mais no SDK 16+
-        yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
-
-    - name: 5. Garantir Gradle Wrapper e Permissoes
+    - name: 3. Garantir Gradle Wrapper e Permissoes
       run: |
         chmod +x gradlew || true
         mkdir -p gradle/wrapper
-        if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
-          echo "Baixando gradle-wrapper.jar 8.2..."
-          curl -sLo gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.2.0/gradle/wrapper/gradle-wrapper.jar || gradle wrapper --gradle-version 8.2
+
+        # Verifica se gradle-wrapper.jar existe e e um arquivo ZIP/JAR integro
+        if [ ! -s gradle/wrapper/gradle-wrapper.jar ] || ! unzip -tq gradle/wrapper/gradle-wrapper.jar 2>/dev/null; then
+          echo "Configurando Gradle Wrapper 8.2 oficial..."
+          rm -f gradle/wrapper/gradle-wrapper.jar
+
+          # 1. Tenta gerar via comando gradle pre-instalado no runner
+          if command -v gradle >/dev/null 2>&1; then
+            gradle wrapper --gradle-version 8.2 --distribution-type bin || true
+          fi
+
+          # 2. Fallback garantido: baixa a distribuicao oficial do Gradle e gera o wrapper
+          if [ ! -s gradle/wrapper/gradle-wrapper.jar ] || ! unzip -tq gradle/wrapper/gradle-wrapper.jar 2>/dev/null; then
+            echo "Baixando distribuicao oficial do Gradle 8.2..."
+            curl -fsSL https://services.gradle.org/distributions/gradle-8.2-bin.zip -o /tmp/gradle-8.2-bin.zip
+            unzip -q /tmp/gradle-8.2-bin.zip -d /tmp/
+            /tmp/gradle-8.2/bin/gradle wrapper --gradle-version 8.2 --distribution-type bin
+            rm -rf /tmp/gradle-8.2*
+          fi
         fi
+
+        chmod +x gradlew
+        echo "Validacao do Gradle Wrapper concluida com sucesso:"
+        unzip -l gradle/wrapper/gradle-wrapper.jar | grep "GradleWrapperMain" || true
+
+    - name: 4. Configurar Gradle Cache
+      uses: gradle/actions/setup-gradle@v3
+
+    - name: 5. Aceitar Licencas do Android SDK
+      run: |
+        yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
 
     - name: 6. Executar Testes Unitarios da Logica Klondike
       run: ./gradlew testDebugUnitTest --stacktrace
