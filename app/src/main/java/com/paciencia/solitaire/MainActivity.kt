@@ -238,7 +238,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateHud()
-        showVictoryDialog(completedLevel, unlockedScenery, coinsEarned)
+        binding.solitaireView.startSkinVictoryCelebration(binding.solitaireView.cardSkin)
+        // Aguarda 1600ms para exibir o diálogo, permitindo que a onda mística da skin equipada brilhe na mesa
+        binding.solitaireView.postDelayed({
+            if (!isFinishing && !isDestroyed) {
+                showVictoryDialog(completedLevel, unlockedScenery, coinsEarned)
+            }
+        }, 1600L)
     }
 
     private fun showVictoryDialog(completedLevel: Int, newSceneryUnlocked: SceneryType?, coinsEarned: Int) {
@@ -530,7 +536,7 @@ class MainActivity : AppCompatActivity() {
             previewView?.cardSkin = skin
             tvPreviewCollection?.text = "COLEÇÃO: ${skin.collection.uppercase(Locale.ROOT)}"
             tvPreviewTitle?.text = skin.name
-            tvPreviewDesc?.text = skin.description
+            tvPreviewDesc?.text = "${skin.description}\n✨ Efeito: ${skin.effectSummary}"
         }
 
         fun showAvatarPreview(avatar: Avatar) {

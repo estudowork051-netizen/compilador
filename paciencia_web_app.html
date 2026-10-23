@@ -495,14 +495,14 @@ const SCENERIES = [
 ];
 
 const SKINS = [
-  { id: 'skin_classic', name: 'Clássica', collection: 'Tradição', desc: 'Safira imperial com arabescos de prata', price: 0, p1: '#1E3A8A', p2: '#0F172A', acc: '#60A5FA', pattern: 'classic' },
-  { id: 'skin_golden', name: 'Dourada', collection: 'Relíquias Douradas', desc: 'Mogno envelhecido com filigranas de ouro 24k', price: 30, p1: '#78350F', p2: '#451A03', acc: '#FBBF24', pattern: 'golden' },
-  { id: 'skin_arcane', name: 'Arcana', collection: 'Arcano', desc: 'Ametista mística e runas ancestrais luminescentes', price: 60, p1: '#4C1D95', p2: '#2E1065', acc: '#A78BFA', pattern: 'arcane' },
-  { id: 'skin_shadow', name: 'Sombria', collection: 'Sombras & Mistério', desc: 'Obsidiana com toques de aço escuro e carmesim', price: 60, p1: '#18181B', p2: '#09090B', acc: '#E11D48', pattern: 'shadow' },
-  { id: 'skin_nature', name: 'Natureza', collection: 'Natureza', desc: 'Esmeralda silvestre com vinhas élficas e nós celtas', price: 100, p1: '#064E3B', p2: '#022C22', acc: '#34D399', pattern: 'nature' },
-  { id: 'skin_ice', name: 'Gelo', collection: 'Gelo', desc: 'Cristal glacial com fractais polares de geada', price: 100, p1: '#0C4A6E', p2: '#082F49', acc: '#38BDF8', pattern: 'ice' },
-  { id: 'skin_cosmic', name: 'Cósmica', collection: 'Cósmico', desc: 'Espaço profundo com constelações astrais', price: 150, p1: '#311042', p2: '#150524', acc: '#E879F9', pattern: 'cosmic' },
-  { id: 'skin_royal', name: 'Real', collection: 'Reino Medieval', desc: 'Veludo rubi imperial com coroa dourada', price: 150, p1: '#831843', p2: '#500724', acc: '#F59E0B', pattern: 'royal' }
+  { id: 'skin_classic', name: 'Clássica', collection: 'Tradição', desc: 'Safira imperial com arabescos de prata', price: 0, p1: '#1E3A8A', p2: '#0F172A', acc: '#60A5FA', pattern: 'classic', trail: '#60A5FA', celebration: 'CLASSIC_FIREWORKS', effectSummary: 'Arabescos de prata, fagulhas safira e salva de fogos estelares' },
+  { id: 'skin_golden', name: 'Dourada', collection: 'Relíquias Douradas', desc: 'Mogno envelhecido com filigranas de ouro 24k', price: 30, p1: '#78350F', p2: '#451A03', acc: '#FBBF24', pattern: 'golden', trail: '#F59E0B', celebration: 'GOLDEN_MAJESTY', effectSummary: 'Filigranas de ouro 24k, chuva dourada e iluminação majestosa' },
+  { id: 'skin_arcane', name: 'Arcana', collection: 'Arcano', desc: 'Ametista mística e runas ancestrais luminescentes', price: 60, p1: '#4C1D95', p2: '#2E1065', acc: '#A78BFA', pattern: 'arcane', trail: '#818CF8', celebration: 'ARCANE_SURGE', effectSummary: 'Runas luminescentes, pulso de energia arcana e símbolos flutuantes' },
+  { id: 'skin_shadow', name: 'Sombria', collection: 'Sombras & Mistério', desc: 'Obsidiana com toques de aço escuro e carmesim', price: 60, p1: '#18181B', p2: '#09090B', acc: '#E11D48', pattern: 'shadow', trail: '#C084FC', celebration: 'ABYSSAL_SHADOW', effectSummary: 'Névoa de obsidiana, brasas carmesim e pulso espectral sombrio' },
+  { id: 'skin_nature', name: 'Natureza', collection: 'Natureza', desc: 'Esmeralda silvestre com vinhas élficas e nós celtas', price: 100, p1: '#064E3B', p2: '#022C22', acc: '#34D399', pattern: 'nature', trail: '#34D399', celebration: 'LIVING_FOREST', effectSummary: 'Vinhas élficas, folhas luminosas e vórtice de energia verde' },
+  { id: 'skin_ice', name: 'Gelo', collection: 'Gelo', desc: 'Cristal glacial com fractais polares de geada', price: 100, p1: '#0C4A6E', p2: '#082F49', acc: '#38BDF8', pattern: 'ice', trail: '#7DD3FC', celebration: 'GLACIAL_BURST', effectSummary: 'Fractais polares, cristais de gelo e onda fria cintilante' },
+  { id: 'skin_cosmic', name: 'Cósmica', collection: 'Cósmico', desc: 'Espaço profundo com constelações astrais', price: 150, p1: '#311042', p2: '#150524', acc: '#E879F9', pattern: 'cosmic', trail: '#E879F9', celebration: 'COSMIC_SUPERNOVA', effectSummary: 'Constelações cósmicas, nebulosas púrpuras e supernova estelar' },
+  { id: 'skin_royal', name: 'Real', collection: 'Reino Medieval', desc: 'Veludo rubi imperial com coroa dourada', price: 150, p1: '#831843', p2: '#500724', acc: '#F59E0B', pattern: 'royal', trail: '#FBBF24', celebration: 'ROYAL_TRIUMPH', effectSummary: 'Emblemas imperiais, estandartes dourados e celebração da corte' }
 ];
 
 const AVATARS = [
@@ -542,6 +542,11 @@ let ambientParticles = [];
 let columnGlows = [];
 let invalidShakeCol = -1, invalidShakeTime = 0;
 let activePreviewItem = currentSkin;
+
+// Celebração de Vitória Exclusiva por Skin
+let isVictoryCelebrationActive = false;
+let victoryCelebrationStartTime = 0;
+let victoryCelebrationSkin = currentSkin;
 
 // Inicializa Partículas Ambientais Específicas
 function initAmbientParticles() {
@@ -924,24 +929,222 @@ function render(now) {
     ctx.restore();
   }
 
-  // 9. Faíscas e Partículas de Celebração
+  // 9. Faíscas e Partículas de Celebração & Drag Trail
   for (let i = sparkParticles.length - 1; i >= 0; i--) {
     let p = sparkParticles[i];
-    p.x += p.vx; p.y += p.vy; p.alpha -= 0.025;
+    p.x += p.vx; p.y += p.vy;
+    p.alpha -= (p.fadeSpeed || 0.025);
     if (p.alpha <= 0) {
       sparkParticles.splice(i, 1);
     } else {
-      ctx.fillStyle = p.color + Math.floor(p.alpha * 255).toString(16).padStart(2, '0');
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.alpha);
+      ctx.fillStyle = p.color;
+      ctx.strokeStyle = p.color;
+      ctx.lineWidth = 1.5;
+      if (p.shape === 'arcane') {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y - p.size);
+        ctx.lineTo(p.x + p.size * 0.7, p.y);
+        ctx.lineTo(p.x, p.y + p.size);
+        ctx.lineTo(p.x - p.size * 0.7, p.y);
+        ctx.closePath();
+        ctx.stroke();
+      } else if (p.shape === 'nature') {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y - p.size);
+        ctx.quadraticCurveTo(p.x + p.size, p.y, p.x, p.y + p.size);
+        ctx.quadraticCurveTo(p.x - p.size, p.y, p.x, p.y - p.size);
+        ctx.fill();
+      } else if (p.shape === 'ice') {
+        ctx.beginPath();
+        ctx.moveTo(p.x - p.size, p.y); ctx.lineTo(p.x + p.size, p.y);
+        ctx.moveTo(p.x, p.y - p.size); ctx.lineTo(p.x, p.y + p.size);
+        ctx.stroke();
+      } else if (p.shape === 'golden' || p.shape === 'cosmic' || p.shape === 'royal') {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y - p.size);
+        ctx.lineTo(p.x + p.size * 0.3, p.y - p.size * 0.3);
+        ctx.lineTo(p.x + p.size, p.y);
+        ctx.lineTo(p.x + p.size * 0.3, p.y + p.size * 0.3);
+        ctx.lineTo(p.x, p.y + p.size);
+        ctx.lineTo(p.x - p.size * 0.3, p.y + p.size * 0.3);
+        ctx.lineTo(p.x - p.size, p.y);
+        ctx.lineTo(p.x - p.size * 0.3, p.y - p.size * 0.3);
+        ctx.closePath();
+        ctx.fill();
+      } else {
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
     }
   }
 
-  // 10. Cascata Especial de Vitória
-  if (isWon && Math.random() < 0.25) {
-    addSparkle(Math.random() * w, h * 0.15, Math.random() < 0.5 ? '#FBBF24' : '#34D399', 6);
+  // 10. Celebração de Vitória Temática Exclusiva da Skin Equipada
+  if (isVictoryCelebrationActive) {
+    const celebrationElapsed = performance.now() - victoryCelebrationStartTime;
+    if (celebrationElapsed < 3600) {
+      drawSkinVictoryCelebration(victoryCelebrationSkin || currentSkin, celebrationElapsed, w, h);
+    } else {
+      isVictoryCelebrationActive = false;
+    }
+  } else if (isWon && Math.random() < 0.25) {
+    addSparkle(Math.random() * w, h * 0.15, currentSkin.acc, 6);
   }
 
   requestAnimationFrame(render);
+}
+
+function startSkinVictoryCelebration(skin) {
+  isVictoryCelebrationActive = true;
+  victoryCelebrationStartTime = performance.now();
+  victoryCelebrationSkin = skin;
+
+  const cx = window.innerWidth * 0.5;
+  const cy = window.innerHeight * 0.42;
+  const count = 36;
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count;
+    const speed = Math.random() * 5 + 3;
+    sparkParticles.push({
+      x: cx,
+      y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      size: Math.random() * 5 + 3,
+      alpha: 1.0,
+      fadeSpeed: 0.015,
+      color: (i % 2 === 0) ? skin.acc : (skin.trail || skin.acc),
+      shape: skin.pattern
+    });
+  }
+}
+
+function drawSkinVictoryCelebration(skin, elapsed, w, h) {
+  const prog = Math.min(1.0, elapsed / 3600);
+  const cx = w * 0.5;
+  const cy = h * 0.42;
+
+  ctx.save();
+  const waveRadius = w * prog * 0.85;
+  const alpha = Math.max(0, (1.0 - prog) * 0.85);
+  ctx.strokeStyle = skin.acc;
+  ctx.globalAlpha = alpha;
+  ctx.lineWidth = 5 * (1 - prog * 0.5);
+  ctx.beginPath();
+  ctx.arc(cx, cy, waveRadius, 0, Math.PI * 2);
+  ctx.stroke();
+
+  if (prog > 0.25) {
+    const p2 = (prog - 0.25) / 0.75;
+    ctx.globalAlpha = Math.max(0, (1.0 - p2) * 0.6);
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(cx, cy, w * p2 * 0.85, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  if (Math.random() < 0.65) {
+    switch(skin.celebration) {
+      case 'ARCANE_SURGE':
+        sparkParticles.push({
+          x: Math.random() * w,
+          y: h * 0.85,
+          vx: Math.sin(elapsed * 0.005) * 2.5,
+          vy: -(Math.random() * 4.5 + 2),
+          size: 6, alpha: 1.0, fadeSpeed: 0.02,
+          color: skin.acc, shape: 'arcane'
+        });
+        break;
+      case 'GOLDEN_MAJESTY':
+        sparkParticles.push({
+          x: Math.random() * w,
+          y: 0,
+          vx: (Math.random() - 0.5) * 2,
+          vy: Math.random() * 4 + 2.5,
+          size: 5, alpha: 1.0, fadeSpeed: 0.02,
+          color: '#FBBF24', shape: 'golden'
+        });
+        break;
+      case 'LIVING_FOREST':
+        const angle = elapsed * 0.008 + Math.random() * 3;
+        const r = Math.random() * w * 0.35;
+        sparkParticles.push({
+          x: cx + Math.cos(angle) * r,
+          y: cy + Math.sin(angle) * r,
+          vx: (Math.random() - 0.5) * 2.5,
+          vy: -(Math.random() * 3.5 + 1),
+          size: 7, alpha: 1.0, fadeSpeed: 0.02,
+          color: '#34D399', shape: 'nature'
+        });
+        break;
+      case 'GLACIAL_BURST':
+        sparkParticles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 3,
+          vy: (Math.random() - 0.5) * 3,
+          size: 6, alpha: 1.0, fadeSpeed: 0.025,
+          color: '#7DD3FC', shape: 'ice'
+        });
+        break;
+      case 'ABYSSAL_SHADOW':
+        sparkParticles.push({
+          x: Math.random() * w,
+          y: Math.random() * h * 0.8 + h * 0.1,
+          vx: (Math.random() - 0.5) * 2.5,
+          vy: -(Math.random() * 2 + 0.5),
+          size: 9, alpha: 0.8, fadeSpeed: 0.02,
+          color: '#C084FC', shape: 'circle'
+        });
+        break;
+      case 'COSMIC_SUPERNOVA':
+        sparkParticles.push({
+          x: Math.random() * w,
+          y: Math.random() * h * 0.5,
+          vx: Math.random() * 4 + 2,
+          vy: Math.random() * 4 + 2,
+          size: 6, alpha: 1.0, fadeSpeed: 0.025,
+          color: '#E879F9', shape: 'cosmic'
+        });
+        break;
+      case 'ROYAL_TRIUMPH':
+        sparkParticles.push({
+          x: Math.random() * w,
+          y: Math.random() * h * 0.3,
+          vx: (Math.random() - 0.5) * 3,
+          vy: Math.random() * 3.5 + 1.5,
+          size: 6, alpha: 1.0, fadeSpeed: 0.02,
+          color: Math.random() < 0.5 ? '#F59E0B' : '#E11D48', shape: 'royal'
+        });
+        break;
+      default:
+        sparkParticles.push({
+          x: Math.random() * w,
+          y: Math.random() * h * 0.4,
+          vx: (Math.random() - 0.5) * 3.5,
+          vy: -(Math.random() * 3 + 1),
+          size: 5, alpha: 1.0, fadeSpeed: 0.02,
+          color: Math.random() < 0.5 ? '#60A5FA' : '#E2E8F0', shape: 'circle'
+        });
+        break;
+    }
+  }
+}
+
+function emitSkinDragTrail(x, y) {
+  sparkParticles.push({
+    x: x + (Math.random() - 0.5) * cw * 0.4,
+    y: y + (Math.random() - 0.5) * ch * 0.4,
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: -(Math.random() * 1.2 + 0.5),
+    size: Math.random() * 3.5 + 2,
+    alpha: 0.85,
+    fadeSpeed: 0.035,
+    color: currentSkin.trail || currentSkin.acc,
+    shape: currentSkin.pattern
+  });
 }
 
 function addSparkle(x, y, color = '#FBBF24', count = 8) {
@@ -1163,6 +1366,7 @@ function checkWin() {
     isWon = true;
     clearInterval(timerInterval);
     playSound('victory');
+    startSkinVictoryCelebration(currentSkin);
 
     let coinsEarned = 0;
     if (!rewardedLevels.includes(currentLevel)) {
@@ -1189,6 +1393,8 @@ function checkWin() {
 
     document.getElementById('vicMessage').innerText = `Você concluiu a fase ${currentLevel} com perfeição!`;
     document.getElementById('vicStats').innerHTML = `
+      <div><strong>Skin Equipada:</strong> ${currentSkin.name} (${currentSkin.collection})</div>
+      <div><strong>Efeito Especial:</strong> ${currentSkin.effectSummary}</div>
       <div><strong>Avatar Ativo:</strong> ${currentAvatar.emoji} ${currentAvatar.name} (${currentAvatar.title})</div>
       <div><strong>Recompensa de Fase:</strong> ${coinsEarned > 0 ? '+10 Moedas de Ouro 🪙' : 'Fase já premiada anteriormente'}</div>
       <div><strong>Saldo Total:</strong> ${coinsBalance} Moedas 🪙</div>
@@ -1196,7 +1402,9 @@ function checkWin() {
     `;
 
     updateHud();
-    document.getElementById('modalVictory').style.display = 'flex';
+    setTimeout(() => {
+      document.getElementById('modalVictory').style.display = 'flex';
+    }, 1600);
   }
 }
 
@@ -1427,6 +1635,9 @@ canvas.addEventListener('pointermove', (e) => {
   if (!isDragging) return;
   const pos = getPointerPos(e);
   dragCurX = pos.x; dragCurY = pos.y;
+  if (Math.random() < 0.45) {
+    emitSkinDragTrail(dragCurX, dragCurY);
+  }
 });
 
 canvas.addEventListener('pointerup', (e) => {
@@ -1509,6 +1720,15 @@ function drawPreviewCard(skin) {
   const ph = pCanvas.height;
   pCtx.clearRect(0, 0, pw, ph);
 
+  // Aura mística suave da skin
+  pCtx.save();
+  pCtx.strokeStyle = skin.acc;
+  pCtx.globalAlpha = 0.55;
+  pCtx.lineWidth = 3;
+  roundRect(pCtx, 1, 1, pw - 2, ph - 2, 13);
+  pCtx.stroke();
+  pCtx.restore();
+
   // Verso da Carta
   let g = pCtx.createLinearGradient(0, 0, pw, ph);
   g.addColorStop(0, skin.p1);
@@ -1546,7 +1766,7 @@ function renderShopList() {
         activePreviewItem = skin;
         document.getElementById('prevColl').innerText = `COLEÇÃO: ${skin.collection}`;
         document.getElementById('prevTitle').innerText = skin.name;
-        document.getElementById('prevDesc').innerText = skin.desc;
+        document.getElementById('prevDesc').innerText = `${skin.desc}\n✨ Efeito: ${skin.effectSummary}`;
         drawPreviewCard(skin);
         renderShopList();
       };
@@ -1749,7 +1969,11 @@ document.getElementById('tabAvatars').onclick = () => {
 };
 
 document.getElementById('btnShop').onclick = () => {
-  drawPreviewCard(activePreviewItem);
+  activePreviewItem = currentSkin;
+  document.getElementById('prevColl').innerText = `COLEÇÃO: ${currentSkin.collection}`;
+  document.getElementById('prevTitle').innerText = currentSkin.name;
+  document.getElementById('prevDesc').innerText = `${currentSkin.desc}\n✨ Efeito: ${currentSkin.effectSummary}`;
+  drawPreviewCard(currentSkin);
   renderShopList();
   document.getElementById('modalShop').style.display = 'flex';
 };

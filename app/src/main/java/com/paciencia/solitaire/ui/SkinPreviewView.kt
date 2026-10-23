@@ -92,6 +92,16 @@ class SkinPreviewView @JvmOverloads constructor(
         shadowRectF.set(pad + 3f, pad + 5f, pad + cardW + 3f, pad + cardH + 5f)
         canvas.drawRoundRect(shadowRectF, cornerRadius, cornerRadius, shadowPaint)
 
+        // Brilho místico suave da Skin
+        val auraPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            strokeWidth = 3f
+            color = skin.accentColor
+            alpha = 130
+        }
+        val auraRect = RectF(pad - 2f, pad - 2f, pad + cardW + 2f, pad + cardH + 2f)
+        canvas.drawRoundRect(auraRect, cornerRadius + 2f, cornerRadius + 2f, auraPaint)
+
         // Fundo com gradiente da skin
         rectF.set(pad, pad, pad + cardW, pad + cardH)
         bgPaint.shader = LinearGradient(

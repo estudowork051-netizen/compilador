@@ -9,6 +9,8 @@ import android.view.MotionEvent
 import android.view.View
 import com.paciencia.solitaire.customization.Avatar
 import com.paciencia.solitaire.customization.CardSkin
+import com.paciencia.solitaire.customization.SkinPattern
+import com.paciencia.solitaire.customization.VictoryCelebrationType
 import com.paciencia.solitaire.engine.KlondikeEngine
 import com.paciencia.solitaire.model.Card
 import com.paciencia.solitaire.model.CardPile
@@ -100,6 +102,14 @@ class SolitaireView @JvmOverloads constructor(
         style = Paint.Style.STROKE
         strokeWidth = 5f
         color = 0xFFF59E0B.toInt()
+    }
+
+    // Celebração de Vitória Temática Personalizada por Skin
+    private var isVictoryCelebrationActive = false
+    private var victoryCelebrationStartTime = 0L
+    private var victoryCelebrationSkin: CardSkin? = null
+    private val victoryWavePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
     }
 
     // Dimensões calculadas proporcionalmente
@@ -380,8 +390,16 @@ class SolitaireView @JvmOverloads constructor(
             }
         }
 
-        // 12. Efeito contínuo de comemoração após vitória
-        if (eng.isWon && isParticlesEnabled && !isPowerSaveMode && Math.random() < 0.25) {
+        // 12. Celebração de Vitória Temática Exclusiva da Skin Equipada
+        if (isVictoryCelebrationActive) {
+            val celebrationElapsed = now - victoryCelebrationStartTime
+            val skin = victoryCelebrationSkin ?: cardSkin
+            if (celebrationElapsed < 3600L) {
+                drawVictoryCelebration(canvas, skin, celebrationElapsed, w, h)
+            } else {
+                isVictoryCelebrationActive = false
+            }
+        } else if (eng.isWon && isParticlesEnabled && !isPowerSaveMode && Math.random() < 0.25) {
             particleSystem.addParticle(
                 Particle(
                     x = (Math.random() * width).toFloat(),
@@ -390,14 +408,14 @@ class SolitaireView @JvmOverloads constructor(
                     vy = Math.random().toFloat() * 3f + 1f,
                     size = (Math.random() * 5 + 4).toFloat(),
                     alpha = 255,
-                    color = if (Math.random() < 0.5) 0xFFFBBF24.toInt() else 0xFF34D399.toInt(),
+                    color = cardSkin.accentColor,
                     shape = Particle.Shape.STAR
                 )
             )
         }
 
-        // Mantém a animação suave a 60 FPS se houver partículas ativas, efeitos em andamento, dica ou arraste
-        if ((isParticlesEnabled && !isPowerSaveMode) || activeColumnEffects.isNotEmpty() || invalidElapsed < 260 || (currentHint != null && hintElapsed < 3000L) || isDragging || eng.isWon) {
+        // Mantém a animação suave a 60 FPS se houver partículas ativas, efeitos em andamento, dica, arraste ou celebração
+        if ((isParticlesEnabled && !isPowerSaveMode) || activeColumnEffects.isNotEmpty() || invalidElapsed < 260 || (currentHint != null && hintElapsed < 3000L) || isDragging || eng.isWon || isVictoryCelebrationActive) {
             postInvalidateOnAnimation()
         }
     }
@@ -540,6 +558,9 @@ class SolitaireView @JvmOverloads constructor(
                 if (isDragging) {
                     dragCurrentX = x
                     dragCurrentY = y
+                    if (isParticlesEnabled && !isPowerSaveMode && Math.random() < 0.45) {
+                        emitSkinDragTrail(x, y)
+                    }
                     invalidate()
                 }
                 return true
@@ -697,6 +718,7 @@ class SolitaireView @JvmOverloads constructor(
     private fun checkVictory() {
         if (engine?.isWon == true) {
             soundFeedback?.victoryCelebration()
+            startSkinVictoryCelebration(cardSkin)
             onVictory?.invoke()
         }
     }
@@ -760,5 +782,275 @@ class SolitaireView @JvmOverloads constructor(
         hintStartTime = System.currentTimeMillis()
         soundFeedback?.cardPicked(this)
         invalidate()
+    }
+
+    /**
+     * Dispara a celebração mágica exclusiva de vitória de acordo com a skin equipada.
+     */
+    fun startSkinVictoryCelebration(skin: CardSkin) {
+        isVictoryCelebrationActive = true
+        victoryCelebrationStartTime = System.currentTimeMillis()
+        victoryCelebrationSkin = skin
+        spawnInitialVictoryBurst(skin)
+        invalidate()
+    }
+
+    private fun spawnInitialVictoryBurst(skin: CardSkin) {
+        if (!isParticlesEnabled || isPowerSaveMode) return
+        val cx = width * 0.5f
+        val cy = height * 0.45f
+
+        // Onda expansiva de energia
+        particleSystem.addParticle(
+            Particle(
+                x = cx,
+                y = cy,
+                size = 14f,
+                alpha = 255,
+                color = skin.accentColor,
+                shape = Particle.Shape.RING,
+                scaleSpeed = 18f,
+                isTemporary = true,
+                life = 1f,
+                maxLife = 1f
+            )
+        )
+
+        // Explosão de 36 partículas temáticas
+        val count = 36
+        for (i in 0 until count) {
+            val angle = (Math.PI * 2 * i / count).toFloat()
+            val speed = (Math.random() * 6 + 3).toFloat()
+            val vx = Math.cos(angle.toDouble()).toFloat() * speed
+            val vy = Math.sin(angle.toDouble()).toFloat() * speed
+
+            val shape = when (skin.celebrationType) {
+                VictoryCelebrationType.ARCANE_SURGE -> Particle.Shape.RUNE
+                VictoryCelebrationType.LIVING_FOREST -> Particle.Shape.LEAF
+                VictoryCelebrationType.GLACIAL_BURST -> Particle.Shape.CRYSTAL
+                VictoryCelebrationType.GOLDEN_MAJESTY,
+                VictoryCelebrationType.COSMIC_SUPERNOVA,
+                VictoryCelebrationType.ROYAL_TRIUMPH -> Particle.Shape.STAR
+                else -> Particle.Shape.CIRCLE
+            }
+
+            particleSystem.addParticle(
+                Particle(
+                    x = cx,
+                    y = cy,
+                    vx = vx,
+                    vy = vy,
+                    size = (Math.random() * 6 + 5).toFloat(),
+                    alpha = 255,
+                    color = if (i % 2 == 0) skin.accentColor else skin.trailColor,
+                    shape = shape,
+                    rotationSpeed = (Math.random().toFloat() - 0.5f) * 12f,
+                    isTemporary = true,
+                    life = 1.2f,
+                    maxLife = 1.2f
+                )
+            )
+        }
+    }
+
+    private fun drawVictoryCelebration(canvas: Canvas, skin: CardSkin, elapsed: Long, w: Float, h: Float) {
+        val progress = (elapsed.toFloat() / 3600f).coerceIn(0f, 1f)
+        val cx = w * 0.5f
+        val cy = h * 0.45f
+
+        // Onda de energia expansiva desenhada no canvas
+        val waveRadius = w * progress * 0.85f
+        val waveAlpha = ((1f - progress) * 200).toInt().coerceIn(0, 255)
+        victoryWavePaint.color = skin.accentColor
+        victoryWavePaint.alpha = waveAlpha
+        victoryWavePaint.strokeWidth = 6f * (1f - progress * 0.5f)
+        canvas.drawCircle(cx, cy, waveRadius, victoryWavePaint)
+
+        // Segunda onda com atraso
+        if (progress > 0.25f) {
+            val wave2Prog = (progress - 0.25f) / 0.75f
+            val wave2Radius = w * wave2Prog * 0.85f
+            val wave2Alpha = ((1f - wave2Prog) * 160).toInt().coerceIn(0, 255)
+            victoryWavePaint.alpha = wave2Alpha
+            victoryWavePaint.strokeWidth = 4f
+            canvas.drawCircle(cx, cy, wave2Radius, victoryWavePaint)
+        }
+
+        // Emissão contínua temática durante os 3.6s
+        if (isParticlesEnabled && !isPowerSaveMode && Math.random() < 0.65) {
+            when (skin.celebrationType) {
+                VictoryCelebrationType.ARCANE_SURGE -> {
+                    val pX = (Math.random() * w).toFloat()
+                    particleSystem.addParticle(
+                        Particle(
+                            x = pX,
+                            y = h * 0.85f,
+                            vx = (Math.sin(elapsed * 0.005 + pX) * 2.5).toFloat(),
+                            vy = -(Math.random().toFloat() * 4.5f + 2f),
+                            size = 8f,
+                            alpha = 240,
+                            color = skin.accentColor,
+                            shape = Particle.Shape.RUNE,
+                            rotationSpeed = 6f,
+                            isTemporary = true,
+                            life = 1f,
+                            maxLife = 1f
+                        )
+                    )
+                }
+                VictoryCelebrationType.GOLDEN_MAJESTY -> {
+                    particleSystem.addParticle(
+                        Particle(
+                            x = (Math.random() * w).toFloat(),
+                            y = 0f,
+                            vx = (Math.random().toFloat() - 0.5f) * 2f,
+                            vy = (Math.random().toFloat() * 4.5f + 3f),
+                            size = 7f,
+                            alpha = 240,
+                            color = 0xFFFBBF24.toInt(),
+                            shape = Particle.Shape.STAR,
+                            rotationSpeed = 8f,
+                            isTemporary = true,
+                            life = 1f,
+                            maxLife = 1f
+                        )
+                    )
+                }
+                VictoryCelebrationType.LIVING_FOREST -> {
+                    val angle = (elapsed * 0.008 + Math.random() * 3).toFloat()
+                    val r = (Math.random() * w * 0.4).toFloat()
+                    particleSystem.addParticle(
+                        Particle(
+                            x = cx + Math.cos(angle.toDouble()).toFloat() * r,
+                            y = cy + Math.sin(angle.toDouble()).toFloat() * r,
+                            vx = (Math.random().toFloat() - 0.5f) * 3f,
+                            vy = -(Math.random().toFloat() * 3.5f + 1f),
+                            size = 9f,
+                            alpha = 240,
+                            color = 0xFF34D399.toInt(),
+                            shape = Particle.Shape.LEAF,
+                            rotationSpeed = 7f,
+                            isTemporary = true,
+                            life = 1f,
+                            maxLife = 1f
+                        )
+                    )
+                }
+                VictoryCelebrationType.GLACIAL_BURST -> {
+                    particleSystem.addParticle(
+                        Particle(
+                            x = (Math.random() * w).toFloat(),
+                            y = (Math.random() * h).toFloat(),
+                            vx = (Math.random().toFloat() - 0.5f) * 2f,
+                            vy = (Math.random().toFloat() - 0.5f) * 2f,
+                            size = 8f,
+                            alpha = 240,
+                            color = 0xFF7DD3FC.toInt(),
+                            shape = Particle.Shape.CRYSTAL,
+                            rotationSpeed = 5f,
+                            isTemporary = true,
+                            life = 0.9f,
+                            maxLife = 0.9f
+                        )
+                    )
+                }
+                VictoryCelebrationType.ABYSSAL_SHADOW -> {
+                    particleSystem.addParticle(
+                        Particle(
+                            x = (Math.random() * w).toFloat(),
+                            y = (Math.random() * h * 0.8f + h * 0.1f).toFloat(),
+                            vx = (Math.random().toFloat() - 0.5f) * 3f,
+                            vy = -(Math.random().toFloat() * 2.5f + 0.5f),
+                            size = 12f,
+                            alpha = 180,
+                            color = 0xFFC084FC.toInt(),
+                            shape = Particle.Shape.CIRCLE,
+                            isTemporary = true,
+                            life = 1f,
+                            maxLife = 1f
+                        )
+                    )
+                }
+                VictoryCelebrationType.COSMIC_SUPERNOVA -> {
+                    particleSystem.addParticle(
+                        Particle(
+                            x = (Math.random() * w).toFloat(),
+                            y = (Math.random() * h * 0.5f).toFloat(),
+                            vx = (Math.random().toFloat() * 5f + 2f),
+                            vy = (Math.random().toFloat() * 5f + 2f),
+                            size = 8f,
+                            alpha = 240,
+                            color = 0xFFE879F9.toInt(),
+                            shape = Particle.Shape.STAR,
+                            rotationSpeed = 10f,
+                            isTemporary = true,
+                            life = 0.8f,
+                            maxLife = 0.8f
+                        )
+                    )
+                }
+                VictoryCelebrationType.ROYAL_TRIUMPH -> {
+                    particleSystem.addParticle(
+                        Particle(
+                            x = (Math.random() * w).toFloat(),
+                            y = (Math.random() * h * 0.3f).toFloat(),
+                            vx = (Math.random().toFloat() - 0.5f) * 4f,
+                            vy = (Math.random().toFloat() * 4f + 2f),
+                            size = 8f,
+                            alpha = 240,
+                            color = if (Math.random() < 0.5) 0xFFF59E0B.toInt() else 0xFFE11D48.toInt(),
+                            shape = Particle.Shape.SPARK,
+                            rotationSpeed = 8f,
+                            isTemporary = true,
+                            life = 1.1f,
+                            maxLife = 1.1f
+                        )
+                    )
+                }
+                VictoryCelebrationType.CLASSIC_FIREWORKS -> {
+                    particleSystem.addParticle(
+                        Particle(
+                            x = (Math.random() * w).toFloat(),
+                            y = (Math.random() * h * 0.4f).toFloat(),
+                            vx = (Math.random().toFloat() - 0.5f) * 4f,
+                            vy = (Math.random().toFloat() * 3.5f + 1f),
+                            size = 6f,
+                            alpha = 240,
+                            color = if (Math.random() < 0.5) 0xFF60A5FA.toInt() else 0xFFE2E8F0.toInt(),
+                            shape = Particle.Shape.STAR,
+                            rotationSpeed = 6f,
+                            isTemporary = true,
+                            life = 1f,
+                            maxLife = 1f
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    private fun emitSkinDragTrail(x: Float, y: Float) {
+        val shape = when (cardSkin.pattern) {
+            SkinPattern.ARCANE -> Particle.Shape.RUNE
+            SkinPattern.NATURE -> Particle.Shape.LEAF
+            SkinPattern.ICE -> Particle.Shape.CRYSTAL
+            SkinPattern.GOLDEN, SkinPattern.ROYAL, SkinPattern.COSMIC -> Particle.Shape.STAR
+            else -> Particle.Shape.CIRCLE
+        }
+        particleSystem.addParticle(
+            Particle(
+                x = x + (Math.random().toFloat() - 0.5f) * cardWidth * 0.4f,
+                y = y + (Math.random().toFloat() - 0.5f) * cardHeight * 0.4f,
+                vx = (Math.random().toFloat() - 0.5f) * 1.5f,
+                vy = (Math.random().toFloat() - 0.5f) * 1.5f - 0.8f,
+                size = (Math.random() * 4 + 3).toFloat(),
+                alpha = 200,
+                color = cardSkin.trailColor,
+                shape = shape,
+                isTemporary = true,
+                life = 0.8f,
+                maxLife = 0.8f
+            )
+        )
     }
 }

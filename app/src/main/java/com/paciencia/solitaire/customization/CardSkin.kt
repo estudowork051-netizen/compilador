@@ -15,7 +15,21 @@ enum class SkinPattern {
 }
 
 /**
- * Modelo de skin de personalização de cartas com coleções temáticas.
+ * Tipo exclusivo de celebração de vitória executada conforme a skin equipada.
+ */
+enum class VictoryCelebrationType {
+    CLASSIC_FIREWORKS, // Cascata festiva de safira e prata
+    GOLDEN_MAJESTY,    // Chuva majestosa de ouro e anéis de luz solar
+    ARCANE_SURGE,      // Onda de choque mágica e runas astrais azul-cobalto
+    ABYSSAL_SHADOW,    // Névoa escura e pulso sombrio violeta/carmesim
+    LIVING_FOREST,     // Vórtice de folhas e expansão de energia esmeralda
+    GLACIAL_BURST,     // Geada cristalina e fragmentos de luz fria
+    COSMIC_SUPERNOVA,  // Supernova violeta e chuva de estrelas cadentes
+    ROYAL_TRIUMPH      // Emblemas imperiais reluzentes e fanfarra majestosa
+}
+
+/**
+ * Modelo de skin de personalização de cartas com coleções temáticas e celebrações exclusivas.
  */
 data class CardSkin(
     val id: String,
@@ -27,104 +41,131 @@ data class CardSkin(
     val primaryColor: Int,
     val secondaryColor: Int,
     val accentColor: Int,
-    val isDefaultUnlocked: Boolean = false
+    val isDefaultUnlocked: Boolean = false,
+    val trailColor: Int = accentColor,
+    val celebrationType: VictoryCelebrationType = VictoryCelebrationType.CLASSIC_FIREWORKS,
+    val effectSummary: String = "Efeito de celebração temático exclusivo"
 ) {
     companion object {
         val CLASSIC = CardSkin(
             id = "skin_classic",
-            name = "Clássica",
+            name = "Clássica Nobre",
             collection = "Tradição",
-            description = "Aparência clássica e atemporal de baralho",
+            description = "Aparência atemporal com filigranas de safira e prata",
             price = 0,
             pattern = SkinPattern.CLASSIC,
             primaryColor = 0xFF1E3A8A.toInt(),
             secondaryColor = 0xFF0F172A.toInt(),
             accentColor = 0xFF60A5FA.toInt(),
-            isDefaultUnlocked = true
+            isDefaultUnlocked = true,
+            trailColor = 0xFF93C5FD.toInt(),
+            celebrationType = VictoryCelebrationType.CLASSIC_FIREWORKS,
+            effectSummary = "Fogos de artifício nobres e chuva de prata"
         )
 
         val GOLDEN = CardSkin(
             id = "skin_golden",
-            name = "Dourada",
+            name = "Relíquia Dourada",
             collection = "Relíquias Douradas",
-            description = "Elegantes filigranas douradas com brilho nobre",
+            description = "Moldura metálica dourada com reflexos e ouro 24k",
             price = 30,
             pattern = SkinPattern.GOLDEN,
             primaryColor = 0xFF78350F.toInt(),
             secondaryColor = 0xFF451A03.toInt(),
-            accentColor = 0xFFFBBF24.toInt()
+            accentColor = 0xFFFBBF24.toInt(),
+            trailColor = 0xFFFDE047.toInt(),
+            celebrationType = VictoryCelebrationType.GOLDEN_MAJESTY,
+            effectSummary = "Chuva majestosa de ouro e iluminação solar"
         )
 
         val ARCANE = CardSkin(
             id = "skin_arcane",
-            name = "Arcana",
+            name = "Arcana Azul",
             collection = "Arcano",
-            description = "Símbolos mágicos e runas de poder antigo",
+            description = "Runas azuis no verso e ondas de energia mística",
             price = 60,
             pattern = SkinPattern.ARCANE,
-            primaryColor = 0xFF4C1D95.toInt(),
-            secondaryColor = 0xFF2E1065.toInt(),
-            accentColor = 0xFFA78BFA.toInt()
+            primaryColor = 0xFF1E1B4B.toInt(),
+            secondaryColor = 0xFF0F172A.toInt(),
+            accentColor = 0xFF38BDF8.toInt(),
+            trailColor = 0xFF60A5FA.toInt(),
+            celebrationType = VictoryCelebrationType.ARCANE_SURGE,
+            effectSummary = "Onda de choque mágica e runas astrais"
         )
 
         val SHADOW = CardSkin(
             id = "skin_shadow",
-            name = "Sombria",
+            name = "Sombra Abissal",
             collection = "Sombras & Mistério",
-            description = "Acabamento escuro sofisticado com toques carmesim",
+            description = "Moldura escura com névoa sutil e energia violeta",
             price = 60,
             pattern = SkinPattern.SHADOW,
             primaryColor = 0xFF18181B.toInt(),
             secondaryColor = 0xFF09090B.toInt(),
-            accentColor = 0xFFE11D48.toInt()
+            accentColor = 0xFFC084FC.toInt(),
+            trailColor = 0xFFE11D48.toInt(),
+            celebrationType = VictoryCelebrationType.ABYSSAL_SHADOW,
+            effectSummary = "Vórtice abissal de névoa e pulso de sombra"
         )
 
         val NATURE = CardSkin(
             id = "skin_nature",
-            name = "Natureza",
+            name = "Floresta Viva",
             collection = "Natureza",
-            description = "Ramos esmeralda e folhagens místicas",
+            description = "Símbolos naturais, folhas e expansão vegetal",
             price = 100,
             pattern = SkinPattern.NATURE,
             primaryColor = 0xFF064E3B.toInt(),
             secondaryColor = 0xFF022C22.toInt(),
-            accentColor = 0xFF34D399.toInt()
+            accentColor = 0xFF34D399.toInt(),
+            trailColor = 0xFF4ADE80.toInt(),
+            celebrationType = VictoryCelebrationType.LIVING_FOREST,
+            effectSummary = "Vórtice de folhas e expansão de luz verde"
         )
 
         val ICE = CardSkin(
             id = "skin_ice",
-            name = "Gelo",
+            name = "Cristal Glacial",
             collection = "Gelo",
-            description = "Cristais gélidos e fractais azuis reluzentes",
+            description = "Molduras com aparência de cristal e onda de luz fria",
             price = 100,
             pattern = SkinPattern.ICE,
             primaryColor = 0xFF0C4A6E.toInt(),
             secondaryColor = 0xFF082F49.toInt(),
-            accentColor = 0xFF38BDF8.toInt()
+            accentColor = 0xFF38BDF8.toInt(),
+            trailColor = 0xFFBAE6FD.toInt(),
+            celebrationType = VictoryCelebrationType.GLACIAL_BURST,
+            effectSummary = "Onda de luz polar e cristais em expansão"
         )
 
         val COSMIC = CardSkin(
             id = "skin_cosmic",
-            name = "Cósmica",
+            name = "Energia Cósmica",
             collection = "Cósmico",
-            description = "Nebulosas profundas com constelações estelares",
+            description = "Símbolos estelares, nebulosas e pulso cósmico",
             price = 150,
             pattern = SkinPattern.COSMIC,
             primaryColor = 0xFF311042.toInt(),
             secondaryColor = 0xFF150524.toInt(),
-            accentColor = 0xFFE879F9.toInt()
+            accentColor = 0xFFE879F9.toInt(),
+            trailColor = 0xFFA855F7.toInt(),
+            celebrationType = VictoryCelebrationType.COSMIC_SUPERNOVA,
+            effectSummary = "Supernova cósmica e chuva de meteoros"
         )
 
         val ROYAL = CardSkin(
             id = "skin_royal",
-            name = "Real",
+            name = "Guardião Real",
             collection = "Reino Medieval",
-            description = "Ornamento de coroa imperial com detalhes em ouro",
+            description = "Moldura de ouro e prata com emblemas heráldicos",
             price = 150,
             pattern = SkinPattern.ROYAL,
             primaryColor = 0xFF831843.toInt(),
             secondaryColor = 0xFF500724.toInt(),
-            accentColor = 0xFFF59E0B.toInt()
+            accentColor = 0xFFF59E0B.toInt(),
+            trailColor = 0xFFFBBF24.toInt(),
+            celebrationType = VictoryCelebrationType.ROYAL_TRIUMPH,
+            effectSummary = "Emblemas imperiais e iluminação majestosa"
         )
 
         val ALL_SKINS = listOf(

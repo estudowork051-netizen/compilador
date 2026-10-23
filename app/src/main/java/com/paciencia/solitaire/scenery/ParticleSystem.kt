@@ -22,8 +22,13 @@ class ParticleSystem {
     }
 
     fun update(screenWidth: Float, screenHeight: Float) {
-        for (i in 0 until particles.size) {
-            particles[i].update(screenWidth, screenHeight)
+        val iterator = particles.iterator()
+        while (iterator.hasNext()) {
+            val p = iterator.next()
+            p.update(screenWidth, screenHeight)
+            if (!p.isAlive) {
+                iterator.remove()
+            }
         }
     }
 
@@ -35,9 +40,16 @@ class ParticleSystem {
 
             when (p.shape) {
                 Particle.Shape.CIRCLE -> {
+                    paint.style = Paint.Style.FILL
+                    canvas.drawCircle(p.x, p.y, p.size, paint)
+                }
+                Particle.Shape.RING -> {
+                    paint.style = Paint.Style.STROKE
+                    paint.strokeWidth = 3f
                     canvas.drawCircle(p.x, p.y, p.size, paint)
                 }
                 Particle.Shape.LEAF -> {
+                    paint.style = Paint.Style.FILL
                     canvas.save()
                     canvas.translate(p.x, p.y)
                     canvas.rotate(p.rotation)
@@ -49,6 +61,7 @@ class ParticleSystem {
                     canvas.restore()
                 }
                 Particle.Shape.STAR -> {
+                    paint.style = Paint.Style.FILL
                     canvas.save()
                     canvas.translate(p.x, p.y)
                     canvas.rotate(p.rotation)
@@ -67,7 +80,41 @@ class ParticleSystem {
                     canvas.drawPath(path, paint)
                     canvas.restore()
                 }
+                Particle.Shape.RUNE -> {
+                    paint.style = Paint.Style.STROKE
+                    paint.strokeWidth = 2f
+                    canvas.save()
+                    canvas.translate(p.x, p.y)
+                    canvas.rotate(p.rotation)
+                    val s = p.size
+                    path.reset()
+                    path.moveTo(0f, -s)
+                    path.lineTo(s * 0.7f, 0f)
+                    path.lineTo(0f, s)
+                    path.lineTo(-s * 0.7f, 0f)
+                    path.close()
+                    path.moveTo(0f, -s * 0.6f)
+                    path.lineTo(0f, s * 0.6f)
+                    canvas.drawPath(path, paint)
+                    canvas.restore()
+                }
+                Particle.Shape.CRYSTAL -> {
+                    paint.style = Paint.Style.FILL
+                    canvas.save()
+                    canvas.translate(p.x, p.y)
+                    canvas.rotate(p.rotation)
+                    val s = p.size
+                    path.reset()
+                    path.moveTo(0f, -s * 1.3f)
+                    path.lineTo(s * 0.45f, 0f)
+                    path.lineTo(0f, s * 1.3f)
+                    path.lineTo(-s * 0.45f, 0f)
+                    path.close()
+                    canvas.drawPath(path, paint)
+                    canvas.restore()
+                }
                 Particle.Shape.SPARK -> {
+                    paint.style = Paint.Style.FILL
                     canvas.drawRect(p.x - p.size * 0.5f, p.y - p.size, p.x + p.size * 0.5f, p.y + p.size, paint)
                 }
             }
