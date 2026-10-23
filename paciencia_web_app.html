@@ -351,6 +351,31 @@ function render() {
     }
   });
 
+  // Highlight valid targets when dragging
+  if (isDragging && dragCards.length > 0) {
+    let first = dragCards[0];
+    if (dragCards.length === 1) {
+      foundations.forEach((f, idx) => {
+        if (canMoveToFoundation(first, f)) {
+          ctx.strokeStyle = '#34D399';
+          ctx.lineWidth = 3;
+          roundRect(ctx, fRects[idx].x - 2, fRects[idx].y - 2, cw + 4, ch + 4, 8);
+          ctx.stroke();
+        }
+      });
+    }
+    tableaus.forEach((t, col) => {
+      if (dragSource !== `t_${col}` && canMoveToTableau(first, t)) {
+        ctx.strokeStyle = '#34D399';
+        ctx.lineWidth = 3;
+        let r = tRects[col];
+        let targetY = t.length === 0 ? r.y : r.y + (t.length - 1) * (ch * 0.28);
+        roundRect(ctx, r.x - 2, targetY - 2, cw + 4, ch + 4, 8);
+        ctx.stroke();
+      }
+    });
+  }
+
   // Dragging cards
   if (isDragging && dragCards.length > 0) {
     let curX = dragCurX - dragOffX;
@@ -381,8 +406,8 @@ function drawSlot(x, y, watermark) {
 function drawCard(card, x, y, isElevated) {
   ctx.save();
   if (isElevated) {
-    ctx.shadowColor = 'rgba(0,0,0,0.4)';
-    ctx.shadowBlur = 12; ctx.shadowOffsetY = 6;
+    ctx.shadowColor = 'rgba(0,0,0,0.45)';
+    ctx.shadowBlur = 14; ctx.shadowOffsetY = 8;
   }
   if (!card.faceUp) {
     let g = ctx.createLinearGradient(x, y, x + cw, y + ch);
@@ -413,9 +438,25 @@ function drawCard(card, x, y, isElevated) {
     ctx.fillText(card.suit.symbol, x + 5, y + 5 + cw * 0.22);
 
     // Center
-    ctx.font = `${cw * 0.38}px sans-serif`;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(card.rank.val > 10 ? card.rank.label : card.suit.symbol, x + cw / 2, y + ch / 2);
+    if (card.rank.val > 10) {
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, x + cw * 0.22, y + ch * 0.28, cw * 0.56, ch * 0.44, 4);
+      ctx.stroke();
+      ctx.font = `serif bold ${cw * 0.36}px`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(card.rank.label, x + cw / 2, y + ch / 2 - 2);
+      ctx.font = `${cw * 0.16}px sans-serif`;
+      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch * 0.64);
+    } else if (card.rank.val === 1) {
+      ctx.font = `${cw * 0.42}px sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2);
+    } else {
+      ctx.font = `${cw * 0.34}px sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2);
+    }
   }
   ctx.restore();
 }

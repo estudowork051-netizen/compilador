@@ -303,6 +303,7 @@ class MainActivity : AppCompatActivity() {
         engine.startNewGame(level)
         elapsedSeconds = 0
         stats.recordGameStarted()
+        binding.solitaireView.theme = SceneryManager.getTheme(preferences.selectedScenery)
         updateHud()
         binding.solitaireView.invalidate()
         startTimer()

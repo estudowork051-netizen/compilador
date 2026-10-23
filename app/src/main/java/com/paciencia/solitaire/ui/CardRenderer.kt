@@ -226,23 +226,16 @@ class CardRenderer {
                 drawSuit(canvas, card.suit, cx, cy, largeSize, suitPaint)
             }
             Rank.JACK, Rank.QUEEN, Rank.KING -> {
-                // Borda nobre interna e letra monumental da figura
-                val courtBoxPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                    color = 0x1A000000.toInt()
-                    style = Paint.Style.STROKE
-                    strokeWidth = 1.5f
-                }
+                // Borda nobre interna dourada e letra monumental da figura
                 val boxWidth = width * 0.55f
                 val boxHeight = height * 0.45f
                 rectF.set(cx - boxWidth * 0.5f, cy - boxHeight * 0.5f, cx + boxWidth * 0.5f, cy + boxHeight * 0.5f)
+                courtBoxPaint.color = 0x33D4AF37.toInt()
+                courtBoxPaint.strokeWidth = 1.8f
                 canvas.drawRoundRect(rectF, 6f, 6f, courtBoxPaint)
 
-                val courtTextPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                    color = suitPaint.color
-                    textSize = width * 0.38f
-                    typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
-                    textAlign = Paint.Align.CENTER
-                }
+                courtTextPaint.color = suitPaint.color
+                courtTextPaint.textSize = width * 0.38f
                 canvas.drawText(card.rank.label, cx, cy + width * 0.14f, courtTextPaint)
 
                 // Pequeno naipe ornamental abaixo da letra
