@@ -45,4 +45,23 @@
     <string name="restart_confirm_message">Deseja reiniciar a partida atual? Seu progresso neste nível não será perdido.</string>
     <string name="restart_confirm_yes">Reiniciar</string>
     <string name="restart_confirm_no">Cancelar</string>
+
+    <!-- Economia, Loja e Recompensas -->
+    <string name="coins_label">%d Moedas</string>
+    <string name="coins_short">%d</string>
+    <string name="btn_shop">Loja</string>
+    <string name="shop_title">Loja e Personalização</string>
+    <string name="shop_tab_skins">Skins de Cartas</string>
+    <string name="shop_tab_avatars">Avatares</string>
+    <string name="btn_watch_ad">ASSISTIR VÍDEO — GANHAR 3 MOEDAS</string>
+    <string name="ad_reward_success">+3 Moedas adicionadas com sucesso!</string>
+    <string name="ad_not_available">Vídeo indisponível no momento. Tente novamente mais tarde.</string>
+    <string name="shop_item_equipped">Equipado</string>
+    <string name="shop_item_equip">Equipar</string>
+    <string name="shop_item_buy">Comprar por %d 🪙</string>
+    <string name="shop_insufficient_coins">Moedas insuficientes! Faltam %d moedas.</string>
+    <string name="shop_buy_success">%s desbloqueado com sucesso!</string>
+    <string name="victory_coins_reward">+10 Moedas de Vitória! 🪙</string>
+    <string name="victory_total_coins">Saldo: %d Moedas</string>
+    <string name="victory_avatar_title">Avatar: %s</string>
 </resources>

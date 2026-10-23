@@ -8,13 +8,15 @@ import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.Typeface
+import com.paciencia.solitaire.customization.CardSkin
+import com.paciencia.solitaire.customization.SkinPattern
 import com.paciencia.solitaire.model.Card
 import com.paciencia.solitaire.model.Rank
 import com.paciencia.solitaire.model.Suit
 import com.paciencia.solitaire.scenery.SceneryTheme
 
 /**
- * Renderizador vetorial de alta precisão de cartas, naipes e pilhas.
+ * Renderizador vetorial de alta precisão de cartas, naipes e pilhas com suporte a skins customizáveis.
  */
 class CardRenderer {
 
@@ -112,7 +114,8 @@ class CardRenderer {
         height: Float,
         theme: SceneryTheme,
         elevation: Float = 0f,
-        isHighlighted: Boolean = false
+        isHighlighted: Boolean = false,
+        skin: CardSkin = CardSkin.CLASSIC
     ) {
         val cornerRadius = width * 0.08f
 
@@ -141,7 +144,7 @@ class CardRenderer {
         if (card.isFaceUp) {
             drawFaceUpCard(canvas, card, x, y, width, height, cornerRadius)
         } else {
-            drawFaceDownCard(canvas, x, y, width, height, cornerRadius, theme)
+            drawFaceDownCard(canvas, x, y, width, height, cornerRadius, theme, skin)
         }
 
         // Realce de seleção ao arrastar ou selecionar a carta
@@ -255,7 +258,7 @@ class CardRenderer {
     }
 
     /**
-     * Renderiza o verso elegante da carta, customizado pelo cenário ativo.
+     * Renderiza o verso elegante da carta, customizado pela skin selecionada e pelo tema.
      */
     private fun drawFaceDownCard(
         canvas: Canvas,
@@ -264,13 +267,16 @@ class CardRenderer {
         width: Float,
         height: Float,
         cornerRadius: Float,
-        theme: SceneryTheme
+        theme: SceneryTheme,
+        skin: CardSkin
     ) {
-        // Gradiente do tema do cenário
-        val gradient = theme.cardBackGradient
+        // Cores do verso da skin ativa ou do cenário se for a skin clássica
+        val colorStart = if (skin.id == CardSkin.CLASSIC.id) theme.cardBackGradient[0] else skin.primaryColor
+        val colorEnd = if (skin.id == CardSkin.CLASSIC.id) theme.cardBackGradient[1] else skin.secondaryColor
+
         cardBackPaint.shader = LinearGradient(
             x, y, x + width, y + height,
-            gradient[0], gradient[1],
+            colorStart, colorEnd,
             Shader.TileMode.CLAMP
         )
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, cardBackPaint)
@@ -278,22 +284,146 @@ class CardRenderer {
         // Moldura branca externa da carta de baralho
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, cardBorderPaint)
 
-        // Moldura dourada/translúcida interna
+        // Moldura interna com a cor de destaque da skin
         val pad = width * 0.08f
         rectF.set(x + pad, y + pad, x + width - pad, y + height - pad)
+        cardBackInnerBorderPaint.color = skin.accentColor
+        cardBackInnerBorderPaint.alpha = 150
         canvas.drawRoundRect(rectF, cornerRadius * 0.7f, cornerRadius * 0.7f, cardBackInnerBorderPaint)
 
-        // Padrão de losangos clássico de baralhos finos
         val cx = x + width * 0.5f
         val cy = y + height * 0.5f
-        val diamondSize = width * 0.22f
+        cardBackPatternPaint.color = skin.accentColor
+        cardBackPatternPaint.alpha = 190
+
+        drawSkinPattern(canvas, skin.pattern, cx, cy, width, height)
+    }
+
+    /**
+     * Desenha geometricamente o padrão decorativo central de cada skin.
+     */
+    private fun drawSkinPattern(
+        canvas: Canvas,
+        pattern: SkinPattern,
+        cx: Float,
+        cy: Float,
+        width: Float,
+        height: Float
+    ) {
+        val size = width * 0.24f
         suitPath.reset()
-        suitPath.moveTo(cx, cy - diamondSize)
-        suitPath.lineTo(cx + diamondSize, cy)
-        suitPath.lineTo(cx, cy + diamondSize)
-        suitPath.lineTo(cx - diamondSize, cy)
-        suitPath.close()
-        canvas.drawPath(suitPath, cardBackPatternPaint)
+
+        when (pattern) {
+            SkinPattern.CLASSIC -> {
+                // Losango clássico de baralhos finos
+                suitPath.moveTo(cx, cy - size)
+                suitPath.lineTo(cx + size, cy)
+                suitPath.lineTo(cx, cy + size)
+                suitPath.lineTo(cx - size, cy)
+                suitPath.close()
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+            }
+            SkinPattern.GOLDEN -> {
+                // Duplo losango com cruz radiante dourada
+                suitPath.moveTo(cx, cy - size)
+                suitPath.lineTo(cx + size, cy)
+                suitPath.lineTo(cx, cy + size)
+                suitPath.lineTo(cx - size, cy)
+                suitPath.close()
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+
+                // Núcleo solar
+                val innerR = size * 0.45f
+                suitPath.reset()
+                suitPath.addCircle(cx, cy, innerR, Path.Direction.CW)
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+            }
+            SkinPattern.ARCANE -> {
+                // Anel místico com estrela de 4 pontas
+                suitPath.addCircle(cx, cy, size * 0.9f, Path.Direction.CW)
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+
+                suitPath.reset()
+                suitPath.moveTo(cx, cy - size * 0.85f)
+                suitPath.lineTo(cx + size * 0.2f, cy - size * 0.2f)
+                suitPath.lineTo(cx + size * 0.85f, cy)
+                suitPath.lineTo(cx + size * 0.2f, cy + size * 0.2f)
+                suitPath.lineTo(cx, cy + size * 0.85f)
+                suitPath.lineTo(cx - size * 0.2f, cy + size * 0.2f)
+                suitPath.lineTo(cx - size * 0.85f, cy)
+                suitPath.lineTo(cx - size * 0.2f, cy - size * 0.2f)
+                suitPath.close()
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+            }
+            SkinPattern.SHADOW -> {
+                // Brasão sombrio com ponta de lâmina
+                suitPath.moveTo(cx - size * 0.7f, cy - size * 0.7f)
+                suitPath.lineTo(cx + size * 0.7f, cy - size * 0.7f)
+                suitPath.lineTo(cx + size * 0.7f, cy)
+                suitPath.lineTo(cx, cy + size * 0.95f)
+                suitPath.lineTo(cx - size * 0.7f, cy)
+                suitPath.close()
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+            }
+            SkinPattern.NATURE -> {
+                // Pétalas ou folhas esmeralda entrelaçadas
+                val leafW = size * 0.75f
+                suitPath.moveTo(cx, cy - size * 0.9f)
+                suitPath.quadTo(cx + leafW, cy, cx, cy + size * 0.9f)
+                suitPath.quadTo(cx - leafW, cy, cx, cy - size * 0.9f)
+                suitPath.close()
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+            }
+            SkinPattern.ICE -> {
+                // Cristal de gelo fractal
+                val arm = size * 0.85f
+                // Eixo vertical
+                suitPath.moveTo(cx, cy - arm)
+                suitPath.lineTo(cx, cy + arm)
+                // Eixo diagonal 1
+                suitPath.moveTo(cx - arm * 0.866f, cy - arm * 0.5f)
+                suitPath.lineTo(cx + arm * 0.866f, cy + arm * 0.5f)
+                // Eixo diagonal 2
+                suitPath.moveTo(cx - arm * 0.866f, cy + arm * 0.5f)
+                suitPath.lineTo(cx + arm * 0.866f, cy - arm * 0.5f)
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+
+                // Núcleo cristalino
+                suitPath.reset()
+                suitPath.addCircle(cx, cy, size * 0.3f, Path.Direction.CW)
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+            }
+            SkinPattern.COSMIC -> {
+                // Galáxia cósmica com órbita estelar
+                val orbitW = size * 1.1f
+                val orbitH = size * 0.45f
+                rectF.set(cx - orbitW, cy - orbitH, cx + orbitW, cy + orbitH)
+                canvas.save()
+                canvas.rotate(35f, cx, cy)
+                suitPath.addOval(rectF, Path.Direction.CW)
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+                canvas.restore()
+
+                // Estrela central cintilante
+                suitPath.reset()
+                suitPath.addCircle(cx, cy, size * 0.35f, Path.Direction.CW)
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+            }
+            SkinPattern.ROYAL -> {
+                // Coroa imperial de 3 pontas
+                val crownW = size * 0.85f
+                val crownH = size * 0.65f
+                suitPath.moveTo(cx - crownW, cy + crownH * 0.5f)
+                suitPath.lineTo(cx - crownW, cy - crownH * 0.5f)
+                suitPath.lineTo(cx - crownW * 0.45f, cy)
+                suitPath.lineTo(cx, cy - crownH * 0.8f)
+                suitPath.lineTo(cx + crownW * 0.45f, cy)
+                suitPath.lineTo(cx + crownW, cy - crownH * 0.5f)
+                suitPath.lineTo(cx + crownW, cy + crownH * 0.5f)
+                suitPath.close()
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+            }
+        }
     }
 
     /**

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="#15FFFFFF"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <!-- Preview / Ícone -->
+    <TextView
+        android:id="@+id/tvShopItemIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#25000000"
+        android:gravity="center"
+        android:text="🃏"
+        android:textSize="22sp" />
+
+    <!-- Nome e Descrição -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvShopItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-bold"
+            android:text="Nome do Item"
+            android:textColor="@color/hud_text_primary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvShopItemDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+            android:text="Descrição detalhada do cosmético"
+            android:textColor="@color/hud_text_secondary"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- Botão de Ação: Equipar / Comprar / Equipado -->
+    <Button
+        android:id="@+id/btnShopItemAction"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:background="@drawable/button_gold"
+        android:fontFamily="sans-serif-medium"
+        android:minWidth="90dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/shop_item_equip"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+</LinearLayout>

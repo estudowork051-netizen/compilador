@@ -42,6 +42,32 @@
             android:textColor="@color/gold"
             android:textSize="16sp" />
 
+        <!-- Saldo de Moedas -->
+        <LinearLayout
+            android:id="@+id/btnCoinsDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="4dp"
+                android:contentDescription="@string/btn_shop"
+                android:src="@drawable/ic_coin" />
+
+            <TextView
+                android:id="@+id/tvCoins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="0"
+                android:textColor="@color/gold"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tvMoves"
             android:layout_width="wrap_content"
@@ -163,6 +189,35 @@
                 android:textSize="11sp" />
         </LinearLayout>
 
+        <!-- Botão Loja -->
+        <LinearLayout
+            android:id="@+id/btnShop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/btn_shop"
+                android:src="@drawable/ic_shop"
+                app:tint="@color/gold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/btn_shop"
+                android:textColor="@color/gold"
+                android:textSize="11sp" />
+        </LinearLayout>
+
         <!-- Botão Configurações -->
         <LinearLayout
             android:id="@+id/btnSettings"
@@ -191,6 +246,43 @@
                 android:textColor="@color/hud_text_secondary"
                 android:textSize="11sp" />
         </LinearLayout>
+    </LinearLayout>
+
+    <!-- Avatar do Jogador (Discreto no canto inferior esquerdo) -->
+    <LinearLayout
+        android:id="@+id/playerAvatarBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/dialog_background"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomHudBar"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvAvatarIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🤠"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvAvatarName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Aventureiro"
+            android:textColor="@color/hud_text_primary"
+            android:textSize="12sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

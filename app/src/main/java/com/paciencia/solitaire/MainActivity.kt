@@ -11,11 +11,16 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.paciencia.solitaire.ads.AdManager
+import com.paciencia.solitaire.customization.Avatar
+import com.paciencia.solitaire.customization.CardSkin
+import com.paciencia.solitaire.data.GameEconomy
 import com.paciencia.solitaire.data.GamePreferences
 import com.paciencia.solitaire.data.GameStateSerializer
 import com.paciencia.solitaire.data.GameStats
@@ -33,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var preferences: GamePreferences
     private lateinit var stats: GameStats
     private lateinit var soundFeedback: SoundFeedback
+    private lateinit var adManager: AdManager
     private var activeDialog: Dialog? = null
 
     private val timerHandler = Handler(Looper.getMainLooper())
@@ -58,6 +64,10 @@ class MainActivity : AppCompatActivity() {
         stats = GameStats(this)
         soundFeedback = SoundFeedback(this).apply {
             isEnabled = preferences.isHapticsEnabled
+        }
+
+        adManager = AdManager(this).apply {
+            initialize()
         }
 
         engine = KlondikeEngine()
@@ -86,6 +96,8 @@ class MainActivity : AppCompatActivity() {
         binding.solitaireView.engine = engine
         binding.solitaireView.soundFeedback = soundFeedback
         binding.solitaireView.theme = SceneryManager.getTheme(preferences.selectedScenery)
+        binding.solitaireView.cardSkin = CardSkin.getById(preferences.equippedSkinId)
+        binding.solitaireView.avatar = Avatar.getById(preferences.equippedAvatarId)
         binding.solitaireView.isParticlesEnabled = preferences.isParticlesEnabled
         binding.solitaireView.isPowerSaveMode = preferences.isPowerSaveMode
 
@@ -120,6 +132,21 @@ class MainActivity : AppCompatActivity() {
             showScenerySelectDialog()
         }
 
+        // Botão Loja
+        binding.btnShop.setOnClickListener {
+            showShopDialog(0)
+        }
+
+        // Badge do Avatar (Canto inferior esquerdo)
+        binding.playerAvatarBadge.setOnClickListener {
+            showShopDialog(1)
+        }
+
+        // Saldo de Moedas no HUD Superior
+        binding.btnCoinsDisplay.setOnClickListener {
+            showShopDialog(0)
+        }
+
         // Botão Configurações
         binding.btnSettings.setOnClickListener {
             showSettingsDialog()
@@ -141,6 +168,12 @@ class MainActivity : AppCompatActivity() {
     private fun updateHud() {
         binding.tvLevel.text = getString(R.string.level_label, engine.currentLevel)
         binding.tvMoves.text = getString(R.string.moves_label, engine.moveCount)
+        binding.tvCoins.text = preferences.coinsBalance.toString()
+
+        val equippedAvatar = Avatar.getById(preferences.equippedAvatarId)
+        binding.tvAvatarIcon.text = equippedAvatar.iconEmoji
+        binding.tvAvatarName.text = equippedAvatar.name
+
         updateTimerDisplay()
     }
 
@@ -177,15 +210,25 @@ class MainActivity : AppCompatActivity() {
         val completedLevel = engine.currentLevel
         val unlockedScenery = preferences.onLevelCompleted(completedLevel)
 
+        // Premiação segura em moedas: garante concessão única por nível concluído
+        val coinsEarned = if (!preferences.isLevelVictoryRewarded(completedLevel)) {
+            preferences.addCoins(GameEconomy.COINS_PER_LEVEL_VICTORY)
+            preferences.markLevelVictoryRewarded(completedLevel)
+            GameEconomy.COINS_PER_LEVEL_VICTORY
+        } else {
+            0
+        }
+
         // Se destravou um novo cenário, atualiza o tema visual
         if (unlockedScenery != null) {
             binding.solitaireView.theme = SceneryManager.getTheme(unlockedScenery)
         }
 
-        showVictoryDialog(completedLevel, unlockedScenery)
+        updateHud()
+        showVictoryDialog(completedLevel, unlockedScenery, coinsEarned)
     }
 
-    private fun showVictoryDialog(completedLevel: Int, newSceneryUnlocked: SceneryType?) {
+    private fun showVictoryDialog(completedLevel: Int, newSceneryUnlocked: SceneryType?, coinsEarned: Int) {
         if (isFinishing || isDestroyed) return
         activeDialog?.dismiss()
 
@@ -200,8 +243,17 @@ class MainActivity : AppCompatActivity() {
         val tvUnlockedAlert = dialog.findViewById<TextView>(R.id.tvUnlockedScenery)
         val tvMoves = dialog.findViewById<TextView>(R.id.tvVictoryMoves)
         val tvTime = dialog.findViewById<TextView>(R.id.tvVictoryTime)
+        val tvCoinsReward = dialog.findViewById<TextView>(R.id.tvVictoryCoinsReward)
+        val tvTotalCoins = dialog.findViewById<TextView>(R.id.tvVictoryTotalCoins)
+        val tvAvatar = dialog.findViewById<TextView>(R.id.tvVictoryAvatar)
+        val tvScenery = dialog.findViewById<TextView>(R.id.tvVictoryScenery)
+
         val btnNext = dialog.findViewById<Button>(R.id.btnNextLevel)
         val btnPlayAgain = dialog.findViewById<Button>(R.id.btnPlayAgain)
+        val btnOpenShop = dialog.findViewById<Button>(R.id.btnVictoryOpenShop)
+
+        val currentAvatar = Avatar.getById(preferences.equippedAvatarId)
+        val currentScenery = preferences.selectedScenery
 
         tvMessage.text = getString(R.string.victory_message, completedLevel)
         tvMoves.text = getString(R.string.victory_stats_moves, engine.moveCount)
@@ -209,6 +261,15 @@ class MainActivity : AppCompatActivity() {
         val minutes = elapsedSeconds / 60
         val seconds = elapsedSeconds % 60
         tvTime.text = getString(R.string.victory_stats_time, String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds))
+
+        tvCoinsReward.text = if (coinsEarned > 0) {
+            getString(R.string.victory_coins_reward)
+        } else {
+            "Fase concluída anteriormente"
+        }
+        tvTotalCoins.text = getString(R.string.victory_total_coins, preferences.coinsBalance)
+        tvAvatar.text = "Avatar: ${currentAvatar.iconEmoji} ${currentAvatar.name}"
+        tvScenery.text = "Cenário: ${currentScenery.title}"
 
         if (newSceneryUnlocked != null) {
             tvUnlockedAlert.visibility = View.VISIBLE
@@ -219,12 +280,20 @@ class MainActivity : AppCompatActivity() {
 
         btnNext.setOnClickListener {
             dialog.dismiss()
-            startNewLevel(completedLevel + 1)
+            // Exibe anúncio intersticial após vitória e antes de iniciar o próximo nível
+            adManager.showInterstitial(this) {
+                startNewLevel(completedLevel + 1)
+            }
         }
 
         btnPlayAgain.setOnClickListener {
             dialog.dismiss()
             startNewLevel(completedLevel)
+        }
+
+        btnOpenShop.setOnClickListener {
+            dialog.dismiss()
+            showShopDialog(0)
         }
 
         dialog.show()
@@ -417,6 +486,210 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
         }
+    }
+
+    private fun showShopDialog(initialTab: Int = 0) {
+        if (isFinishing || isDestroyed) return
+        activeDialog?.dismiss()
+
+        val dialog = Dialog(this)
+        activeDialog = dialog
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_shop)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val tvBalance = dialog.findViewById<TextView>(R.id.tvShopCoinsBalance)
+        val btnRewarded = dialog.findViewById<Button>(R.id.btnWatchRewardedAd)
+        val tabSkins = dialog.findViewById<TextView>(R.id.tabSkins)
+        val tabAvatars = dialog.findViewById<TextView>(R.id.tabAvatars)
+        val layoutItems = dialog.findViewById<LinearLayout>(R.id.layoutShopItems)
+        val btnClose = dialog.findViewById<Button>(R.id.btnCloseShop)
+
+        var currentTab = initialTab // 0 = Skins, 1 = Avatares
+
+        fun refreshBalance() {
+            tvBalance.text = getString(R.string.coins_label, preferences.coinsBalance)
+            updateHud()
+        }
+
+        fun populateList() {
+            layoutItems.removeAllViews()
+            val colorSelectedBg = ContextCompat.getColor(this, R.color.primary)
+            val colorUnselectedBg = Color.TRANSPARENT
+            val colorSelectedText = ContextCompat.getColor(this, R.color.white)
+            val colorUnselectedText = ContextCompat.getColor(this, R.color.hud_text_secondary)
+
+            if (currentTab == 0) {
+                tabSkins.setBackgroundColor(colorSelectedBg)
+                tabSkins.setTextColor(colorSelectedText)
+                tabAvatars.setBackgroundColor(colorUnselectedBg)
+                tabAvatars.setTextColor(colorUnselectedText)
+
+                val equippedSkinId = preferences.equippedSkinId
+                for (skin in CardSkin.ALL_SKINS) {
+                    val row = layoutInflater.inflate(R.layout.item_shop_entry, layoutItems, false)
+                    val tvIcon = row.findViewById<TextView>(R.id.tvShopItemIcon)
+                    val tvName = row.findViewById<TextView>(R.id.tvShopItemName)
+                    val tvDesc = row.findViewById<TextView>(R.id.tvShopItemDesc)
+                    val btnAction = row.findViewById<Button>(R.id.btnShopItemAction)
+
+                    tvIcon.text = "🃏"
+                    tvName.text = skin.name
+                    tvDesc.text = skin.description
+
+                    val isEquipped = skin.id == equippedSkinId
+                    val isUnlocked = preferences.isSkinUnlocked(skin.id)
+
+                    when {
+                        isEquipped -> {
+                            btnAction.text = getString(R.string.shop_item_equipped)
+                            btnAction.isEnabled = false
+                            btnAction.setBackgroundResource(R.drawable.button_primary)
+                            btnAction.setTextColor(ContextCompat.getColor(this, R.color.hud_text_secondary))
+                        }
+                        isUnlocked -> {
+                            btnAction.text = getString(R.string.shop_item_equip)
+                            btnAction.isEnabled = true
+                            btnAction.setBackgroundResource(R.drawable.button_primary)
+                            btnAction.setTextColor(ContextCompat.getColor(this, R.color.white))
+                            btnAction.setOnClickListener {
+                                preferences.equippedSkinId = skin.id
+                                binding.solitaireView.cardSkin = skin
+                                soundFeedback.cardPlaced(binding.solitaireView)
+                                populateList()
+                            }
+                        }
+                        else -> {
+                            btnAction.text = getString(R.string.shop_item_buy, skin.price)
+                            btnAction.isEnabled = true
+                            btnAction.setBackgroundResource(R.drawable.button_gold)
+                            btnAction.setTextColor(ContextCompat.getColor(this, R.color.black))
+                            btnAction.setOnClickListener {
+                                if (preferences.hasEnoughCoins(skin.price)) {
+                                    preferences.spendCoins(skin.price)
+                                    preferences.unlockSkin(skin.id)
+                                    preferences.equippedSkinId = skin.id
+                                    binding.solitaireView.cardSkin = skin
+                                    soundFeedback.victoryCelebration()
+                                    Toast.makeText(this, getString(R.string.shop_buy_success, skin.name), Toast.LENGTH_SHORT).show()
+                                    refreshBalance()
+                                    populateList()
+                                } else {
+                                    val missing = skin.price - preferences.coinsBalance
+                                    soundFeedback.invalidMove(binding.solitaireView)
+                                    Toast.makeText(this, getString(R.string.shop_insufficient_coins, missing), Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+                    layoutItems.addView(row)
+                }
+            } else {
+                tabAvatars.setBackgroundColor(colorSelectedBg)
+                tabAvatars.setTextColor(colorSelectedText)
+                tabSkins.setBackgroundColor(colorUnselectedBg)
+                tabSkins.setTextColor(colorUnselectedText)
+
+                val equippedAvatarId = preferences.equippedAvatarId
+                for (avatar in Avatar.ALL_AVATARS) {
+                    val row = layoutInflater.inflate(R.layout.item_shop_entry, layoutItems, false)
+                    val tvIcon = row.findViewById<TextView>(R.id.tvShopItemIcon)
+                    val tvName = row.findViewById<TextView>(R.id.tvShopItemName)
+                    val tvDesc = row.findViewById<TextView>(R.id.tvShopItemDesc)
+                    val btnAction = row.findViewById<Button>(R.id.btnShopItemAction)
+
+                    tvIcon.text = avatar.iconEmoji
+                    tvName.text = avatar.name
+                    tvDesc.text = "${avatar.title} • ${avatar.description}"
+
+                    val isEquipped = avatar.id == equippedAvatarId
+                    val isUnlocked = preferences.isAvatarUnlocked(avatar.id)
+
+                    when {
+                        isEquipped -> {
+                            btnAction.text = getString(R.string.shop_item_equipped)
+                            btnAction.isEnabled = false
+                            btnAction.setBackgroundResource(R.drawable.button_primary)
+                            btnAction.setTextColor(ContextCompat.getColor(this, R.color.hud_text_secondary))
+                        }
+                        isUnlocked -> {
+                            btnAction.text = getString(R.string.shop_item_equip)
+                            btnAction.isEnabled = true
+                            btnAction.setBackgroundResource(R.drawable.button_primary)
+                            btnAction.setTextColor(ContextCompat.getColor(this, R.color.white))
+                            btnAction.setOnClickListener {
+                                preferences.equippedAvatarId = avatar.id
+                                binding.solitaireView.avatar = avatar
+                                updateHud()
+                                soundFeedback.cardPlaced(binding.solitaireView)
+                                populateList()
+                            }
+                        }
+                        else -> {
+                            btnAction.text = getString(R.string.shop_item_buy, avatar.price)
+                            btnAction.isEnabled = true
+                            btnAction.setBackgroundResource(R.drawable.button_gold)
+                            btnAction.setTextColor(ContextCompat.getColor(this, R.color.black))
+                            btnAction.setOnClickListener {
+                                if (preferences.hasEnoughCoins(avatar.price)) {
+                                    preferences.spendCoins(avatar.price)
+                                    preferences.unlockAvatar(avatar.id)
+                                    preferences.equippedAvatarId = avatar.id
+                                    binding.solitaireView.avatar = avatar
+                                    soundFeedback.victoryCelebration()
+                                    Toast.makeText(this, getString(R.string.shop_buy_success, avatar.name), Toast.LENGTH_SHORT).show()
+                                    refreshBalance()
+                                    populateList()
+                                } else {
+                                    val missing = avatar.price - preferences.coinsBalance
+                                    soundFeedback.invalidMove(binding.solitaireView)
+                                    Toast.makeText(this, getString(R.string.shop_insufficient_coins, missing), Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+                    layoutItems.addView(row)
+                }
+            }
+        }
+
+        tabSkins.setOnClickListener {
+            currentTab = 0
+            populateList()
+        }
+
+        tabAvatars.setOnClickListener {
+            currentTab = 1
+            populateList()
+        }
+
+        btnRewarded.setOnClickListener {
+            // Anúncio em vídeo recompensado oficial Google AdMob
+            val started = adManager.showRewardedAd(
+                activity = this,
+                onUserEarnedReward = { coinsAmount ->
+                    preferences.addCoins(GameEconomy.COINS_PER_REWARDED_AD)
+                    refreshBalance()
+                    soundFeedback.victoryCelebration()
+                    Toast.makeText(this, R.string.ad_reward_success, Toast.LENGTH_SHORT).show()
+                    populateList()
+                },
+                onAdClosed = { rewardEarned ->
+                    Log.d("MainActivity", "Vídeo recompensado encerrado. Recompensa: $rewardEarned")
+                }
+            )
+            if (!started) {
+                Toast.makeText(this, R.string.ad_not_available, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        refreshBalance()
+        populateList()
+        dialog.show()
     }
 
     override fun onPause() {

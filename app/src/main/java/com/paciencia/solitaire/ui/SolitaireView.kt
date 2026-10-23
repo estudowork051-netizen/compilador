@@ -2,16 +2,20 @@ package com.paciencia.solitaire.ui
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.paciencia.solitaire.customization.Avatar
+import com.paciencia.solitaire.customization.CardSkin
 import com.paciencia.solitaire.engine.KlondikeEngine
 import com.paciencia.solitaire.model.Card
 import com.paciencia.solitaire.model.CardPile
 import com.paciencia.solitaire.model.PileType
 import com.paciencia.solitaire.model.Rank
 import com.paciencia.solitaire.model.Suit
+import com.paciencia.solitaire.scenery.Particle
 import com.paciencia.solitaire.scenery.ParticleSystem
 import com.paciencia.solitaire.scenery.SceneryManager
 import com.paciencia.solitaire.scenery.SceneryTheme
@@ -20,8 +24,8 @@ import kotlin.math.hypot
 
 /**
  * Custom View interativa de alto desempenho para o jogo Paciência.
- * Renderiza o cenário procedural, sistema de partículas, cartas vetoriais,
- * e gerencia os gestos de arrastar-e-soltar e toque inteligente.
+ * Renderiza o cenário procedural, sistema de partículas, cartas vetoriais com skins,
+ * efeitos de coluna completa e gerencia gestos de arrastar e soltar e toque inteligente.
  */
 class SolitaireView @JvmOverloads constructor(
     context: Context,
@@ -37,6 +41,18 @@ class SolitaireView @JvmOverloads constructor(
             invalidate()
         }
 
+    var cardSkin: CardSkin = CardSkin.CLASSIC
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    var avatar: Avatar = Avatar.ADVENTURER
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     var soundFeedback: SoundFeedback? = null
     var onMoveMade: (() -> Unit)? = null
     var onVictory: (() -> Unit)? = null
@@ -46,6 +62,20 @@ class SolitaireView @JvmOverloads constructor(
 
     private val cardRenderer = CardRenderer()
     private val particleSystem = ParticleSystem()
+
+    // Efeitos visuais de coluna concluída
+    private data class ColumnEffect(
+        val col: Int,
+        val startTime: Long = System.currentTimeMillis(),
+        val durationMs: Long = 1000L
+    )
+    private val activeColumnEffects = mutableListOf<ColumnEffect>()
+    private val columnCompletedState = BooleanArray(7)
+    private val columnGlowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 6f
+        color = 0xFFFBBF24.toInt()
+    }
 
     // Dimensões calculadas proporcionalmente
     private var cardWidth: Float = 0f
@@ -146,7 +176,7 @@ class SolitaireView @JvmOverloads constructor(
         } else {
             val topCard = eng.stockPile.top()
             if (topCard != null) {
-                cardRenderer.drawCard(canvas, topCard, stockRect.left, stockRect.top, cardWidth, cardHeight, theme)
+                cardRenderer.drawCard(canvas, topCard, stockRect.left, stockRect.top, cardWidth, cardHeight, theme, skin = cardSkin)
             }
         }
 
@@ -163,7 +193,7 @@ class SolitaireView @JvmOverloads constructor(
                 val drawIndex = if (isTopDragged && cards.size > 1) cards.size - 2 else cards.size - 1
                 if (drawIndex in cards.indices) {
                     val card = cards[drawIndex]
-                    cardRenderer.drawCard(canvas, card, wasteRect.left, wasteRect.top, cardWidth, cardHeight, theme)
+                    cardRenderer.drawCard(canvas, card, wasteRect.left, wasteRect.top, cardWidth, cardHeight, theme, skin = cardSkin)
                 }
             }
         }
@@ -185,7 +215,7 @@ class SolitaireView @JvmOverloads constructor(
                     val drawIndex = if (isTopDragged && cards.size > 1) cards.size - 2 else cards.size - 1
                     if (drawIndex in cards.indices) {
                         val card = cards[drawIndex]
-                        cardRenderer.drawCard(canvas, card, rect.left, rect.top, cardWidth, cardHeight, theme)
+                        cardRenderer.drawCard(canvas, card, rect.left, rect.top, cardWidth, cardHeight, theme, skin = cardSkin)
                     }
                 }
             }
@@ -209,13 +239,31 @@ class SolitaireView @JvmOverloads constructor(
 
                 for (idx in 0 until dragIndex) {
                     val card = cards[idx]
-                    cardRenderer.drawCard(canvas, card, rect.left, currentY, cardWidth, cardHeight, theme)
+                    cardRenderer.drawCard(canvas, card, rect.left, currentY, cardWidth, cardHeight, theme, skin = cardSkin)
                     currentY += if (card.isFaceUp) cardOverlapFaceUp else cardOverlapFaceDown
                 }
             }
         }
 
-        // 7. Renderiza as cartas flutuantes que estão sendo arrastadas pelo dedo com destaque e sombra elevada
+        // 7. Renderiza brilho e aura dourada das colunas recém-concluídas
+        val now = System.currentTimeMillis()
+        val effectIterator = activeColumnEffects.iterator()
+        while (effectIterator.hasNext()) {
+            val effect = effectIterator.next()
+            val elapsed = now - effect.startTime
+            if (elapsed > effect.durationMs) {
+                effectIterator.remove()
+            } else {
+                val progress = elapsed.toFloat() / effect.durationMs
+                val alpha = (Math.sin(progress * Math.PI) * 220).toInt().coerceIn(0, 255)
+                columnGlowPaint.alpha = alpha
+                columnGlowPaint.strokeWidth = 4f + (1f - progress) * 6f
+                val colRect = tableauRects[effect.col]
+                canvas.drawRoundRect(colRect.left - 4f, colRect.top - 4f, colRect.right + 4f, colRect.bottom + 4f, 16f, 16f, columnGlowPaint)
+            }
+        }
+
+        // 8. Renderiza as cartas flutuantes que estão sendo arrastadas pelo dedo com destaque e sombra elevada
         if (isDragging && draggedCards.isNotEmpty()) {
             var currentY = dragCurrentY - dragTouchOffsetY
             val currentX = dragCurrentX - dragTouchOffsetX
@@ -230,14 +278,15 @@ class SolitaireView @JvmOverloads constructor(
                     cardHeight,
                     theme,
                     elevation = 24f,
-                    isHighlighted = true
+                    isHighlighted = true,
+                    skin = cardSkin
                 )
                 currentY += cardOverlapFaceUp
             }
         }
 
-        // Mantém a animação suave a 60 FPS se houver partículas ativas
-        if (isParticlesEnabled && !isPowerSaveMode) {
+        // Mantém a animação suave a 60 FPS se houver partículas ativas ou efeitos em andamento
+        if ((isParticlesEnabled && !isPowerSaveMode) || activeColumnEffects.isNotEmpty()) {
             postInvalidateOnAnimation()
         }
     }
@@ -374,14 +423,16 @@ class SolitaireView @JvmOverloads constructor(
 
                     // Se o deslocamento foi muito curto (< 14px), considera como TOQUE (Tap-to-Move Inteligente)
                     if (moveDistance < 14f) {
-                        val firstCard = draggedCards.first()
-                        val autoMoved = eng.autoMove(firstCard, fromType)
-                        if (autoMoved) {
-                            soundFeedback?.cardPlaced(this)
-                            onMoveMade?.invoke()
-                            checkVictory()
-                        } else {
-                            soundFeedback?.invalidMove(this)
+                        if (firstCard != null) {
+                            val autoMoved = eng.autoMove(firstCard, fromType)
+                            if (autoMoved) {
+                                soundFeedback?.cardPlaced(this)
+                                checkColumnCompletions()
+                                onMoveMade?.invoke()
+                                checkVictory()
+                            } else {
+                                soundFeedback?.invalidMove(this)
+                            }
                         }
                     } else {
                         // ARRASTAR E SOLTAR (Drag & Drop)
@@ -394,6 +445,7 @@ class SolitaireView @JvmOverloads constructor(
 
                         if (success) {
                             soundFeedback?.cardPlaced(this)
+                            checkColumnCompletions()
                             onMoveMade?.invoke()
                             checkVictory()
                         } else {
@@ -411,6 +463,66 @@ class SolitaireView @JvmOverloads constructor(
         }
 
         return super.onTouchEvent(event)
+    }
+
+    /**
+     * Verifica se alguma coluna de tableau atingiu sequência completa e dispara o efeito comemorativo.
+     */
+    fun checkColumnCompletions() {
+        val eng = engine ?: return
+        for (col in 0 until 7) {
+            val pile = eng.tableauPiles[col]
+            val cards = pile.cards
+            var isComplete = false
+
+            if (cards.isNotEmpty() && cards.all { it.isFaceUp }) {
+                var validSeq = true
+                for (i in 0 until cards.size - 1) {
+                    if (!cards[i + 1].rank.isOneBelow(cards[i].rank) || cards[i + 1].isRed == cards[i].isRed) {
+                        validSeq = false
+                        break
+                    }
+                }
+                if (validSeq && (cards.last().rank == Rank.ACE || (cards.first().rank == Rank.KING && cards.size >= 4))) {
+                    isComplete = true
+                }
+            }
+
+            if (isComplete && !columnCompletedState[col]) {
+                columnCompletedState[col] = true
+                triggerColumnCompleteEffect(col)
+            } else if (!isComplete) {
+                columnCompletedState[col] = false
+            }
+        }
+    }
+
+    private fun triggerColumnCompleteEffect(col: Int) {
+        activeColumnEffects.add(ColumnEffect(col))
+        soundFeedback?.columnCompleted(this)
+
+        if (isParticlesEnabled && !isPowerSaveMode && col in 0 until 7) {
+            val rect = tableauRects[col]
+            val cx = (rect.left + rect.right) * 0.5f
+            val cy = rect.top + cardHeight * 0.5f
+            for (i in 0 until 14) {
+                val vx = (Math.random().toFloat() - 0.5f) * 4.5f
+                val vy = -(Math.random().toFloat() * 3.5f + 1.5f)
+                particleSystem.addParticle(
+                    Particle(
+                        x = cx,
+                        y = cy,
+                        vx = vx,
+                        vy = vy,
+                        size = 7f,
+                        alpha = 240,
+                        color = 0xFFFBBF24.toInt(),
+                        shape = Particle.Shape.SPARK
+                    )
+                )
+            }
+        }
+        invalidate()
     }
 
     private fun checkVictory() {

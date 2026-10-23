@@ -6,13 +6,13 @@
     android:background="@drawable/dialog_background"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="22dp">
 
     <!-- Trophy Icon -->
     <ImageView
         android:id="@+id/ivTrophy"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:contentDescription="@string/victory_title"
         android:src="@drawable/ic_trophy" />
 
@@ -21,7 +21,7 @@
         android:id="@+id/tvVictoryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-black"
         android:text="@string/victory_title"
         android:textColor="@color/gold"
@@ -32,38 +32,104 @@
         android:id="@+id/tvVictoryMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="@string/victory_message"
         android:textColor="@color/hud_text_primary"
-        android:textSize="15sp" />
+        android:textSize="14sp" />
+
+    <!-- Avatar e Cenário Ativos -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#15FFFFFF"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvVictoryAvatar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Avatar: 🤠 Aventureiro"
+            android:textColor="@color/hud_text_secondary"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/dialog_stroke" />
+
+        <TextView
+            android:id="@+id/tvVictoryScenery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Cenário: Floresta Encantada"
+            android:textColor="@color/hud_text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Box de Recompensa em Moedas -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#20FBBF24"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tvVictoryCoinsReward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/victory_coins_reward"
+            android:textColor="@color/gold"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvVictoryTotalCoins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif"
+            android:text="Saldo: 10 Moedas"
+            android:textColor="@color/hud_text_primary"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <!-- Unlocked Scenery Alert (visible if newly unlocked) -->
     <TextView
         android:id="@+id/tvUnlockedScenery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:background="#3338BDF8"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:paddingStart="12dp"
-        android:paddingTop="6dp"
+        android:paddingTop="5dp"
         android:paddingEnd="12dp"
-        android:paddingBottom="6dp"
+        android:paddingBottom="5dp"
         android:textColor="@color/accent"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:visibility="gone" />
 
     <!-- Stats Box -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:background="#15FFFFFF"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/tvVictoryMoves"
@@ -73,7 +139,7 @@
             android:gravity="center"
             android:text="@string/victory_stats_moves"
             android:textColor="@color/hud_text_secondary"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
         <View
             android:layout_width="1dp"
@@ -88,32 +154,48 @@
             android:gravity="center"
             android:text="@string/victory_stats_time"
             android:textColor="@color/hud_text_secondary"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
     <!-- Buttons -->
     <Button
         android:id="@+id/btnNextLevel"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/button_gold"
         android:fontFamily="sans-serif-medium"
         android:text="@string/btn_next_level"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btnVictoryOpenShop"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/button_primary"
+        android:drawableStart="@drawable/ic_shop"
+        android:drawablePadding="6dp"
+        android:fontFamily="sans-serif"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:text="@string/shop_title"
+        android:textAllCaps="false"
+        android:textColor="@color/gold"
+        android:textSize="13sp" />
 
     <Button
         android:id="@+id/btnPlayAgain"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/button_primary"
         android:fontFamily="sans-serif"
         android:text="@string/btn_play_again"
         android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:textColor="@color/hud_text_primary"
+        android:textSize="13sp" />
 
 </LinearLayout>

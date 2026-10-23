@@ -94,4 +94,25 @@ class SoundFeedback(private val context: Context) {
             } catch (_: Throwable) {}
         }
     }
+
+    /**
+     * Feedback comemorativo suave ao completar uma sequência ou coluna.
+     */
+    fun columnCompleted(view: View) {
+        if (!isEnabled) return
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val pattern = longArrayOf(0, 30, 50, 40)
+                val amplitudes = intArrayOf(0, 120, 0, 180)
+                vibrator?.vibrate(VibrationEffect.createWaveform(pattern, amplitudes, -1))
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator?.vibrate(longArrayOf(0, 30, 50, 40), -1)
+            }
+        } catch (_: Throwable) {
+            try {
+                view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+            } catch (_: Throwable) {}
+        }
+    }
 }
