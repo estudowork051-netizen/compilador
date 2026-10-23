@@ -145,6 +145,67 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Medalhão de Perfil do Avatar na Mesa de Jogo (Canto Inferior) -->
+    <LinearLayout
+        android:id="@+id/avatarMedallion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/medallion_pill_border"
+        android:clickable="true"
+        android:elevation="6dp"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="3dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomHudBar"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout
+            android:id="@+id/avatarCircleContainer"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/avatar_circle_border">
+
+            <TextView
+                android:id="@+id/tvMedallionAvatarIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="🤠"
+                android:textSize="22sp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvMedallionAvatarName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-bold"
+                android:text="Aventureiro"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvMedallionAvatarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="O Desbravador"
+                android:textColor="@color/gold"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </LinearLayout>
+
     <!-- Bottom HUD Controls -->
     <LinearLayout
         android:id="@+id/bottomHudBar"

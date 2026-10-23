@@ -150,8 +150,13 @@ class MainActivity : AppCompatActivity() {
             showShopDialog(0)
         }
 
-        // Badge do Avatar (Canto inferior esquerdo)
+        // Badge do Avatar no HUD Superior
         binding.playerAvatarBadge.setOnClickListener {
+            showShopDialog(1)
+        }
+
+        // Medalhão de Perfil do Avatar na Mesa de Jogo
+        binding.avatarMedallion.setOnClickListener {
             showShopDialog(1)
         }
 
@@ -186,6 +191,11 @@ class MainActivity : AppCompatActivity() {
         val equippedAvatar = Avatar.getById(preferences.equippedAvatarId)
         binding.tvAvatarIcon.text = equippedAvatar.iconEmoji
         binding.tvAvatarName.text = equippedAvatar.name
+
+        // Atualiza o Medalhão de Perfil no Canto Inferior da Mesa
+        binding.tvMedallionAvatarIcon.text = equippedAvatar.iconEmoji
+        binding.tvMedallionAvatarName.text = equippedAvatar.name
+        binding.tvMedallionAvatarTitle.text = equippedAvatar.title
 
         updateTimerDisplay()
     }

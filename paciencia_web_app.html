@@ -1162,21 +1162,33 @@ function addSparkle(x, y, color = '#FBBF24', count = 8) {
 
 function drawSlot(x, y, watermark) {
   ctx.save();
-  ctx.strokeStyle = currentScenery.accent + '3a';
-  ctx.lineWidth = 1.5;
-  ctx.fillStyle = 'rgba(0,0,0,0.38)';
+  ctx.fillStyle = 'rgba(0,0,0,0.52)';
   roundRect(ctx, x, y, cw, ch, 7);
-  ctx.fill(); ctx.stroke();
+  ctx.fill();
 
-  // Moldura interna da cavidade mágica
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  ctx.lineWidth = 1;
-  roundRect(ctx, x + 3, y + 3, cw - 6, ch - 6, 5);
+  ctx.strokeStyle = 'rgba(0,0,0,0.7)';
+  ctx.lineWidth = 2.5;
+  roundRect(ctx, x, y, cw, ch, 7);
+  ctx.stroke();
+
+  ctx.strokeStyle = currentSkin.acc + '66';
+  ctx.lineWidth = 1.8;
+  roundRect(ctx, x + 1.5, y + 1.5, cw - 3, ch - 3, 5.5);
+  ctx.stroke();
+
+  const b = cw * 0.18;
+  ctx.strokeStyle = currentSkin.acc + '88';
+  ctx.lineWidth = 2.0;
+  ctx.beginPath();
+  ctx.moveTo(x, y + b); ctx.lineTo(x, y); ctx.lineTo(x + b, y);
+  ctx.moveTo(x + cw - b, y); ctx.lineTo(x + cw, y); ctx.lineTo(x + cw, y + b);
+  ctx.moveTo(x, y + ch - b); ctx.lineTo(x, y + ch); ctx.lineTo(x + b, y + ch);
+  ctx.moveTo(x + cw - b, y + ch); ctx.lineTo(x + cw, y + ch); ctx.lineTo(x + cw, y + ch - b);
   ctx.stroke();
 
   if (watermark) {
-    ctx.fillStyle = currentScenery.accent + '55';
-    ctx.font = `bold ${cw * 0.36}px serif`;
+    ctx.fillStyle = currentSkin.acc + '88';
+    ctx.font = `bold ${cw * 0.38}px serif`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(watermark, x + cw / 2, y + ch / 2);
   }
@@ -1187,10 +1199,10 @@ function drawSlot(x, y, watermark) {
 function drawCard(card, x, y, isElevated) {
   ctx.save();
   if (isElevated) {
-    ctx.shadowColor = 'rgba(0,0,0,0.7)';
-    ctx.shadowBlur = 20; ctx.shadowOffsetY = 14;
+    ctx.shadowColor = currentSkin.acc + 'aa';
+    ctx.shadowBlur = 22; ctx.shadowOffsetY = 12;
   } else {
-    ctx.shadowColor = 'rgba(0,0,0,0.35)';
+    ctx.shadowColor = 'rgba(0,0,0,0.38)';
     ctx.shadowBlur = 6; ctx.shadowOffsetY = 3;
   }
 
@@ -1200,83 +1212,156 @@ function drawCard(card, x, y, isElevated) {
     g.addColorStop(0, currentSkin.p1);
     g.addColorStop(1, currentSkin.p2);
     ctx.fillStyle = g;
-    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 1.4;
+    roundRect(ctx, x, y, cw, ch, 7);
+    ctx.fill(); ctx.stroke();
+
+    // Moldura Interna em Ouro/Acento com Brilho
+    ctx.strokeStyle = currentSkin.acc;
+    ctx.lineWidth = 2.0;
+    roundRect(ctx, x + 4, y + 4, cw - 8, ch - 8, 5);
+    ctx.stroke();
+
+    // Segunda borda interna sutil
+    ctx.strokeStyle = currentSkin.acc + '55';
+    ctx.lineWidth = 1.0;
+    roundRect(ctx, x + 7, y + 7, cw - 14, ch - 14, 4);
+    ctx.stroke();
+
+    // Padrão Geométrico Exclusivo da Skin
+    drawSkinPattern(ctx, currentSkin.pattern, x + cw / 2, y + ch / 2, cw * 0.30, currentSkin.acc);
+  } else {
+    // Face Frontal com Tom Pergaminho Nobre Harmonizado com a Skin
+    let parchmentG = ctx.createLinearGradient(x, y, x + cw, y + ch);
+    if (currentSkin.pattern === 'golden') {
+      parchmentG.addColorStop(0, '#FFFDF5'); parchmentG.addColorStop(1, '#FAF0D7');
+    } else if (currentSkin.pattern === 'arcane') {
+      parchmentG.addColorStop(0, '#F8FAFC'); parchmentG.addColorStop(1, '#EDE9FE');
+    } else if (currentSkin.pattern === 'nature') {
+      parchmentG.addColorStop(0, '#F7FDF9'); parchmentG.addColorStop(1, '#ECFDF5');
+    } else if (currentSkin.pattern === 'ice') {
+      parchmentG.addColorStop(0, '#F0F9FF'); parchmentG.addColorStop(1, '#E0F2FE');
+    } else if (currentSkin.pattern === 'shadow') {
+      parchmentG.addColorStop(0, '#F5F5F7'); parchmentG.addColorStop(1, '#E4E4E7');
+    } else if (currentSkin.pattern === 'cosmic') {
+      parchmentG.addColorStop(0, '#FAF5FF'); parchmentG.addColorStop(1, '#F3E8FF');
+    } else if (currentSkin.pattern === 'royal') {
+      parchmentG.addColorStop(0, '#FFF1F2'); parchmentG.addColorStop(1, '#FFE4E6');
+    } else {
+      parchmentG.addColorStop(0, '#FFFDF8'); parchmentG.addColorStop(1, '#F3ECE0');
+    }
+    ctx.fillStyle = parchmentG;
+    ctx.strokeStyle = '#D1D5DB';
     ctx.lineWidth = 1.2;
     roundRect(ctx, x, y, cw, ch, 7);
     ctx.fill(); ctx.stroke();
 
-    // Moldura Interna em Ouro/Acento
-    ctx.strokeStyle = currentSkin.acc + 'aa';
-    roundRect(ctx, x + 4, y + 4, cw - 8, ch - 8, 5);
+    // Moldura Interna de Filigrana com a cor de destaque da Skin
+    ctx.strokeStyle = currentSkin.acc + 'cc';
+    ctx.lineWidth = 1.8;
+    roundRect(ctx, x + 3.5, y + 3.5, cw - 7, ch - 7, 5);
     ctx.stroke();
 
-    // Padrão Geométrico Exclusivo da Skin
-    drawSkinPattern(ctx, currentSkin.pattern, x + cw / 2, y + ch / 2, cw * 0.28, currentSkin.acc);
-  } else {
-    // Face Frontal com Tom Pergaminho Nobre Marfim e Bisel
-    let parchmentG = ctx.createLinearGradient(x, y, x + cw, y + ch);
-    parchmentG.addColorStop(0, '#FFFDF8');
-    parchmentG.addColorStop(0.5, '#FAF6EC');
-    parchmentG.addColorStop(1, '#F3ECE0');
-    ctx.fillStyle = parchmentG;
-    ctx.strokeStyle = '#D1D5DB';
-    ctx.lineWidth = 1;
-    roundRect(ctx, x, y, cw, ch, 7);
-    ctx.fill(); ctx.stroke();
-
-    // Moldura Interna Delicada de Filigrana
-    ctx.strokeStyle = 'rgba(180, 140, 60, 0.35)';
-    roundRect(ctx, x + 3, y + 3, cw - 6, ch - 6, 5);
-    ctx.stroke();
-
-    // Pequenos pontos ornamentais nos 4 cantos
-    ctx.fillStyle = 'rgba(180, 140, 60, 0.5)';
-    ctx.beginPath();
-    ctx.arc(x + 5.5, y + 5.5, 1.2, 0, Math.PI * 2);
-    ctx.arc(x + cw - 5.5, y + 5.5, 1.2, 0, Math.PI * 2);
-    ctx.arc(x + 5.5, y + ch - 5.5, 1.2, 0, Math.PI * 2);
-    ctx.arc(x + cw - 5.5, y + ch - 5.5, 1.2, 0, Math.PI * 2);
-    ctx.fill();
+    // Ornamentos nos 4 cantos da face da carta
+    drawFaceCornerOrnaments(ctx, currentSkin.pattern, x, y, cw, ch, currentSkin.acc);
 
     // Índices da Carta (Valor & Naipe)
-    ctx.fillStyle = card.suit.isRed ? '#C41E3A' : '#111827';
-    ctx.font = `bold ${cw * 0.24}px -apple-system, serif`;
+    ctx.fillStyle = card.suit.isRed ? '#DC2626' : '#0F172A';
+    ctx.font = `bold ${cw * 0.25}px -apple-system, serif`;
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-    ctx.fillText(card.rank.label, x + 5, y + 5);
+    ctx.fillText(card.rank.label, x + 5.5, y + 5);
 
-    ctx.font = `${cw * 0.17}px sans-serif`;
-    ctx.fillText(card.suit.symbol, x + 5, y + 5 + cw * 0.23);
+    ctx.font = `${cw * 0.18}px sans-serif`;
+    ctx.fillText(card.suit.symbol, x + 5.5, y + 5 + cw * 0.24);
 
     // Ilustração Central Nobre
     if (card.rank.val > 10) {
-      // Figuras da Corte (Valete, Rainha, Rei) com Brasão Imperial
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.55)';
-      ctx.lineWidth = 1.5;
-      roundRect(ctx, x + cw * 0.2, y + ch * 0.26, cw * 0.6, ch * 0.48, 5);
+      // Figuras da Corte (Valete, Rainha, Rei) com Caixa Nobre na cor da Skin
+      ctx.strokeStyle = currentSkin.acc;
+      ctx.lineWidth = 1.8;
+      roundRect(ctx, x + cw * 0.18, y + ch * 0.24, cw * 0.64, ch * 0.52, 6);
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(251, 191, 36, 0.15)';
+      ctx.fillStyle = currentSkin.acc + '20';
       ctx.fill();
 
-      ctx.fillStyle = card.suit.isRed ? '#C41E3A' : '#111827';
-      ctx.font = `serif bold ${cw * 0.38}px`;
+      ctx.fillStyle = card.suit.isRed ? '#DC2626' : '#0F172A';
+      ctx.font = `serif bold ${cw * 0.40}px`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(card.rank.label, x + cw / 2, y + ch / 2 - 2);
 
       ctx.font = `${cw * 0.18}px sans-serif`;
-      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch * 0.66);
+      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch * 0.67);
     } else if (card.rank.val === 1) {
-      // Ás Majestoso com Brasão Central
-      ctx.font = `${cw * 0.44}px sans-serif`;
+      // Ás Monumental com Halo Radiante
+      ctx.save();
+      ctx.strokeStyle = currentSkin.acc + '55';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(x + cw / 2, y + ch / 2, cw * 0.32, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.font = `${cw * 0.46}px sans-serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2);
     } else {
-      ctx.font = `${cw * 0.35}px sans-serif`;
+      ctx.font = `${cw * 0.36}px sans-serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2);
     }
   }
+
+  // Realce de elevação com energia da skin
+  if (isElevated) {
+    ctx.strokeStyle = currentSkin.acc;
+    ctx.lineWidth = 3;
+    roundRect(ctx, x, y, cw, ch, 7);
+    ctx.stroke();
+  }
+
   ctx.restore();
+}
+
+function drawFaceCornerOrnaments(c, pattern, x, y, w, h, acc) {
+  c.save();
+  c.strokeStyle = acc;
+  c.fillStyle = acc;
+  c.lineWidth = 1.4;
+  const s = w * 0.04;
+  const pts = [
+    {cx: x + 6.5, cy: y + 6.5},
+    {cx: x + w - 6.5, cy: y + 6.5},
+    {cx: x + 6.5, cy: y + h - 6.5},
+    {cx: x + w - 6.5, cy: y + h - 6.5}
+  ];
+  pts.forEach(p => {
+    if (pattern === 'arcane') {
+      c.beginPath();
+      c.moveTo(p.cx, p.cy - s); c.lineTo(p.cx + s*0.7, p.cy); c.lineTo(p.cx, p.cy + s); c.lineTo(p.cx - s*0.7, p.cy);
+      c.closePath(); c.stroke();
+    } else if (pattern === 'nature') {
+      c.beginPath();
+      c.moveTo(p.cx, p.cy - s); c.quadraticCurveTo(p.cx + s, p.cy, p.cx, p.cy + s); c.quadraticCurveTo(p.cx - s, p.cy, p.cx, p.cy - s);
+      c.closePath(); c.fill();
+    } else if (pattern === 'ice') {
+      c.beginPath();
+      c.moveTo(p.cx - s, p.cy); c.lineTo(p.cx + s, p.cy);
+      c.moveTo(p.cx, p.cy - s); c.lineTo(p.cx, p.cy + s);
+      c.stroke();
+    } else if (pattern === 'golden' || pattern === 'royal' || pattern === 'cosmic') {
+      c.beginPath();
+      c.moveTo(p.cx, p.cy - s); c.lineTo(p.cx + s*0.3, p.cy - s*0.3);
+      c.lineTo(p.cx + s, p.cy); c.lineTo(p.cx + s*0.3, p.cy + s*0.3);
+      c.lineTo(p.cx, p.cy + s); c.lineTo(p.cx - s*0.3, p.cy + s*0.3);
+      c.lineTo(p.cx - s, p.cy); c.lineTo(p.cx - s*0.3, p.cy - s*0.3);
+      c.closePath(); c.fill();
+    } else {
+      c.beginPath(); c.arc(p.cx, p.cy, s * 0.6, 0, Math.PI * 2); c.fill();
+    }
+  });
+  c.restore();
 }
 
 function drawSkinPattern(c, pattern, cx, cy, size, acc) {

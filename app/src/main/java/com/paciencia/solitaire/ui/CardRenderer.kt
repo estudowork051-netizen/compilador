@@ -16,7 +16,8 @@ import com.paciencia.solitaire.model.Suit
 import com.paciencia.solitaire.scenery.SceneryTheme
 
 /**
- * Renderizador vetorial de alta precisão de cartas, naipes e pilhas com suporte a skins customizáveis.
+ * Renderizador vetorial de alta precisão de cartas, naipes, pilhas e molduras com
+ * suporte integral à identidade Dark Fantasy das 8 skins colecionáveis (frente e verso).
  */
 class CardRenderer {
 
@@ -25,15 +26,14 @@ class CardRenderer {
     }
 
     private val cardInnerBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0x18D4AF37.toInt() // Filigrana dourada interna sutil
         style = Paint.Style.STROKE
-        strokeWidth = 1f
+        strokeWidth = 1.8f
     }
 
     private val cardBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0x33000000.toInt()
+        color = 0x40000000.toInt()
         style = Paint.Style.STROKE
-        strokeWidth = 1.5f
+        strokeWidth = 1.6f
     }
 
     private val cardBackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -41,24 +41,27 @@ class CardRenderer {
     }
 
     private val cardBackInnerBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0x44FFFFFF.toInt()
         style = Paint.Style.STROKE
-        strokeWidth = 2f
+        strokeWidth = 2.2f
     }
 
     private val cardBackPatternPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0x1AFFFFFF.toInt()
         style = Paint.Style.STROKE
-        strokeWidth = 1.2f
+        strokeWidth = 2.4f
+    }
+
+    private val cornerOrnamentPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 1.4f
     }
 
     private val redPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0xFFE11D48.toInt() // Crimson de alto contraste
+        color = 0xFFDC2626.toInt() // Carmesim vivo de alto contraste
         style = Paint.Style.FILL
     }
 
     private val blackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0xFF0F172A.toInt() // Obsidian black profundo
+        color = 0xFF0F172A.toInt() // Obsidian profundo
         style = Paint.Style.FILL
     }
 
@@ -68,25 +71,32 @@ class CardRenderer {
     }
 
     private val ambientShadowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0x26000000.toInt()
+        color = 0x33000000.toInt()
         style = Paint.Style.FILL
     }
 
     private val shadowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0x55000000.toInt()
+        color = 0x66000000.toInt()
         style = Paint.Style.FILL
     }
 
-    private val highlightPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0xFFF59E0B.toInt() // Destaque âmbar/dourado
+    private val highlightAuraPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = 3f
+        strokeWidth = 6f
+    }
+
+    private val highlightPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 2.8f
     }
 
     private val courtBoxPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = 0x1A000000.toInt()
         style = Paint.Style.STROKE
-        strokeWidth = 1.5f
+        strokeWidth = 2f
+    }
+
+    private val courtBoxBgPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
     }
 
     private val courtTextPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -96,16 +106,25 @@ class CardRenderer {
 
     private val slotPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = 2f
+    }
+
+    private val slotBevelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
     }
 
     private val slotBgPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
     }
 
+    private val bracketPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 2f
+    }
+
     private val rectF = RectF()
     private val shadowRectF = RectF()
     private val suitPath = Path()
+    private val ornamentPath = Path()
 
     /**
      * Desenha uma carta completa (frente ou verso) na posição especificada.
@@ -122,19 +141,18 @@ class CardRenderer {
         isHighlighted: Boolean = false,
         skin: CardSkin = CardSkin.CLASSIC
     ) {
-        val cornerRadius = width * 0.08f
+        val cornerRadius = width * 0.09f
 
-        // Sombra suave ambiente em repouso
+        // 1. Sombra volumétrica realista com camada dupla (ambient + directional)
         if (elevation <= 0f) {
-            shadowRectF.set(x + 1f, y + 2f, x + width + 1f, y + height + 2f)
+            shadowRectF.set(x + 1.5f, y + 2.5f, x + width + 1.5f, y + height + 2.5f)
             canvas.drawRoundRect(shadowRectF, cornerRadius, cornerRadius, ambientShadowPaint)
         } else {
-            // Sombra dinâmica elevada com dupla camada para profundidade 3D
-            val ambientOffset = elevation * 0.25f
+            val ambientOffset = elevation * 0.3f
             shadowRectF.set(x, y + ambientOffset, x + width, y + height + ambientOffset)
             canvas.drawRoundRect(shadowRectF, cornerRadius, cornerRadius, ambientShadowPaint)
 
-            val dirOffset = elevation * 0.5f
+            val dirOffset = elevation * 0.65f
             shadowRectF.set(
                 x + dirOffset * 0.2f,
                 y + dirOffset,
@@ -146,20 +164,31 @@ class CardRenderer {
 
         rectF.set(x, y, x + width, y + height)
 
+        // 2. Renderização do corpo da carta (Frente estilizada pela Skin ou Verso temático)
         if (card.isFaceUp) {
-            drawFaceUpCard(canvas, card, x, y, width, height, cornerRadius)
+            drawFaceUpCard(canvas, card, x, y, width, height, cornerRadius, skin)
         } else {
             drawFaceDownCard(canvas, x, y, width, height, cornerRadius, theme, skin)
         }
 
-        // Realce de seleção ao arrastar ou selecionar a carta
+        // 3. Realce luminoso multicamadas com a energia mística da skin ativa
         if (isHighlighted) {
+            // Aura de energia externa suave
+            highlightAuraPaint.color = skin.accentColor
+            highlightAuraPaint.alpha = 110
+            highlightAuraPaint.strokeWidth = 7f
+            canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, highlightAuraPaint)
+
+            // Contorno brilhante nítido
+            highlightPaint.color = skin.accentColor
+            highlightPaint.alpha = 255
+            highlightPaint.strokeWidth = 3f
             canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, highlightPaint)
         }
     }
 
     /**
-     * Renderiza a face frontal da carta.
+     * Renderiza a face frontal da carta personalizada pela skin equipada.
      */
     private fun drawFaceUpCard(
         canvas: Canvas,
@@ -168,30 +197,50 @@ class CardRenderer {
         y: Float,
         width: Float,
         height: Float,
-        cornerRadius: Float
+        cornerRadius: Float,
+        skin: CardSkin
     ) {
-        // Fundo em pergaminho nobre com gradiente marfim suave
+        // Paleta nobre de pergaminho sutilmente harmonizada com o reino da skin
+        val (faceColorTop, faceColorBottom) = when (skin.pattern) {
+            SkinPattern.GOLDEN -> Pair(0xFFFFFDF5.toInt(), 0xFFFAF0D7.toInt())
+            SkinPattern.ARCANE -> Pair(0xFFF8FAFC.toInt(), 0xFFEDE9FE.toInt())
+            SkinPattern.NATURE -> Pair(0xFFF7FDF9.toInt(), 0xFFECFDF5.toInt())
+            SkinPattern.ICE -> Pair(0xFFF0F9FF.toInt(), 0xFFE0F2FE.toInt())
+            SkinPattern.SHADOW -> Pair(0xFFF5F5F7.toInt(), 0xFFE4E4E7.toInt())
+            SkinPattern.COSMIC -> Pair(0xFFFAF5FF.toInt(), 0xFFF3E8FF.toInt())
+            SkinPattern.ROYAL -> Pair(0xFFFFF1F2.toInt(), 0xFFFFE4E6.toInt())
+            SkinPattern.CLASSIC -> Pair(0xFFFFFDF9.toInt(), 0xFFF3EFE6.toInt())
+        }
+
         cardFacePaint.shader = LinearGradient(
             x, y, x, y + height,
-            0xFFFFFDF9.toInt(), 0xFFF3EFE6.toInt(),
+            faceColorTop, faceColorBottom,
             Shader.TileMode.CLAMP
         )
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, cardFacePaint)
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, cardBorderPaint)
 
-        // Moldura interna de filigrana dourada suave
-        val innerPad = width * 0.045f
+        // Moldura interna de filigrana na cor de destaque da Skin equipada
+        val innerPad = width * 0.055f
         shadowRectF.set(x + innerPad, y + innerPad, x + width - innerPad, y + height - innerPad)
+        cardInnerBorderPaint.color = skin.accentColor
+        cardInnerBorderPaint.alpha = 180
         canvas.drawRoundRect(shadowRectF, cornerRadius * 0.7f, cornerRadius * 0.7f, cardInnerBorderPaint)
 
+        // Ornamentos nos 4 cantos da face da carta de acordo com o padrão da skin
+        cornerOrnamentPaint.color = skin.accentColor
+        cornerOrnamentPaint.alpha = 200
+        drawCornerOrnaments(canvas, skin.pattern, x, y, width, height, innerPad, cornerOrnamentPaint)
+
+        // Textos e Naipes com alto contraste visual
         val suitPaint = if (card.isRed) redPaint else blackPaint
         textPaint.color = suitPaint.color
-        val textSize = width * 0.22f
+        val textSize = width * 0.23f
         textPaint.textSize = textSize
 
-        // Desenha número e naipe no canto superior esquerdo
+        // Índice no canto superior esquerdo
         val leftMargin = width * 0.09f
-        val topMargin = height * 0.16f
+        val topMargin = height * 0.17f
         canvas.drawText(card.rank.label, x + leftMargin, y + topMargin, textPaint)
 
         val suitSize = width * 0.14f
@@ -199,12 +248,12 @@ class CardRenderer {
             canvas,
             card.suit,
             x + leftMargin + (textPaint.measureText(card.rank.label) * 0.5f),
-            y + topMargin + suitSize * 1.1f,
+            y + topMargin + suitSize * 1.15f,
             suitSize,
             suitPaint
         )
 
-        // Desenha número e naipe no canto inferior direito invertido (180°)
+        // Índice no canto inferior direito rotacionado 180 graus
         canvas.save()
         canvas.rotate(180f, x + width * 0.5f, y + height * 0.5f)
         canvas.drawText(card.rank.label, x + leftMargin, y + topMargin, textPaint)
@@ -212,14 +261,154 @@ class CardRenderer {
             canvas,
             card.suit,
             x + leftMargin + (textPaint.measureText(card.rank.label) * 0.5f),
-            y + topMargin + suitSize * 1.1f,
+            y + topMargin + suitSize * 1.15f,
             suitSize,
             suitPaint
         )
         canvas.restore()
 
-        // Desenho central da carta
-        drawCenterEmblem(canvas, card, x + width * 0.5f, y + height * 0.5f, width, height, suitPaint)
+        // Desenho central da carta (Figuras heráldicas da corte, Ás monumental ou naipes)
+        drawCenterEmblem(canvas, card, x + width * 0.5f, y + height * 0.5f, width, height, suitPaint, skin)
+    }
+
+    /**
+     * Desenha os 4 ornamentos nos cantos da carta frontal com símbolos da coleção.
+     */
+    private fun drawCornerOrnaments(
+        canvas: Canvas,
+        pattern: SkinPattern,
+        x: Float,
+        y: Float,
+        width: Float,
+        height: Float,
+        pad: Float,
+        paint: Paint
+    ) {
+        val s = width * 0.038f
+        val left = x + pad + 2.5f
+        val right = x + width - pad - 2.5f
+        val top = y + pad + 2.5f
+        val bottom = y + height - pad - 2.5f
+
+        when (pattern) {
+            SkinPattern.ARCANE -> {
+                drawMiniDiamond(canvas, left, top, s, paint)
+                drawMiniDiamond(canvas, right, top, s, paint)
+                drawMiniDiamond(canvas, left, bottom, s, paint)
+                drawMiniDiamond(canvas, right, bottom, s, paint)
+            }
+            SkinPattern.GOLDEN -> {
+                drawMiniCross(canvas, left, top, s, paint)
+                drawMiniCross(canvas, right, top, s, paint)
+                drawMiniCross(canvas, left, bottom, s, paint)
+                drawMiniCross(canvas, right, bottom, s, paint)
+            }
+            SkinPattern.NATURE -> {
+                drawMiniLeaf(canvas, left, top, s, paint)
+                drawMiniLeaf(canvas, right, top, s, paint)
+                drawMiniLeaf(canvas, left, bottom, s, paint)
+                drawMiniLeaf(canvas, right, bottom, s, paint)
+            }
+            SkinPattern.ICE -> {
+                drawMiniIce(canvas, left, top, s, paint)
+                drawMiniIce(canvas, right, top, s, paint)
+                drawMiniIce(canvas, left, bottom, s, paint)
+                drawMiniIce(canvas, right, bottom, s, paint)
+            }
+            SkinPattern.SHADOW -> {
+                drawMiniGothic(canvas, left, top, s, paint)
+                drawMiniGothic(canvas, right, top, s, paint)
+                drawMiniGothic(canvas, left, bottom, s, paint)
+                drawMiniGothic(canvas, right, bottom, s, paint)
+            }
+            SkinPattern.COSMIC -> {
+                drawMiniStar(canvas, left, top, s, paint)
+                drawMiniStar(canvas, right, top, s, paint)
+                drawMiniStar(canvas, left, bottom, s, paint)
+                drawMiniStar(canvas, right, bottom, s, paint)
+            }
+            SkinPattern.ROYAL -> {
+                drawMiniCrown(canvas, left, top, s, paint)
+                drawMiniCrown(canvas, right, top, s, paint)
+                drawMiniCrown(canvas, left, bottom, s, paint)
+                drawMiniCrown(canvas, right, bottom, s, paint)
+            }
+            SkinPattern.CLASSIC -> {
+                canvas.drawCircle(left, top, s * 0.7f, paint)
+                canvas.drawCircle(right, top, s * 0.7f, paint)
+                canvas.drawCircle(left, bottom, s * 0.7f, paint)
+                canvas.drawCircle(right, bottom, s * 0.7f, paint)
+            }
+        }
+    }
+
+    private fun drawMiniDiamond(canvas: Canvas, cx: Float, cy: Float, s: Float, paint: Paint) {
+        ornamentPath.reset()
+        ornamentPath.moveTo(cx, cy - s)
+        ornamentPath.lineTo(cx + s * 0.7f, cy)
+        ornamentPath.lineTo(cx, cy + s)
+        ornamentPath.lineTo(cx - s * 0.7f, cy)
+        ornamentPath.close()
+        canvas.drawPath(ornamentPath, paint)
+    }
+
+    private fun drawMiniCross(canvas: Canvas, cx: Float, cy: Float, s: Float, paint: Paint) {
+        canvas.drawLine(cx - s, cy, cx + s, cy, paint)
+        canvas.drawLine(cx, cy - s, cx, cy + s, paint)
+        canvas.drawCircle(cx, cy, s * 0.4f, paint)
+    }
+
+    private fun drawMiniLeaf(canvas: Canvas, cx: Float, cy: Float, s: Float, paint: Paint) {
+        ornamentPath.reset()
+        ornamentPath.moveTo(cx, cy - s)
+        ornamentPath.quadTo(cx + s, cy, cx, cy + s)
+        ornamentPath.quadTo(cx - s, cy, cx, cy - s)
+        ornamentPath.close()
+        canvas.drawPath(ornamentPath, paint)
+    }
+
+    private fun drawMiniIce(canvas: Canvas, cx: Float, cy: Float, s: Float, paint: Paint) {
+        canvas.drawLine(cx - s, cy, cx + s, cy, paint)
+        canvas.drawLine(cx, cy - s, cx, cy + s, paint)
+        val d = s * 0.7f
+        canvas.drawLine(cx - d, cy - d, cx + d, cy + d, paint)
+        canvas.drawLine(cx - d, cy + d, cx + d, cy - d, paint)
+    }
+
+    private fun drawMiniGothic(canvas: Canvas, cx: Float, cy: Float, s: Float, paint: Paint) {
+        ornamentPath.reset()
+        ornamentPath.moveTo(cx - s * 0.6f, cy - s)
+        ornamentPath.lineTo(cx + s * 0.6f, cy - s)
+        ornamentPath.lineTo(cx, cy + s)
+        ornamentPath.close()
+        canvas.drawPath(ornamentPath, paint)
+    }
+
+    private fun drawMiniStar(canvas: Canvas, cx: Float, cy: Float, s: Float, paint: Paint) {
+        ornamentPath.reset()
+        ornamentPath.moveTo(cx, cy - s)
+        ornamentPath.lineTo(cx + s * 0.25f, cy - s * 0.25f)
+        ornamentPath.lineTo(cx + s, cy)
+        ornamentPath.lineTo(cx + s * 0.25f, cy + s * 0.25f)
+        ornamentPath.lineTo(cx, cy + s)
+        ornamentPath.lineTo(cx - s * 0.25f, cy + s * 0.25f)
+        ornamentPath.lineTo(cx - s, cy)
+        ornamentPath.lineTo(cx - s * 0.25f, cy - s * 0.25f)
+        ornamentPath.close()
+        canvas.drawPath(ornamentPath, paint)
+    }
+
+    private fun drawMiniCrown(canvas: Canvas, cx: Float, cy: Float, s: Float, paint: Paint) {
+        ornamentPath.reset()
+        ornamentPath.moveTo(cx - s, cy + s * 0.5f)
+        ornamentPath.lineTo(cx + s, cy + s * 0.5f)
+        ornamentPath.lineTo(cx + s * 0.8f, cy - s * 0.5f)
+        ornamentPath.lineTo(cx + s * 0.35f, cy)
+        ornamentPath.lineTo(cx, cy - s * 0.7f)
+        ornamentPath.lineTo(cx - s * 0.35f, cy)
+        ornamentPath.lineTo(cx - s * 0.8f, cy - s * 0.5f)
+        ornamentPath.close()
+        canvas.drawPath(ornamentPath, paint)
     }
 
     /**
@@ -232,41 +421,56 @@ class CardRenderer {
         cy: Float,
         width: Float,
         height: Float,
-        suitPaint: Paint
+        suitPaint: Paint,
+        skin: CardSkin
     ) {
         when (card.rank) {
             Rank.ACE -> {
-                // Grande naipe monumental com aura radiante
+                // Ás monumental com anel radiante na cor da skin
+                val auraPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                    color = skin.accentColor
+                    alpha = 75
+                    style = Paint.Style.STROKE
+                    strokeWidth = 2.5f
+                }
+                canvas.drawCircle(cx, cy, width * 0.27f, auraPaint)
+
                 val largeSize = width * 0.44f
                 drawSuit(canvas, card.suit, cx, cy, largeSize, suitPaint)
             }
             Rank.JACK, Rank.QUEEN, Rank.KING -> {
-                // Caixa nobre com filigrana dourada e marca d'água heráldica
-                val boxWidth = width * 0.58f
-                val boxHeight = height * 0.46f
+                // Caixa nobre heráldica com moldura dourada e fundo perolado
+                val boxWidth = width * 0.60f
+                val boxHeight = height * 0.48f
                 rectF.set(cx - boxWidth * 0.5f, cy - boxHeight * 0.5f, cx + boxWidth * 0.5f, cy + boxHeight * 0.5f)
-                courtBoxPaint.color = 0x44D4AF37.toInt()
-                courtBoxPaint.strokeWidth = 1.8f
-                canvas.drawRoundRect(rectF, 6f, 6f, courtBoxPaint)
 
-                // Marca d'água sutil do naipe por trás da letra da figura
-                val watermarkSize = width * 0.28f
+                courtBoxBgPaint.color = 0x1A000000 or (skin.accentColor and 0x00FFFFFF)
+                canvas.drawRoundRect(rectF, 7f, 7f, courtBoxBgPaint)
+
+                courtBoxPaint.color = skin.accentColor
+                courtBoxPaint.alpha = 220
+                courtBoxPaint.strokeWidth = 2f
+                canvas.drawRoundRect(rectF, 7f, 7f, courtBoxPaint)
+
+                // Marca d'água sutil do naipe ao fundo
+                val watermarkSize = width * 0.30f
                 val oldAlpha = suitPaint.alpha
-                suitPaint.alpha = 24
+                suitPaint.alpha = 26
                 drawSuit(canvas, card.suit, cx, cy - 2f, watermarkSize, suitPaint)
                 suitPaint.alpha = oldAlpha
 
+                // Letra da figura (J, Q, K)
                 courtTextPaint.color = suitPaint.color
-                courtTextPaint.textSize = width * 0.38f
+                courtTextPaint.textSize = width * 0.40f
                 canvas.drawText(card.rank.label, cx, cy + width * 0.13f, courtTextPaint)
 
-                // Pequeno naipe ornamental abaixo da letra
+                // Pequeno naipe nobre sob a letra
                 val smallSuitSize = width * 0.15f
                 drawSuit(canvas, card.suit, cx, cy + boxHeight * 0.36f, smallSuitSize, suitPaint)
             }
             else -> {
                 // Cartas numéricas (2 a 10): naipe proporcional central
-                val midSize = width * 0.32f
+                val midSize = width * 0.34f
                 drawSuit(canvas, card.suit, cx, cy, midSize, suitPaint)
             }
         }
@@ -285,7 +489,6 @@ class CardRenderer {
         theme: SceneryTheme,
         skin: CardSkin
     ) {
-        // Cores do verso da skin ativa ou do cenário se for a skin clássica
         val colorStart = if (skin.id == CardSkin.CLASSIC.id) theme.cardBackGradient[0] else skin.primaryColor
         val colorEnd = if (skin.id == CardSkin.CLASSIC.id) theme.cardBackGradient[1] else skin.secondaryColor
 
@@ -296,26 +499,32 @@ class CardRenderer {
         )
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, cardBackPaint)
 
-        // Moldura branca externa da carta de baralho
+        // Moldura externa da carta de baralho
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, cardBorderPaint)
 
-        // Moldura interna com a cor de destaque da skin
+        // Moldura interna ornamental com a cor de destaque da skin
         val pad = width * 0.08f
         rectF.set(x + pad, y + pad, x + width - pad, y + height - pad)
         cardBackInnerBorderPaint.color = skin.accentColor
-        cardBackInnerBorderPaint.alpha = 150
+        cardBackInnerBorderPaint.alpha = 210
         canvas.drawRoundRect(rectF, cornerRadius * 0.7f, cornerRadius * 0.7f, cardBackInnerBorderPaint)
+
+        // Segunda moldura fina para profundidade
+        val pad2 = width * 0.12f
+        rectF.set(x + pad2, y + pad2, x + width - pad2, y + height - pad2)
+        cardBackInnerBorderPaint.alpha = 90
+        canvas.drawRoundRect(rectF, cornerRadius * 0.5f, cornerRadius * 0.5f, cardBackInnerBorderPaint)
 
         val cx = x + width * 0.5f
         val cy = y + height * 0.5f
         cardBackPatternPaint.color = skin.accentColor
-        cardBackPatternPaint.alpha = 190
+        cardBackPatternPaint.alpha = 240
 
         drawSkinPattern(canvas, skin.pattern, cx, cy, width, height)
     }
 
     /**
-     * Desenha geometricamente o padrão decorativo central de cada skin.
+     * Desenha geometricamente o padrão decorativo central de cada skin no verso.
      */
     private fun drawSkinPattern(
         canvas: Canvas,
@@ -325,21 +534,23 @@ class CardRenderer {
         width: Float,
         height: Float
     ) {
-        val size = width * 0.24f
+        val size = width * 0.26f
         suitPath.reset()
 
         when (pattern) {
             SkinPattern.CLASSIC -> {
-                // Losango clássico de baralhos finos
+                // Losango clássico de baralhos finos com roseta interna
                 suitPath.moveTo(cx, cy - size)
                 suitPath.lineTo(cx + size, cy)
                 suitPath.lineTo(cx, cy + size)
                 suitPath.lineTo(cx - size, cy)
                 suitPath.close()
                 canvas.drawPath(suitPath, cardBackPatternPaint)
+
+                canvas.drawCircle(cx, cy, size * 0.4f, cardBackPatternPaint)
             }
             SkinPattern.GOLDEN -> {
-                // Duplo losango com cruz radiante dourada
+                // Duplo losango com cruz radiante dourada e núcleo solar
                 suitPath.moveTo(cx, cy - size)
                 suitPath.lineTo(cx + size, cy)
                 suitPath.lineTo(cx, cy + size)
@@ -352,66 +563,68 @@ class CardRenderer {
                 suitPath.reset()
                 suitPath.addCircle(cx, cy, innerR, Path.Direction.CW)
                 canvas.drawPath(suitPath, cardBackPatternPaint)
+
+                canvas.drawLine(cx - size * 0.8f, cy, cx + size * 0.8f, cy, cardBackPatternPaint)
+                canvas.drawLine(cx, cy - size * 0.8f, cx, cy + size * 0.8f, cardBackPatternPaint)
             }
             SkinPattern.ARCANE -> {
-                // Anel místico com estrela de 4 pontas
-                suitPath.addCircle(cx, cy, size * 0.9f, Path.Direction.CW)
+                // Anel rúnico místico com estrela de 4 pontas
+                suitPath.addCircle(cx, cy, size * 0.92f, Path.Direction.CW)
                 canvas.drawPath(suitPath, cardBackPatternPaint)
 
                 suitPath.reset()
-                suitPath.moveTo(cx, cy - size * 0.85f)
-                suitPath.lineTo(cx + size * 0.2f, cy - size * 0.2f)
-                suitPath.lineTo(cx + size * 0.85f, cy)
-                suitPath.lineTo(cx + size * 0.2f, cy + size * 0.2f)
-                suitPath.lineTo(cx, cy + size * 0.85f)
-                suitPath.lineTo(cx - size * 0.2f, cy + size * 0.2f)
-                suitPath.lineTo(cx - size * 0.85f, cy)
-                suitPath.lineTo(cx - size * 0.2f, cy - size * 0.2f)
+                suitPath.moveTo(cx, cy - size * 0.88f)
+                suitPath.lineTo(cx + size * 0.22f, cy - size * 0.22f)
+                suitPath.lineTo(cx + size * 0.88f, cy)
+                suitPath.lineTo(cx + size * 0.22f, cy + size * 0.22f)
+                suitPath.lineTo(cx, cy + size * 0.88f)
+                suitPath.lineTo(cx - size * 0.22f, cy + size * 0.22f)
+                suitPath.lineTo(cx - size * 0.88f, cy)
+                suitPath.lineTo(cx - size * 0.22f, cy - size * 0.22f)
                 suitPath.close()
                 canvas.drawPath(suitPath, cardBackPatternPaint)
             }
             SkinPattern.SHADOW -> {
                 // Brasão sombrio com ponta de lâmina
-                suitPath.moveTo(cx - size * 0.7f, cy - size * 0.7f)
-                suitPath.lineTo(cx + size * 0.7f, cy - size * 0.7f)
-                suitPath.lineTo(cx + size * 0.7f, cy)
-                suitPath.lineTo(cx, cy + size * 0.95f)
-                suitPath.lineTo(cx - size * 0.7f, cy)
+                suitPath.moveTo(cx - size * 0.75f, cy - size * 0.75f)
+                suitPath.lineTo(cx + size * 0.75f, cy - size * 0.75f)
+                suitPath.lineTo(cx + size * 0.75f, cy)
+                suitPath.lineTo(cx, cy + size * 1.0f)
+                suitPath.lineTo(cx - size * 0.75f, cy)
                 suitPath.close()
                 canvas.drawPath(suitPath, cardBackPatternPaint)
+
+                canvas.drawLine(cx, cy - size * 0.75f, cx, cy + size * 0.75f, cardBackPatternPaint)
             }
             SkinPattern.NATURE -> {
-                // Pétalas ou folhas esmeralda entrelaçadas
-                val leafW = size * 0.75f
-                suitPath.moveTo(cx, cy - size * 0.9f)
-                suitPath.quadTo(cx + leafW, cy, cx, cy + size * 0.9f)
-                suitPath.quadTo(cx - leafW, cy, cx, cy - size * 0.9f)
+                // Folhas élficas e vinhas entrelaçadas
+                val leafW = size * 0.8f
+                suitPath.moveTo(cx, cy - size * 0.95f)
+                suitPath.quadTo(cx + leafW, cy, cx, cy + size * 0.95f)
+                suitPath.quadTo(cx - leafW, cy, cx, cy - size * 0.95f)
+                suitPath.close()
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+
+                suitPath.reset()
+                suitPath.moveTo(cx - size * 0.95f, cy)
+                suitPath.quadTo(cx, cy + leafW, cx + size * 0.95f, cy)
+                suitPath.quadTo(cx, cy - leafW, cx - size * 0.95f, cy)
                 suitPath.close()
                 canvas.drawPath(suitPath, cardBackPatternPaint)
             }
             SkinPattern.ICE -> {
-                // Cristal de gelo fractal
-                val arm = size * 0.85f
-                // Eixo vertical
-                suitPath.moveTo(cx, cy - arm)
-                suitPath.lineTo(cx, cy + arm)
-                // Eixo diagonal 1
-                suitPath.moveTo(cx - arm * 0.866f, cy - arm * 0.5f)
-                suitPath.lineTo(cx + arm * 0.866f, cy + arm * 0.5f)
-                // Eixo diagonal 2
-                suitPath.moveTo(cx - arm * 0.866f, cy + arm * 0.5f)
-                suitPath.lineTo(cx + arm * 0.866f, cy - arm * 0.5f)
-                canvas.drawPath(suitPath, cardBackPatternPaint)
+                // Cristal de gelo fractal sextavado
+                val arm = size * 0.9f
+                canvas.drawLine(cx, cy - arm, cx, cy + arm, cardBackPatternPaint)
+                canvas.drawLine(cx - arm * 0.866f, cy - arm * 0.5f, cx + arm * 0.866f, cy + arm * 0.5f, cardBackPatternPaint)
+                canvas.drawLine(cx - arm * 0.866f, cy + arm * 0.5f, cx + arm * 0.866f, cy - arm * 0.5f, cardBackPatternPaint)
 
-                // Núcleo cristalino
-                suitPath.reset()
-                suitPath.addCircle(cx, cy, size * 0.3f, Path.Direction.CW)
-                canvas.drawPath(suitPath, cardBackPatternPaint)
+                canvas.drawCircle(cx, cy, size * 0.35f, cardBackPatternPaint)
             }
             SkinPattern.COSMIC -> {
-                // Galáxia cósmica com órbita estelar
-                val orbitW = size * 1.1f
-                val orbitH = size * 0.45f
+                // Órbita planetária com estrela central
+                val orbitW = size * 1.15f
+                val orbitH = size * 0.48f
                 rectF.set(cx - orbitW, cy - orbitH, cx + orbitW, cy + orbitH)
                 canvas.save()
                 canvas.rotate(35f, cx, cy)
@@ -419,19 +632,23 @@ class CardRenderer {
                 canvas.drawPath(suitPath, cardBackPatternPaint)
                 canvas.restore()
 
-                // Estrela central cintilante
+                canvas.save()
+                canvas.rotate(-35f, cx, cy)
                 suitPath.reset()
-                suitPath.addCircle(cx, cy, size * 0.35f, Path.Direction.CW)
+                suitPath.addOval(rectF, Path.Direction.CW)
                 canvas.drawPath(suitPath, cardBackPatternPaint)
+                canvas.restore()
+
+                canvas.drawCircle(cx, cy, size * 0.35f, cardBackPatternPaint)
             }
             SkinPattern.ROYAL -> {
-                // Coroa imperial de 3 pontas
-                val crownW = size * 0.85f
-                val crownH = size * 0.65f
+                // Coroa imperial nobre de cavaleiro
+                val crownW = size * 0.9f
+                val crownH = size * 0.7f
                 suitPath.moveTo(cx - crownW, cy + crownH * 0.5f)
                 suitPath.lineTo(cx - crownW, cy - crownH * 0.5f)
                 suitPath.lineTo(cx - crownW * 0.45f, cy)
-                suitPath.lineTo(cx, cy - crownH * 0.8f)
+                suitPath.lineTo(cx, cy - crownH * 0.85f)
                 suitPath.lineTo(cx + crownW * 0.45f, cy)
                 suitPath.lineTo(cx + crownW, cy - crownH * 0.5f)
                 suitPath.lineTo(cx + crownW, cy + crownH * 0.5f)
@@ -442,7 +659,7 @@ class CardRenderer {
     }
 
     /**
-     * Desenha um espaço vazio de pilha (Tableau, Stock, Foundation).
+     * Desenha um espaço vazio de pilha com chanfro esculpido em pedra e cantoneiras.
      */
     fun drawEmptySlot(
         canvas: Canvas,
@@ -451,25 +668,54 @@ class CardRenderer {
         width: Float,
         height: Float,
         theme: SceneryTheme,
-        watermarkSuit: Suit? = null
+        watermarkSuit: Suit? = null,
+        accentColor: Int = theme.accentColor
     ) {
-        val cornerRadius = width * 0.08f
+        val cornerRadius = width * 0.09f
         rectF.set(x, y, x + width, y + height)
 
+        // Fundo em cavidade entalhada
         slotBgPaint.color = theme.slotBackgroundColor
         canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, slotBgPaint)
 
-        slotPaint.color = theme.slotBorderColor
-        canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, slotPaint)
+        // Chanfro interno para profundidade de encaixe
+        slotBevelPaint.color = 0x44000000
+        slotBevelPaint.strokeWidth = 2.5f
+        canvas.drawRoundRect(rectF, cornerRadius, cornerRadius, slotBevelPaint)
 
+        // Borda suave com a cor de destaque do tema
+        slotPaint.color = accentColor
+        slotPaint.alpha = 110
+        slotPaint.strokeWidth = 1.8f
+        val innerPad = 1.5f
+        rectF.set(x + innerPad, y + innerPad, x + width - innerPad, y + height - innerPad)
+        canvas.drawRoundRect(rectF, cornerRadius * 0.85f, cornerRadius * 0.85f, slotPaint)
+
+        // Cantoneiras ornamentais
+        val bLen = width * 0.20f
+        bracketPaint.color = accentColor
+        bracketPaint.alpha = 140
+        canvas.drawLine(x, y + bLen, x, y, bracketPaint)
+        canvas.drawLine(x, y, x + bLen, y, bracketPaint)
+
+        canvas.drawLine(x + width - bLen, y, x + width, y, bracketPaint)
+        canvas.drawLine(x + width, y, x + width, y + bLen, bracketPaint)
+
+        canvas.drawLine(x, y + height - bLen, x, y + height, bracketPaint)
+        canvas.drawLine(x, y + height, x + bLen, y + height, bracketPaint)
+
+        canvas.drawLine(x + width - bLen, y + height, x + width, y + height, bracketPaint)
+        canvas.drawLine(x + width, y + height - bLen, x + width, y + height, bracketPaint)
+
+        // Marca d'água dos naipes nas fundações
         if (watermarkSuit != null) {
             val watermarkPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                color = theme.slotBorderColor
-                alpha = 80
+                color = accentColor
+                alpha = 130
                 style = Paint.Style.STROKE
-                strokeWidth = 2f
+                strokeWidth = 2.4f
             }
-            drawSuit(canvas, watermarkSuit, x + width * 0.5f, y + height * 0.5f, width * 0.35f, watermarkPaint)
+            drawSuit(canvas, watermarkSuit, x + width * 0.5f, y + height * 0.5f, width * 0.38f, watermarkPaint)
         }
     }
 
@@ -489,7 +735,6 @@ class CardRenderer {
 
         when (suit) {
             Suit.HEARTS -> {
-                // Coração: dois arcos superiores e ponta inferior
                 suitPath.moveTo(cx, cy + r * 0.8f)
                 suitPath.cubicTo(
                     cx - r * 1.1f, cy + r * 0.1f,
@@ -514,7 +759,6 @@ class CardRenderer {
                 suitPath.close()
             }
             Suit.DIAMONDS -> {
-                // Ouros: losango geométrico elegante
                 suitPath.moveTo(cx, cy - r * 0.95f)
                 suitPath.lineTo(cx + r * 0.75f, cy)
                 suitPath.lineTo(cx, cy + r * 0.95f)
@@ -522,7 +766,6 @@ class CardRenderer {
                 suitPath.close()
             }
             Suit.SPADES -> {
-                // Espadas: coração invertido com haste na base
                 suitPath.moveTo(cx, cy - r * 0.9f)
                 suitPath.cubicTo(
                     cx + r * 1.1f, cy - r * 0.2f,
@@ -545,7 +788,7 @@ class CardRenderer {
                     cx, cy - r * 0.9f
                 )
                 suitPath.close()
-                // Haste inferior
+
                 suitPath.moveTo(cx - r * 0.15f, cy + r * 0.3f)
                 suitPath.lineTo(cx - r * 0.35f, cy + r * 0.95f)
                 suitPath.lineTo(cx + r * 0.35f, cy + r * 0.95f)
@@ -553,15 +796,11 @@ class CardRenderer {
                 suitPath.close()
             }
             Suit.CLUBS -> {
-                // Paus: três círculos e haste central
                 val circleR = r * 0.42f
-                // Círculo superior
                 suitPath.addCircle(cx, cy - circleR * 0.85f, circleR, Path.Direction.CW)
-                // Círculo esquerdo
                 suitPath.addCircle(cx - circleR * 0.85f, cy + circleR * 0.2f, circleR, Path.Direction.CW)
-                // Círculo direito
                 suitPath.addCircle(cx + circleR * 0.85f, cy + circleR * 0.2f, circleR, Path.Direction.CW)
-                // Haste triangular inferior
+
                 suitPath.moveTo(cx - r * 0.15f, cy + circleR * 0.2f)
                 suitPath.lineTo(cx - r * 0.35f, cy + r * 0.95f)
                 suitPath.lineTo(cx + r * 0.35f, cy + r * 0.95f)
