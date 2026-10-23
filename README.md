@@ -95,3 +95,32 @@ O arquivo APK gerado estará em:
 ```
 O arquivo APK gerado estará em:
 `app/build/outputs/apk/release/app-release-unsigned.apk`
+
+---
+
+## 🧪 Testes Unitários Automatizados
+
+O projeto conta com suíte de testes unitários para o motor Klondike (`KlondikeEngineTest.kt`), validando:
+- Integridade estrita das 52 cartas (sem duplicações ou perdas).
+- Distribuição inicial das 7 colunas em cascata, monte e descarte.
+- Regras de movimentação (alternância de cores, ordem decrescente, Rei em coluna vazia).
+- Regras de fundação (mesmo naipe, ordem ascendente do Ás ao Rei).
+- Ciclo completo de compra e reciclagem do monte.
+- Conservação de cartas no desfazer (*Undo*).
+- Condição de vitória com todas as fundações completas.
+
+Para executar os testes:
+```bash
+./gradlew testDebugUnitTest --stacktrace
+```
+
+---
+
+## 🛠️ Registro de Atualizações e Correções (Changelog v1.0.1)
+
+- **Correção Crítica de Fechamento (*Crash*)**: Adicionada permissão `android.permission.VIBRATE` no `AndroidManifest.xml` e implementado tratamento defensivo no `SoundFeedback.kt`, prevenindo `SecurityException` no Android 8.0+.
+- **Prevenção de Falhas de Desempilhamento**: Proteção de limites em `CardPile.pop(count)` com `.coerceAtMost()`, impedindo exceções em toques ultra-rápidos.
+- **Robustez de Ciclo de Vida**: Adicionada checagem `!isFinishing && !isDestroyed` em `MainActivity.kt` e descarte de callbacks ao pausar/destruir a Activity.
+- **Upgrades Visuais**: Contraste aprimorado nas cartas (`#E11D48` e `#0F172A`), sombra 3D em camadas, destaque dourado de elevação ao arrastar e eliminação de alocações de `Paint` no `onDraw()`.
+- **Renderização e Interatividade**: Correção de slot vazio ao arrastar a única carta de Waste/Fundação e suporte a virar a carta do topo do Tableau com um toque simples.
+
