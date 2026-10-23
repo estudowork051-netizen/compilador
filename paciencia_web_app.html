@@ -6,8 +6,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0A0D14">
-<title>Paciência Klondike — Edição Visual Premium Fantasy</title>
+<meta name="theme-color" content="#080B10">
+<title>Paciência Klondike — Edição Visual Dark Fantasy Premium</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
 body, html {
@@ -19,13 +19,13 @@ body, html {
 
 /* Moldura e Cabeçalho Dark Fantasy */
 #hud-top {
-  position: absolute; top: 0; left: 0; right: 0; height: 58px;
-  background: linear-gradient(180deg, rgba(14, 18, 28, 0.96) 0%, rgba(10, 14, 22, 0.88) 100%);
-  backdrop-filter: blur(12px);
+  position: absolute; top: 0; left: 0; right: 0; height: 56px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(10, 15, 26, 0.92) 100%);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 16px; color: #F8FAFC; z-index: 20; font-size: 13px;
-  border-bottom: 1.5px solid rgba(212, 175, 55, 0.28);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  border-bottom: 1.5px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
 }
 
 .hud-group {
@@ -34,38 +34,79 @@ body, html {
 
 .hud-badge {
   display: flex; align-items: center; gap: 6px; cursor: pointer;
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.95));
   padding: 5px 12px; border-radius: 20px;
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  transition: all 0.2s ease;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.hud-badge:active { transform: scale(0.96); background: rgba(212, 175, 55, 0.2); }
+.hud-badge:active { transform: scale(0.95); background: rgba(212, 175, 55, 0.25); }
 
 .hud-coins {
   color: #FBBF24; font-weight: 800; display: flex; align-items: center; gap: 5px;
-  text-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+  text-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
   font-family: monospace, sans-serif; font-size: 14px;
 }
 
 .level-badge {
-  color: #F8FAFC; font-weight: 800; font-size: 13px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  color: #38BDF8; font-weight: 800; letter-spacing: 0.8px;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
-.level-badge span { color: #FBBF24; }
 
 .hud-stats {
-  font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 8px;
-  background: rgba(0, 0, 0, 0.3); padding: 4px 10px; border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex; align-items: center; gap: 10px;
+  color: #CBD5E1; font-size: 12px; font-weight: 600;
+  background: rgba(15, 23, 42, 0.6); padding: 4px 10px; border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
-.hud-stats strong { color: #F1F5F9; }
+.hud-stats strong { color: #FFF; font-weight: 700; }
 
-/* Barra de Controles Inferior com Efeito Metal Envelhecido */
+#gameCanvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: block; z-index: 1;
+}
+
+/* Medalhão do Jogador no Canto Inferior Esquerdo */
+#avatar-medallion {
+  position: absolute; bottom: 70px; left: 14px;
+  background: linear-gradient(135deg, rgba(20, 26, 40, 0.95), rgba(10, 14, 24, 0.95));
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(212, 175, 55, 0.5);
+  border-radius: 28px;
+  padding: 4px 14px 4px 4px;
+  display: flex; align-items: center; gap: 10px;
+  z-index: 10; cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.65), 0 0 12px rgba(212, 175, 55, 0.25);
+  transition: all 0.25s ease;
+}
+#avatar-medallion:hover, #avatar-medallion:active {
+  transform: translateY(-2px) scale(1.02);
+  border-color: #FBBF24;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8), 0 0 18px rgba(251, 191, 36, 0.45);
+}
+
+.avatar-canvas-circle {
+  width: 44px; height: 44px; border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  display: block;
+}
+
+.avatar-meta {
+  display: flex; flex-direction: column; justify-content: center;
+}
+.avatar-name {
+  color: #F8FAFC; font-weight: 800; font-size: 13px; letter-spacing: 0.3px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+.avatar-title {
+  color: #F59E0B; font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Barra de Ações Inferior */
 #hud-bottom {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 64px;
-  background: linear-gradient(0deg, rgba(14, 18, 28, 0.96) 0%, rgba(10, 14, 22, 0.88) 100%);
+  position: absolute; bottom: 0; left: 0; right: 0; height: 62px;
+  background: linear-gradient(0deg, rgba(10, 14, 24, 0.98) 0%, rgba(15, 23, 42, 0.90) 100%);
   backdrop-filter: blur(12px);
   display: flex; align-items: center; justify-content: space-around;
   padding: 0 8px; z-index: 20;
@@ -74,179 +115,167 @@ body, html {
 }
 
 .btn-control {
-  background: none; border: none; color: #94A3B8; font-size: 11px;
-  display: flex; flex-direction: column; align-items: center; cursor: pointer;
-  padding: 5px 10px; border-radius: 10px; font-weight: 600;
-  letter-spacing: 0.3px; transition: all 0.15s ease;
+  background: transparent; border: none; outline: none;
+  color: #CBD5E1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-size: 10.5px; font-weight: 700; cursor: pointer; padding: 6px 12px; border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.4px;
 }
 .btn-control svg {
-  width: 22px; height: 22px; fill: #CBD5E1; margin-bottom: 3px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  transition: all 0.2s;
+  width: 22px; height: 22px; fill: currentColor; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
-.btn-control:active { transform: scale(0.92); color: #FBBF24; }
-.btn-control:active svg { fill: #FBBF24; filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6)); }
+.btn-control:active {
+  transform: scale(0.92); color: #FBBF24;
+  background: rgba(212, 175, 55, 0.15);
+}
 
-#gameCanvas { display: block; width: 100%; height: 100%; }
-
-/* Medalhão do Jogador / Avatar no Canto Inferior Esquerdo */
-#avatar-medallion {
-  position: absolute; bottom: 74px; left: 14px;
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
-  border: 1.5px solid rgba(212, 175, 55, 0.45);
-  border-radius: 28px; padding: 4px 12px 4px 4px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
-  z-index: 15; cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s;
-}
-#avatar-medallion:active { transform: scale(0.95); border-color: #FBBF24; }
-.avatar-circle {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: radial-gradient(circle, #334155, #0F172A);
-  border: 1.5px solid #FBBF24;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
-}
-.avatar-meta {
-  display: flex; flex-direction: column; text-align: left;
-}
-.avatar-name { font-size: 11px; font-weight: bold; color: #F8FAFC; line-height: 1.1; }
-.avatar-title { font-size: 9px; color: #FBBF24; letter-spacing: 0.3px; }
-
-/* Modais Dark Fantasy com Bordas Douradas */
+/* Modais de Fantasia Escura */
 .modal {
-  display: none; position: fixed; inset: 0; background: rgba(5, 7, 12, 0.85);
-  z-index: 100; align-items: center; justify-content: center; padding: 16px;
-  backdrop-filter: blur(8px);
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(4, 7, 14, 0.82);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  display: none; align-items: center; justify-content: center;
+  z-index: 100; padding: 16px;
+  animation: fadeIn 0.25s ease;
 }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
 .modal-content {
-  background: linear-gradient(160deg, #161D2C 0%, #0F131D 100%);
-  border: 1.5px solid rgba(212, 175, 55, 0.45);
-  border-radius: 20px;
-  max-width: 400px; width: 100%; padding: 22px; color: #F8FAFC; text-align: center;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.15);
-  max-height: 90vh; display: flex; flex-direction: column;
-  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  background: linear-gradient(135deg, rgba(22, 30, 48, 0.98) 0%, rgba(14, 20, 34, 0.98) 100%);
+  border: 1.8px solid rgba(212, 175, 55, 0.45);
+  border-radius: 20px; width: 100%; max-width: 440px; max-height: 88vh;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(212, 175, 55, 0.2);
+  display: flex; flex-direction: column; padding: 20px; color: #FFF;
+  overflow: hidden;
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.92) translateY(12px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+@keyframes scaleUp { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.modal-title {
+  font-size: 18px; font-weight: 800; color: #FBBF24; text-align: center;
+  margin-bottom: 14px; text-transform: uppercase; letter-spacing: 1px;
+  text-shadow: 0 2px 10px rgba(251, 191, 36, 0.4);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 
-.modal h2 {
-  color: #FBBF24; font-size: 22px; font-weight: 800; margin-bottom: 4px;
-  letter-spacing: 0.5px; text-shadow: 0 2px 10px rgba(251, 191, 36, 0.3);
-}
-.modal p { color: #94A3B8; font-size: 13px; line-height: 1.4; margin-bottom: 14px; }
-.modal-btn {
-  width: 100%; padding: 12px; border-radius: 12px; border: none; font-weight: bold;
-  font-size: 14px; margin-top: 8px; cursor: pointer; transition: transform 0.1s, filter 0.2s;
-  letter-spacing: 0.3px;
-}
-.modal-btn:active { transform: scale(0.98); }
-.btn-gold {
-  background: linear-gradient(135deg, #F59E0B, #D97706); color: #050810;
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4);
-}
-.btn-gold:hover { filter: brightness(1.1); }
-.btn-blue {
-  background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #FFF;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-}
-.btn-gray { background: #1E293B; color: #E2E8F0; border: 1px solid rgba(255,255,255,0.08); }
-
-/* Galeria e Abas da Loja */
-.shop-tabs {
-  display: flex; gap: 6px; background: rgba(0,0,0,0.35);
-  padding: 4px; border-radius: 12px; margin-bottom: 12px;
-  border: 1px solid rgba(255,255,255,0.06);
-}
-.shop-tab {
-  flex: 1; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: bold;
-  color: #94A3B8; cursor: pointer; text-align: center; background: transparent; border: none;
-  transition: all 0.2s;
-}
-.shop-tab.active {
-  background: linear-gradient(135deg, #F59E0B, #B45309); color: #080B10;
-  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
-}
-
+/* Vitrine de Prévia da Loja */
 .preview-box {
-  background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(15,23,42,0.4));
-  border: 1.5px solid rgba(212, 175, 55, 0.3); border-radius: 14px;
-  padding: 12px; display: flex; align-items: center; gap: 14px; margin-bottom: 12px; text-align: left;
-  box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+  background: radial-gradient(circle at center, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border: 1.5px solid rgba(212, 175, 55, 0.35);
+  border-radius: 16px; padding: 14px;
+  display: flex; align-items: center; gap: 16px; margin-bottom: 14px;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
 }
 .preview-card-canvas {
-  width: 64px; height: 92px; border-radius: 8px; flex-shrink: 0;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.6), 0 0 10px rgba(212, 175, 55, 0.2);
+  width: 90px; height: 130px; border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  display: block; flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
-.preview-info { flex: 1; min-width: 0; }
+.preview-info {
+  display: flex; flex-direction: column; gap: 4px; flex: 1;
+}
 .preview-coll {
-  font-size: 9px; font-weight: 800; color: #FBBF24; text-transform: uppercase;
-  background: rgba(251,191,36,0.12); padding: 2px 7px; border-radius: 4px;
-  display: inline-block; margin-bottom: 4px; letter-spacing: 0.5px;
+  font-size: 10px; font-weight: 800; color: #38BDF8; text-transform: uppercase; letter-spacing: 0.8px;
 }
-.preview-title { font-size: 15px; font-weight: bold; color: #FFF; margin-bottom: 3px; }
-.preview-desc { font-size: 11px; color: #94A3B8; line-height: 1.3; }
+.preview-title {
+  font-size: 16px; font-weight: 800; color: #F8FAFC;
+}
+.preview-desc {
+  font-size: 11.5px; color: #94A3B8; line-height: 1.35;
+}
+
+/* Abas da Loja */
+.shop-tabs {
+  display: flex; gap: 8px; margin-bottom: 12px;
+}
+.shop-tab {
+  flex: 1; padding: 8px 0; border: none; outline: none; border-radius: 10px;
+  background: rgba(30, 41, 59, 0.7); color: #94A3B8; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s ease; border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.shop-tab.active {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(245, 158, 11, 0.15));
+  color: #FBBF24; border-color: rgba(251, 191, 36, 0.5);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.2);
+}
 
 .shop-list {
-  overflow-y: auto; max-height: 210px; text-align: left; display: flex; flex-direction: column; gap: 8px;
+  flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
   padding-right: 4px;
 }
 .shop-list::-webkit-scrollbar { width: 5px; }
-.shop-list::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+.shop-list::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 4px; }
 
 .shop-item {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px; padding: 9px 12px;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 12px; border-radius: 12px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06); gap: 10px;
-  cursor: pointer; transition: all 0.15s ease;
+  cursor: pointer; transition: all 0.2s ease;
 }
 .shop-item:hover, .shop-item.selected {
-  background: rgba(212, 175, 55, 0.08);
-  border-color: rgba(212, 175, 55, 0.4);
+  border-color: rgba(251, 191, 36, 0.5);
+  background: rgba(30, 41, 59, 0.85);
+  transform: translateX(2px);
 }
-.shop-item-info { flex: 1; min-width: 0; }
-.shop-item-name { font-size: 13px; font-weight: bold; color: #F8FAFC; }
-.shop-item-coll { font-size: 9px; color: #FBBF24; text-transform: uppercase; font-weight: bold; }
-.shop-item-desc { font-size: 11px; color: #94A3B8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shop-item.selected {
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.25);
+}
+
+.shop-item-left {
+  display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;
+}
+.shop-item-thumb {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.shop-item-thumb-card {
+  width: 28px; height: 38px; border-radius: 4px; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.shop-item-info {
+  display: flex; flex-direction: column; min-width: 0;
+}
+.shop-item-coll { font-size: 9px; font-weight: 700; color: #38BDF8; text-transform: uppercase; }
+.shop-item-name { font-size: 13px; font-weight: 700; color: #F1F5F9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.shop-item-desc { font-size: 10px; color: #94A3B8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
 .shop-item-btn {
-  padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; border: none;
-  cursor: pointer; white-space: nowrap; transition: transform 0.1s;
+  padding: 6px 14px; border-radius: 14px; font-size: 11px; font-weight: 800;
+  cursor: pointer; border: none; outline: none; transition: all 0.2s ease;
+  flex-shrink: 0; letter-spacing: 0.3px;
 }
-.shop-item-btn:active { transform: scale(0.95); }
-
-/* Modal de Simulação de Anúncio Recompensado */
-#modalAdProgress {
-  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
-  z-index: 250; align-items: center; justify-content: center; flex-direction: column;
-  padding: 24px; color: #FFF; text-align: center;
+.btn-gold {
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: #0F172A; box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
 }
-.ad-box {
-  max-width: 340px; width: 100%; background: #111827; border: 1.5px solid #F59E0B;
-  border-radius: 16px; padding: 24px; box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+.btn-gold:active { transform: scale(0.94); }
+.btn-blue {
+  background: linear-gradient(135deg, #0284C7, #0369A1);
+  color: #FFF; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.4);
 }
-.ad-progress-bar {
-  width: 100%; height: 8px; background: #374151; border-radius: 4px; overflow: hidden; margin: 16px 0;
-}
-.ad-progress-fill {
-  height: 100%; width: 0%; background: linear-gradient(90deg, #F59E0B, #10B981);
-  transition: width 0.1s linear;
+.btn-blue:active { transform: scale(0.94); }
+.btn-gray {
+  background: rgba(51, 65, 85, 0.8); color: #E2E8F0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Toast */
+.modal-btn {
+  width: 100%; padding: 12px; border-radius: 14px; font-size: 13px; font-weight: 800;
+  cursor: pointer; border: none; outline: none; transition: all 0.2s ease;
+  margin-top: 10px; letter-spacing: 0.5px;
+}
+
+/* Notificação Toast */
 #toast {
-  position: fixed; top: 72px; left: 50%; transform: translateX(-50%);
-  background: linear-gradient(135deg, #10B981, #059669); color: #FFF;
-  font-weight: bold; font-size: 13px; letter-spacing: 0.3px;
-  padding: 9px 22px; border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 12px rgba(16, 185, 129, 0.4);
-  display: none; z-index: 300; pointer-events: none;
-  animation: toastFade 0.2s ease-out;
+  position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98));
+  border: 1.5px solid rgba(212, 175, 55, 0.6);
+  color: #FBBF24; padding: 10px 22px; border-radius: 24px;
+  font-size: 12.5px; font-weight: 700; z-index: 200; pointer-events: none;
+  display: none; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+  animation: toastFade 0.3s ease; text-align: center; max-width: 90vw;
 }
 @keyframes toastFade {
   from { opacity: 0; transform: translate(-50%, -10px); }
@@ -276,12 +305,12 @@ body, html {
 
 <canvas id="gameCanvas"></canvas>
 
-<!-- Medalhão do Avatar Ativo no Canto Inferior Esquerdo -->
+<!-- Medalhão do Avatar Ativo no Canto Inferior Esquerdo (com retrato vetorial) -->
 <div id="avatar-medallion" title="Ver Avatares e Coleções">
-  <div class="avatar-circle" id="hudAvatarIcon">🤠</div>
+  <canvas class="avatar-canvas-circle" id="hudAvatarCanvas" width="44" height="44"></canvas>
   <div class="avatar-meta">
-    <span class="avatar-name" id="hudAvatarName">Aventureiro</span>
-    <span class="avatar-title" id="hudAvatarTitle">O Desbravador</span>
+    <span class="avatar-name" id="hudAvatarName">Mago Arcano</span>
+    <span class="avatar-title" id="hudAvatarTitle">Mestre do Éter</span>
   </div>
 </div>
 
@@ -313,31 +342,31 @@ body, html {
 <div class="modal" id="modalShop">
   <div class="modal-content">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h2>Galeria de Coleções</h2>
+      <div class="modal-title" style="margin-bottom:0;">🏛️ Galeria de Coleções</div>
       <div class="hud-coins" style="font-size:14px; background:rgba(251,191,36,0.15); padding:5px 10px; border-radius:14px;">
-        🪙 <span id="lblShopCoins">0</span>
+        🪙 <span id="shopCoinsBalance">0</span>
       </div>
     </div>
 
-    <!-- Botão de Vídeo Recompensado -->
+    <!-- Botão de Recompensa de Vídeo -->
     <button class="modal-btn btn-gold" id="btnWatchAd" style="margin-top:0; margin-bottom:12px; display:flex; align-items:center; justify-content:center; gap:8px;">
-      <span style="font-size:16px;">🎬</span> ASSISTIR VÍDEO — GANHAR 3 MOEDAS
+      🎬 Assistir Vídeo • Ganhar 3 Moedas 🪙
     </button>
 
-    <!-- Painel de Prévia Ampliada -->
+    <!-- Vitrine Interativa Ampliada -->
     <div class="preview-box">
-      <canvas id="previewCanvas" class="preview-card-canvas" width="128" height="184"></canvas>
+      <canvas id="previewCanvas" class="preview-card-canvas" width="130" height="190"></canvas>
       <div class="preview-info">
-        <span class="preview-coll" id="prevColl">COLEÇÃO: TRADIÇÃO</span>
-        <div class="preview-title" id="prevTitle">Skin Clássica</div>
-        <div class="preview-desc" id="prevDesc">Aparência atemporal com filigranas de safira</div>
+        <span class="preview-coll" id="prevColl">COLEÇÃO: ARCANO</span>
+        <div class="preview-title" id="prevTitle">Arcana Azul</div>
+        <div class="preview-desc" id="prevDesc">Runas astrais luminescentes e ondas de energia azul-cobalto</div>
       </div>
     </div>
 
-    <!-- Abas de Navegação -->
+    <!-- Abas da Loja -->
     <div class="shop-tabs">
-      <button class="shop-tab active" id="tabSkins">Versos de Cartas (8)</button>
-      <button class="shop-tab" id="tabAvatars">Avatares (8)</button>
+      <button class="shop-tab active" id="tabSkins">Versos de Cartas (9)</button>
+      <button class="shop-tab" id="tabAvatars">Avatares Heroicos (9)</button>
     </div>
 
     <!-- Lista de Itens -->
@@ -347,135 +376,39 @@ body, html {
   </div>
 </div>
 
-<!-- Modal de Simulação de Anúncio Recompensado -->
-<div id="modalAdProgress">
-  <div class="ad-box">
-    <div style="font-size:36px; margin-bottom:8px;">🎬</div>
-    <h3 style="color:#FBBF24; margin-bottom:6px;">Exibindo Vídeo Recompensado...</h3>
-    <p style="font-size:12px; color:#94A3B8;">Aguarde a conclusão da transmissão oficial para receber +3 moedas.</p>
-    <div class="ad-progress-bar">
-      <div class="ad-progress-fill" id="adProgressFill"></div>
-    </div>
-    <span style="font-size:13px; font-weight:bold; color:#CBD5E1;" id="adCountDown">Concluindo em 3s...</span>
-  </div>
-</div>
-
-<!-- Modal de Vitória Gloriosa -->
-<div class="modal" id="modalVictory">
-  <div class="modal-content">
-    <div style="font-size:48px; margin-bottom:6px; filter:drop-shadow(0 0 16px rgba(251,191,36,0.6));">🏆</div>
-    <h2>Vitória Gloriosa!</h2>
-    <p id="vicMessage">Você dominou o baralho com maestria lendária!</p>
-
-    <div id="vicSceneryUnlock" style="display:none; color:#38BDF8; margin-bottom:12px; font-weight:bold; font-size:13px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.3); padding:8px; border-radius:10px;"></div>
-
-    <div style="background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08); padding:12px; border-radius:12px; margin-bottom:14px; font-size:13px; line-height:1.7;" id="vicStats"></div>
-
-    <button class="modal-btn btn-gold" id="btnNextLevel">Próximo Nível ➔</button>
-    <button class="modal-btn btn-blue" id="btnPlayAgain">Jogar Este Nível Novamente</button>
-  </div>
-</div>
-
-<!-- Modal de Seleção de Cenários -->
+<!-- Modal Cenários -->
 <div class="modal" id="modalScenery">
   <div class="modal-content">
-    <h2>Reinos & Cenários</h2>
-    <p>Conquiste novos reinos visuais ao progredir pelos níveis</p>
-    <div id="sceneryList" style="text-align:left; max-height:260px; overflow-y:auto; margin-bottom:14px;"></div>
+    <div class="modal-title">🌄 Selecionar Cenário</div>
+    <div class="shop-list" id="sceneryListContainer" style="max-height:50vh;"></div>
     <button class="modal-btn btn-gray" id="btnCloseScenery">Fechar</button>
+  </div>
+</div>
+
+<!-- Modal Vitória -->
+<div class="modal" id="modalVictory">
+  <div class="modal-content" style="text-align:center;">
+    <div class="modal-title" style="color:#34D399;">🏆 Vitória Conquistada! 🏆</div>
+    <p id="vicMessage" style="color:#E2E8F0; font-size:14px; margin-bottom:12px;"></p>
+    <div id="vicSceneryUnlock" style="background:rgba(56,189,248,0.2); border:1px solid #38BDF8; color:#BAE6FD; padding:8px; border-radius:10px; font-size:12px; font-weight:700; margin-bottom:12px; display:none;"></div>
+    <div id="vicStats" style="background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px; font-size:12px; color:#CBD5E1; text-align:left; margin-bottom:14px; line-height:1.7;"></div>
+    <button class="modal-btn btn-gold" id="btnNextLevel">Avançar para Próxima Fase ➔</button>
+    <button class="modal-btn btn-blue" id="btnPlayAgain">Jogar Novamente</button>
   </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-// --- MOTOR DE ÁUDIO SINTETIZADO (Web Audio API) ---
-let audioCtx = null;
-let soundEnabled = (localStorage.getItem('pac_sound') !== 'false');
+// ==========================================
+// 1. DADOS E MODELOS (Dark Fantasy Premium)
+// ==========================================
 
-function toggleSound() {
-  soundEnabled = !soundEnabled;
-  localStorage.setItem('pac_sound', soundEnabled);
-  document.getElementById('btnAudioToggle').innerText = soundEnabled ? '🔊' : '🔇';
-  showToast(soundEnabled ? 'Som Ativado' : 'Som Desativado');
-}
-document.getElementById('btnAudioToggle').innerText = soundEnabled ? '🔊' : '🔇';
-document.getElementById('btnAudioToggle').addEventListener('click', toggleSound);
-
-function playSound(type) {
-  if (!soundEnabled) return;
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    const now = audioCtx.currentTime;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    if (type === 'touch') {
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(320, now);
-      osc.frequency.exponentialRampToValueAtTime(480, now + 0.05);
-      gain.gain.setValueAtTime(0.08, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-      osc.start(now); osc.stop(now + 0.05);
-    } else if (type === 'place') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(560, now);
-      osc.frequency.exponentialRampToValueAtTime(740, now + 0.07);
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
-      osc.start(now); osc.stop(now + 0.07);
-    } else if (type === 'invalid') {
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(160, now);
-      osc.frequency.linearRampToValueAtTime(90, now + 0.12);
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-      osc.start(now); osc.stop(now + 0.12);
-    } else if (type === 'column') {
-      [659.25, 830.61, 987.77, 1318.51].forEach((freq, idx) => {
-        const no = audioCtx.createOscillator();
-        const ng = audioCtx.createGain();
-        no.type = 'sine';
-        no.connect(ng); ng.connect(audioCtx.destination);
-        no.frequency.setValueAtTime(freq, now + idx * 0.06);
-        ng.gain.setValueAtTime(0.12, now + idx * 0.06);
-        ng.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.25);
-        no.start(now + idx * 0.06); no.stop(now + idx * 0.06 + 0.25);
-      });
-    } else if (type === 'coin') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(987.77, now);
-      osc.frequency.setValueAtTime(1318.51, now + 0.08);
-      gain.gain.setValueAtTime(0.15, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-      osc.start(now); osc.stop(now + 0.25);
-    } else if (type === 'victory') {
-      const fanfare = [523.25, 659.25, 783.99, 1046.50, 1318.51];
-      fanfare.forEach((freq, idx) => {
-        const noteOsc = audioCtx.createOscillator();
-        const noteGain = audioCtx.createGain();
-        noteOsc.type = 'triangle';
-        noteOsc.connect(noteGain);
-        noteGain.connect(audioCtx.destination);
-        noteOsc.frequency.setValueAtTime(freq, now + idx * 0.12);
-        noteGain.gain.setValueAtTime(0.18, now + idx * 0.12);
-        noteGain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.4);
-        noteOsc.start(now + idx * 0.12); noteOsc.stop(now + idx * 0.12 + 0.4);
-      });
-    }
-  } catch(e) {}
-}
-
-// --- DADOS DO JOGO (BARALHO & COLEÇÕES) ---
 const SUITS = [
-  { name: 'SPADES', symbol: '♠', isRed: false },
-  { name: 'HEARTS', symbol: '♥', isRed: true },
-  { name: 'CLUBS', symbol: '♣', isRed: false },
-  { name: 'DIAMONDS', symbol: '♦', isRed: true }
+  { name: 'spades', symbol: '♠', isRed: false },
+  { name: 'hearts', symbol: '♥', isRed: true },
+  { name: 'clubs', symbol: '♣', isRed: false },
+  { name: 'diamonds', symbol: '♦', isRed: true }
 ];
 
 const RANKS = [
@@ -487,51 +420,54 @@ const RANKS = [
 ];
 
 const SCENERIES = [
-  { id: 'forest', name: 'Floresta Encantada', minLevel: 1, accent: '#34D399', bgTop: '#081D13', bgBot: '#020C07', desc: 'Névoa mística, folhas ao vento e vaga-lumes dourados' },
-  { id: 'frozen', name: 'Montanhas Geladas', minLevel: 11, accent: '#7DD3FC', bgTop: '#0C1B2B', bgBot: '#040A10', desc: 'Picos nevados, aurora boreal polar e flocos de neve' },
-  { id: 'desert', name: 'Deserto Dourado', minLevel: 21, accent: '#F59E0B', bgTop: '#2C1004', bgBot: '#100501', desc: 'Dunas douradas, miragem solar e poeira brilhante' },
-  { id: 'medieval', name: 'Reino Medieval', minLevel: 31, accent: '#C084FC', bgTop: '#210B39', bgBot: '#07020E', desc: 'Torres góticas, tochas ardentes e flâmulas reais' },
-  { id: 'cosmic', name: 'Noite Cósmica', minLevel: 41, accent: '#818CF8', bgTop: '#0B0621', bgBot: '#010006', desc: 'Nebulosas cósmicas, poeira estelar e meteoros' }
+  { id: 'forest', name: 'Floresta Encantada', minLevel: 1, desc: 'Névoa mágica, vagalumes cintilantes e copas ancestrais' },
+  { id: 'frozen', name: 'Montanhas Geladas', minLevel: 11, desc: 'Cordilheiras polares, aurora boreal e geada cristalina' },
+  { id: 'desert', name: 'Deserto Dourado', minLevel: 21, desc: 'Dunas esculpidas pelo vento e miragens de sol poente' },
+  { id: 'medieval', name: 'Reino Medieval', minLevel: 31, desc: 'Fortaleza gótica com tochas crepitantes e janelas de vitral' },
+  { id: 'cosmic', name: 'Noite Cósmica', minLevel: 41, desc: 'Nebulosas misteriosas, constelações e estrelas pulsantes' }
 ];
 
 const SKINS = [
-  { id: 'skin_classic', name: 'Clássica', collection: 'Tradição', desc: 'Safira imperial com arabescos de prata', price: 0, p1: '#1E3A8A', p2: '#0F172A', acc: '#60A5FA', pattern: 'classic', trail: '#60A5FA', celebration: 'CLASSIC_FIREWORKS', effectSummary: 'Arabescos de prata, fagulhas safira e salva de fogos estelares' },
-  { id: 'skin_golden', name: 'Dourada', collection: 'Relíquias Douradas', desc: 'Mogno envelhecido com filigranas de ouro 24k', price: 30, p1: '#78350F', p2: '#451A03', acc: '#FBBF24', pattern: 'golden', trail: '#F59E0B', celebration: 'GOLDEN_MAJESTY', effectSummary: 'Filigranas de ouro 24k, chuva dourada e iluminação majestosa' },
-  { id: 'skin_arcane', name: 'Arcana', collection: 'Arcano', desc: 'Ametista mística e runas ancestrais luminescentes', price: 60, p1: '#4C1D95', p2: '#2E1065', acc: '#A78BFA', pattern: 'arcane', trail: '#818CF8', celebration: 'ARCANE_SURGE', effectSummary: 'Runas luminescentes, pulso de energia arcana e símbolos flutuantes' },
-  { id: 'skin_shadow', name: 'Sombria', collection: 'Sombras & Mistério', desc: 'Obsidiana com toques de aço escuro e carmesim', price: 60, p1: '#18181B', p2: '#09090B', acc: '#E11D48', pattern: 'shadow', trail: '#C084FC', celebration: 'ABYSSAL_SHADOW', effectSummary: 'Névoa de obsidiana, brasas carmesim e pulso espectral sombrio' },
-  { id: 'skin_nature', name: 'Natureza', collection: 'Natureza', desc: 'Esmeralda silvestre com vinhas élficas e nós celtas', price: 100, p1: '#064E3B', p2: '#022C22', acc: '#34D399', pattern: 'nature', trail: '#34D399', celebration: 'LIVING_FOREST', effectSummary: 'Vinhas élficas, folhas luminosas e vórtice de energia verde' },
-  { id: 'skin_ice', name: 'Gelo', collection: 'Gelo', desc: 'Cristal glacial com fractais polares de geada', price: 100, p1: '#0C4A6E', p2: '#082F49', acc: '#38BDF8', pattern: 'ice', trail: '#7DD3FC', celebration: 'GLACIAL_BURST', effectSummary: 'Fractais polares, cristais de gelo e onda fria cintilante' },
-  { id: 'skin_cosmic', name: 'Cósmica', collection: 'Cósmico', desc: 'Espaço profundo com constelações astrais', price: 150, p1: '#311042', p2: '#150524', acc: '#E879F9', pattern: 'cosmic', trail: '#E879F9', celebration: 'COSMIC_SUPERNOVA', effectSummary: 'Constelações cósmicas, nebulosas púrpuras e supernova estelar' },
-  { id: 'skin_royal', name: 'Real', collection: 'Reino Medieval', desc: 'Veludo rubi imperial com coroa dourada', price: 150, p1: '#831843', p2: '#500724', acc: '#F59E0B', pattern: 'royal', trail: '#FBBF24', celebration: 'ROYAL_TRIUMPH', effectSummary: 'Emblemas imperiais, estandartes dourados e celebração da corte' }
+  { id: 'skin_classic', name: 'Clássica Nobre', collection: 'Tradição', desc: 'Safira imperial com arabescos de prata e linho fino', price: 0, p1: '#1E3A8A', p2: '#0F172A', acc: '#60A5FA', pattern: 'classic', celebration: 'CLASSIC_FIREWORKS', effectSummary: 'Arabescos de prata, fagulhas safira e salva de fogos estelares' },
+  { id: 'skin_arcane', name: 'Arcana Azul', collection: 'Arcano', desc: 'Runas astrais luminescentes e ondas de choque azul-cobalto', price: 30, p1: '#1E1B4B', p2: '#0F172A', acc: '#38BDF8', pattern: 'arcane', celebration: 'ARCANE_SURGE', effectSummary: 'Onda de energia mágica azul, relâmpagos e runas astrais' },
+  { id: 'skin_golden', name: 'Relíquia Dourada', collection: 'Relíquias Douradas', desc: 'Moldura metálica com ouro 24k e acanto barroco', price: 50, p1: '#78350F', p2: '#451A03', acc: '#FBBF24', pattern: 'golden', celebration: 'GOLDEN_MAJESTY', effectSummary: 'Chuva majestosa de moedas de ouro, raios solares e anéis de luz' },
+  { id: 'skin_nature', name: 'Floresta Viva', collection: 'Natureza', desc: 'Símbolos naturais, vinhas élficas e energia vegetal esmeralda', price: 80, p1: '#064E3B', p2: '#022C22', acc: '#34D399', pattern: 'nature', celebration: 'LIVING_FOREST', effectSummary: 'Vórtice de folhas mágicas élficas e expansão de luz verde' },
+  { id: 'skin_ice', name: 'Cristal Glacial', collection: 'Gelo', desc: 'Molduras de gelo cristalino e fractais polares de geada', price: 80, p1: '#0C4A6E', p2: '#082F49', acc: '#38BDF8', pattern: 'ice', celebration: 'GLACIAL_BURST', effectSummary: 'Explosão de cristais glaciais e onda de luz polar cintilante' },
+  { id: 'skin_flame', name: 'Chamas Ancestrais', collection: 'Fogo Ancestral', desc: 'Obsidiana vulcânica com brasas vivas e dragão de fogo', price: 100, p1: '#431407', p2: '#1C0A00', acc: '#FB923C', pattern: 'flame', celebration: 'ANCESTRAL_FLAME', effectSummary: 'Erupção de fogo ancestral, brasas vivas e dragões flamejantes' },
+  { id: 'skin_cosmic', name: 'Energia Cósmica', collection: 'Cósmico', desc: 'Nebulosas violetas, astrolábio astral e constelações estelares', price: 120, p1: '#311042', p2: '#150524', acc: '#E879F9', pattern: 'cosmic', celebration: 'COSMIC_SUPERNOVA', effectSummary: 'Supernova cósmica, pulso astral e chuva de estrelas cadentes' },
+  { id: 'skin_shadow', name: 'Sombra Abissal', collection: 'Sombras & Mistério', desc: 'Armadura gótica de obsidiana com névoa e olhos abissais', price: 120, p1: '#18181B', p2: '#09090B', acc: '#C084FC', pattern: 'shadow', celebration: 'ABYSSAL_SHADOW', effectSummary: 'Névoa abissal escura, tentáculos espectrais e pulso de sombra' },
+  { id: 'skin_royal', name: 'Guardião Real', collection: 'Reino Medieval', desc: 'Veludo imperial, espadas cruzadas e brasão de realeza', price: 150, p1: '#831843', p2: '#500724', acc: '#F59E0B', pattern: 'royal', celebration: 'ROYAL_TRIUMPH', effectSummary: 'Estandartes dourados, brasão imperial e chuva de glória da corte' }
 ];
 
 const AVATARS = [
-  { id: 'avatar_adventurer', name: 'Aventureiro', collection: 'Desbravadores', title: 'O Desbravador', emoji: '🤠', price: 0 },
-  { id: 'avatar_wizard', name: 'Mago', collection: 'Mestres Arcanos', title: 'O Conjurador', emoji: '🧙', price: 40 },
-  { id: 'avatar_knight', name: 'Cavaleiro', collection: 'Reino Medieval', title: 'O Guardião Real', emoji: '🛡️', price: 40 },
-  { id: 'avatar_forest_guardian', name: 'Guardião', collection: 'Natureza', title: 'O Protetor Verde', emoji: '🏹', price: 70 },
-  { id: 'avatar_ice_spirit', name: 'Espírito do Gelo', collection: 'Gelo', title: 'O Andarilho Polar', emoji: '❄️', price: 70 },
-  { id: 'avatar_desert_wanderer', name: 'Viajante', collection: 'Relíquias Douradas', title: 'O Nômade Solar', emoji: '🐪', price: 90 },
-  { id: 'avatar_medieval_king', name: 'Rei Medieval', collection: 'Reino Medieval', title: 'Sua Majestade', emoji: '👑', price: 120 },
-  { id: 'avatar_cosmic_explorer', name: 'Explorador', collection: 'Cósmico', title: 'O Viajante Estelar', emoji: '🚀', price: 150 }
+  { id: 'avatar_adventurer', name: 'Explorador Destemido', collection: 'Desbravadores', title: 'O Desbravador', archetype: 'adventurer', price: 0, desc: 'Aventureiro audaz com chapéu de couro e pena de fênix', p1: '#D97706', p2: '#78350F', border: '#FBBF24', bg: '#2E1005' },
+  { id: 'avatar_wizard', name: 'Mago Arcano', collection: 'Mestres Arcanos', title: 'Mestre do Éter', archetype: 'arcane_mage', price: 30, desc: 'Conjurador com capuz de ametista e olhos celestes ardentes', p1: '#6366F1', p2: '#312E81', border: '#818CF8', bg: '#0F172A' },
+  { id: 'avatar_knight', name: 'Guardião Medieval', collection: 'Reino Medieval', title: 'Defensor da Cidadela', archetype: 'medieval_knight', price: 50, desc: 'Cavaleiro em armadura de placas e visor de aço com reflexo azul', p1: '#94A3B8', p2: '#334155', border: '#E2E8F0', bg: '#0F172A' },
+  { id: 'avatar_forest_guardian', name: 'Explorador da Floresta', collection: 'Natureza', title: 'Sentinela Silvestre', archetype: 'forest_ranger', price: 70, desc: 'Sentinela élfica com capuz de folhas e olhos esmeralda', p1: '#10B981', p2: '#064E3B', border: '#34D399', bg: '#022C22' },
+  { id: 'avatar_ice_spirit', name: 'Cavaleiro de Gelo', collection: 'Gelo', title: 'Lâmina Polar', archetype: 'ice_knight', price: 80, desc: 'Guerreiro polar com coroa de gelo cristalino e olhar frio', p1: '#0EA5E9', p2: '#0369A1', border: '#38BDF8', bg: '#082F49' },
+  { id: 'avatar_shadow_lord', name: 'Senhor das Sombras', collection: 'Sombras & Mistério', title: 'Arauto do Abismo', archetype: 'shadow_lord', price: 100, desc: 'Soberano das trevas com chifres espectrais e máscara de vazio', p1: '#A855F7', p2: '#581C87', border: '#C084FC', bg: '#180B26' },
+  { id: 'avatar_cosmic_explorer', name: 'Guardião Cósmico', collection: 'Cósmico', title: 'Astrônomo Estelar', archetype: 'cosmic_guardian', price: 120, desc: 'Entidade celestial com halo orbital de estrelas e poeira astral', p1: '#EC4899', p2: '#831843', border: '#F472B6', bg: '#240417' },
+  { id: 'avatar_desert_wanderer', name: 'Alquimista Dourado', collection: 'Relíquias Douradas', title: 'Mestre da Transmutação', archetype: 'golden_alchemist', price: 140, desc: 'Sábio que decifra o fogo solar com monóculo e anéis de ouro', p1: '#F59E0B', p2: '#78350F', border: '#FBBF24', bg: '#351A05' },
+  { id: 'avatar_medieval_king', name: 'Criatura Mágica', collection: 'Místicos', title: 'Espírito Draconiano', archetype: 'mystic_creature', price: 150, desc: 'Dragão nobre guardião de sabedoria ancestral com chifres de jade', p1: '#14B8A6', p2: '#0F766E', border: '#2DD4BF', bg: '#042F2C' }
 ];
 
-// --- PERSISTÊNCIA LOCAL ---
+// Persistência Local
 let coinsBalance = parseInt(localStorage.getItem('pac_coins') || '0');
 let highestLevel = parseInt(localStorage.getItem('pac_high_lvl') || '1');
 let currentLevel = parseInt(localStorage.getItem('pac_cur_lvl') || '1');
 let currentSceneryId = localStorage.getItem('pac_scenery') || 'forest';
-let equippedSkinId = localStorage.getItem('pac_skin') || 'skin_classic';
-let equippedAvatarId = localStorage.getItem('pac_avatar') || 'avatar_adventurer';
-let unlockedSkins = JSON.parse(localStorage.getItem('pac_unlocked_skins') || '["skin_classic"]');
-let unlockedAvatars = JSON.parse(localStorage.getItem('pac_unlocked_avatars') || '["avatar_adventurer"]');
+let equippedSkinId = localStorage.getItem('pac_skin') || 'skin_arcane';
+let equippedAvatarId = localStorage.getItem('pac_avatar') || 'avatar_wizard';
+let unlockedSkins = JSON.parse(localStorage.getItem('pac_unlocked_skins') || '["skin_classic","skin_arcane"]');
+let unlockedAvatars = JSON.parse(localStorage.getItem('pac_unlocked_avatars') || '["avatar_adventurer","avatar_wizard"]');
 let rewardedLevels = JSON.parse(localStorage.getItem('pac_rewarded_levels') || '[]');
+let soundEnabled = (localStorage.getItem('pac_sound') !== 'false');
 
 let currentScenery = SCENERIES.find(s => s.id === currentSceneryId) || SCENERIES[0];
-let currentSkin = SKINS.find(s => s.id === equippedSkinId) || SKINS[0];
-let currentAvatar = AVATARS.find(a => a.id === equippedAvatarId) || AVATARS[0];
+let currentSkin = SKINS.find(s => s.id === equippedSkinId) || SKINS[1];
+let currentAvatar = AVATARS.find(a => a.id === equippedAvatarId) || AVATARS[1];
 
-// Estado da Mesa
+// Estado da Mesa do Jogo
 let stock = [], waste = [], foundations = [[], [], [], []], tableaus = [[], [], [], [], [], [], []];
 let undoStack = [];
 let moves = 0, seconds = 0, timerInterval = null, isWon = false;
@@ -541,271 +477,711 @@ let sparkParticles = [];
 let ambientParticles = [];
 let columnGlows = [];
 let invalidShakeCol = -1, invalidShakeTime = 0;
+let hintEffect = null;
 let activePreviewItem = currentSkin;
 
-// Celebração de Vitória Exclusiva por Skin
+// Celebração de Vitória
 let isVictoryCelebrationActive = false;
 let victoryCelebrationStartTime = 0;
 let victoryCelebrationSkin = currentSkin;
 
-// Inicializa Partículas Ambientais Específicas
-function initAmbientParticles() {
-  ambientParticles = [];
-  const count = 35;
-  for (let i = 0; i < count; i++) {
-    ambientParticles.push({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      vx: (Math.random() - 0.5) * 0.8,
-      vy: Math.random() * 0.6 + 0.2,
-      size: Math.random() * 3 + 1.5,
-      rot: Math.random() * Math.PI * 2,
-      vrot: (Math.random() - 0.5) * 0.04,
-      phase: Math.random() * Math.PI * 2
-    });
-  }
-}
-initAmbientParticles();
+// Gestos / Arraste
+let isDragging = false, dragCards = [], dragSource = null;
+let dragStartX = 0, dragStartY = 0, dragCurX = 0, dragCurY = 0, dragOffX = 0, dragOffY = 0;
 
-// Layout & Canvas
+// Dimensões da Mesa
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-let cw = 0, ch = 0, gap = 0, topY = 0, tabY = 0;
-let stockRect = {}, wasteRect = {}, fRects = [], tRects = [];
+let cw = 0, ch = 0, hGap = 0, topY = 0, tabY = 0;
+let stockRect = {x:0, y:0, w:0, h:0};
+let wasteRect = {x:0, y:0, w:0, h:0};
+let fRects = [];
+let tRects = [];
 
-// Arraste (Drag and Drop)
-let isDragging = false, dragCards = [], dragSource = null;
-let touchStartX = 0, touchStartY = 0, dragCurX = 0, dragCurY = 0, dragOffX = 0, dragOffY = 0;
+// ==========================================
+// 2. RENDERIZADOR DE AVATARES VETORIAIS
+// ==========================================
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.innerText = msg;
-  t.style.display = 'block';
-  setTimeout(() => { t.style.display = 'none'; }, 2200);
-}
+function drawAvatarPortrait(c, avatar, cx, cy, r) {
+  if (r <= 2) return;
+  c.save();
 
-function updateAvatarHud() {
-  document.getElementById('hudAvatarIcon').innerText = currentAvatar.emoji;
-  document.getElementById('hudAvatarName').innerText = currentAvatar.name;
-  document.getElementById('hudAvatarTitle').innerText = currentAvatar.title;
-}
+  // 1. Sombra de Profundidade
+  c.shadowColor = 'rgba(0,0,0,0.7)';
+  c.shadowBlur = r * 0.3;
+  c.shadowOffsetY = r * 0.1;
 
-function updateHud() {
-  document.getElementById('lblLevel').innerHTML = `NÍVEL <span>${currentLevel}</span>`;
-  document.getElementById('lblCoins').innerText = coinsBalance;
-  document.getElementById('lblShopCoins').innerText = coinsBalance;
-  document.getElementById('lblMoves').innerText = moves;
-  let m = Math.floor(seconds / 60).toString().padStart(2, '0');
-  let s = (seconds % 60).toString().padStart(2, '0');
-  document.getElementById('lblTime').innerText = `${m}:${s}`;
-  updateAvatarHud();
-}
+  // 2. Fundo Gradiente Atmosférico
+  let bgG = c.createRadialGradient(cx, cy - r * 0.2, r * 0.2, cx, cy, r);
+  bgG.addColorStop(0, avatar.p1);
+  bgG.addColorStop(1, avatar.bg);
+  c.fillStyle = bgG;
+  c.beginPath();
+  c.arc(cx, cy, r, 0, Math.PI * 2);
+  c.fill();
+  c.shadowColor = 'transparent';
 
-function resize() {
-  const dpr = window.devicePixelRatio || 1;
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  canvas.style.width = w + 'px';
-  canvas.style.height = h + 'px';
-  ctx.scale(dpr, dpr);
+  const s = r * 0.85;
+  const arch = avatar.archetype;
 
-  gap = w * 0.022;
-  cw = (w - (8 * gap)) / 7;
-  ch = cw * 1.42;
-  topY = 66;
-  tabY = topY + ch + 18;
+  // 3. Manto / Ombros Base
+  c.fillStyle = avatar.p2;
+  c.beginPath();
+  c.moveTo(cx - s * 0.75, cy + s);
+  c.quadraticCurveTo(cx - s * 0.55, cy + s * 0.25, cx, cy + s * 0.35);
+  c.quadraticCurveTo(cx + s * 0.55, cy + s * 0.25, cx + s * 0.75, cy + s);
+  c.closePath();
+  c.fill();
 
-  stockRect = { x: gap, y: topY, w: cw, h: ch };
-  wasteRect = { x: gap * 2 + cw, y: topY, w: cw, h: ch };
-  fRects = [];
-  for (let i = 0; i < 4; i++) {
-    fRects.push({ x: gap + (3 + i) * (cw + gap), y: topY, w: cw, h: ch });
+  // 4. Ilustração Específica do Personagem Fantasia
+  switch(arch) {
+    case 'adventurer':
+      // Chapéu de Couro com Aba Virada
+      c.fillStyle = '#451A03';
+      c.beginPath();
+      c.moveTo(cx - s * 0.7, cy);
+      c.quadraticCurveTo(cx, cy - s * 0.15, cx + s * 0.65, cy - s * 0.25);
+      c.lineTo(cx + s * 0.45, cy + s * 0.1);
+      c.quadraticCurveTo(cx, cy + s * 0.05, cx - s * 0.65, cy + s * 0.08);
+      c.closePath(); c.fill();
+
+      // Copa
+      c.fillStyle = '#78350F';
+      c.beginPath();
+      c.moveTo(cx - s * 0.45, cy);
+      c.lineTo(cx - s * 0.35, cy - s * 0.6);
+      c.quadraticCurveTo(cx, cy - s * 0.7, cx + s * 0.35, cy - s * 0.55);
+      c.lineTo(cx + s * 0.45, cy - s * 0.1);
+      c.closePath(); c.fill();
+
+      // Pena Dourada de Fênix
+      c.fillStyle = '#FBBF24';
+      c.beginPath();
+      c.moveTo(cx + s * 0.15, cy - s * 0.3);
+      c.quadraticCurveTo(cx + s * 0.55, cy - s * 0.85, cx + s * 0.35, cy - s * 0.95);
+      c.quadraticCurveTo(cx + s * 0.2, cy - s * 0.6, cx + s * 0.1, cy - s * 0.25);
+      c.closePath(); c.fill();
+
+      drawEyes(c, cx, cy + s * 0.14, s * 0.18, '#FDE68A');
+      break;
+
+    case 'arcane_mage':
+      // Capuz Arcano de Éter
+      c.fillStyle = '#2E1065';
+      c.beginPath();
+      c.moveTo(cx, cy - s * 0.95);
+      c.lineTo(cx + s * 0.55, cy + s * 0.2);
+      c.lineTo(cx - s * 0.55, cy + s * 0.2);
+      c.closePath(); c.fill();
+
+      // Vazio Abissal do Capuz
+      c.fillStyle = '#0F0728';
+      c.beginPath(); c.arc(cx, cy - s * 0.12, s * 0.32, 0, Math.PI * 2); c.fill();
+
+      // Olhos de Chama Astral
+      drawGlowingEyes(c, cx, cy - s * 0.14, s * 0.22, '#38BDF8');
+
+      // Runa na Testa
+      c.strokeStyle = '#818CF8'; c.lineWidth = s * 0.05;
+      c.beginPath();
+      c.moveTo(cx, cy - s * 0.45); c.lineTo(cx, cy - s * 0.32);
+      c.moveTo(cx - s * 0.08, cy - s * 0.38); c.lineTo(cx + s * 0.08, cy - s * 0.38);
+      c.stroke();
+      break;
+
+    case 'medieval_knight':
+      // Elmo Fechado de Aço Nobre
+      c.fillStyle = '#475569';
+      roundRect(c, cx - s * 0.38, cy - s * 0.65, s * 0.76, s * 0.85, s * 0.18);
+      c.fill();
+
+      // Pluma Prateada
+      c.fillStyle = '#E2E8F0';
+      c.beginPath();
+      c.moveTo(cx, cy - s * 0.65);
+      c.quadraticCurveTo(cx + s * 0.4, cy - s * 1.0, cx - s * 0.1, cy - s * 0.95);
+      c.closePath(); c.fill();
+
+      // Visor T-Shaped com reflexo dourado
+      c.strokeStyle = '#FCD34D'; c.lineWidth = s * 0.06;
+      c.beginPath();
+      c.moveTo(cx - s * 0.24, cy - s * 0.12); c.lineTo(cx + s * 0.24, cy - s * 0.12);
+      c.moveTo(cx, cy - s * 0.12); c.lineTo(cx, cy + s * 0.16);
+      c.stroke();
+
+      drawEyes(c, cx, cy - s * 0.12, s * 0.15, '#60A5FA');
+      break;
+
+    case 'forest_ranger':
+      // Capuz de Folhas Élfico
+      c.fillStyle = '#064E3B';
+      c.beginPath();
+      c.moveTo(cx, cy - s * 0.85);
+      c.quadraticCurveTo(cx + s * 0.6, cy - s * 0.2, cx + s * 0.45, cy + s * 0.25);
+      c.lineTo(cx - s * 0.45, cy + s * 0.25);
+      c.quadraticCurveTo(cx - s * 0.6, cy - s * 0.2, cx, cy - s * 0.85);
+      c.closePath(); c.fill();
+
+      // Folha Central
+      c.fillStyle = '#059669';
+      c.beginPath();
+      c.moveTo(cx, cy - s * 0.85);
+      c.quadraticCurveTo(cx + s * 0.2, cy - s * 0.5, cx, cy - s * 0.2);
+      c.quadraticCurveTo(cx - s * 0.2, cy - s * 0.5, cx, cy - s * 0.85);
+      c.closePath(); c.fill();
+
+      drawGlowingEyes(c, cx, cy - s * 0.08, s * 0.20, '#34D399');
+      break;
+
+    case 'ice_knight':
+      // Elmo Glacial e Tiara de Cristais
+      c.fillStyle = '#0284C7';
+      c.beginPath(); c.arc(cx, cy - s * 0.1, s * 0.38, 0, Math.PI * 2); c.fill();
+
+      // Espinhos de Gelo Polares
+      c.fillStyle = '#BAE6FD';
+      [-0.35, -0.15, 0, 0.15, 0.35].forEach(off => {
+        let h = (off === 0) ? s * 0.95 : s * 0.7;
+        c.beginPath();
+        c.moveTo(cx + s * (off - 0.08), cy - s * 0.2);
+        c.lineTo(cx + s * off, cy - h);
+        c.lineTo(cx + s * (off + 0.08), cy - s * 0.2);
+        c.closePath(); c.fill();
+      });
+
+      drawGlowingEyes(c, cx, cy - s * 0.05, s * 0.22, '#E0F2FE');
+      break;
+
+    case 'shadow_lord':
+      // Chifres Demoníacos de Névoa Abissal
+      c.fillStyle = '#581C87';
+      c.beginPath();
+      c.moveTo(cx - s * 0.25, cy - s * 0.3);
+      c.quadraticCurveTo(cx - s * 0.85, cy - s * 0.85, cx - s * 0.45, cy - s * 1.0);
+      c.quadraticCurveTo(cx - s * 0.4, cy - s * 0.6, cx - s * 0.15, cy - s * 0.35);
+      c.closePath(); c.fill();
+
+      c.beginPath();
+      c.moveTo(cx + s * 0.25, cy - s * 0.3);
+      c.quadraticCurveTo(cx + s * 0.85, cy - s * 0.85, cx + s * 0.45, cy - s * 1.0);
+      c.quadraticCurveTo(cx + s * 0.4, cy - s * 0.6, cx + s * 0.15, cy - s * 0.35);
+      c.closePath(); c.fill();
+
+      // Máscara de Obsidiana
+      c.fillStyle = '#180B26';
+      c.beginPath();
+      c.moveTo(cx, cy + s * 0.3);
+      c.lineTo(cx + s * 0.38, cy - s * 0.3);
+      c.lineTo(cx, cy - s * 0.5);
+      c.lineTo(cx - s * 0.38, cy - s * 0.3);
+      c.closePath(); c.fill();
+
+      drawGlowingEyes(c, cx, cy - s * 0.18, s * 0.22, '#F43F5E');
+      break;
+
+    case 'cosmic_guardian':
+      // Halo Cósmico Orbital
+      c.strokeStyle = '#F472B6'; c.lineWidth = s * 0.05;
+      c.beginPath(); c.arc(cx, cy - s * 0.2, s * 0.55, 0, Math.PI * 2); c.stroke();
+
+      // Cabeça Estelar
+      c.fillStyle = '#4A044E';
+      c.beginPath(); c.arc(cx, cy - s * 0.15, s * 0.35, 0, Math.PI * 2); c.fill();
+
+      drawGlowingEyes(c, cx, cy - s * 0.15, s * 0.22, '#FFFFFF');
+
+      // Estrelas Orbitais
+      c.fillStyle = '#FDF4FF';
+      c.beginPath(); c.arc(cx + s * 0.45, cy - s * 0.4, s * 0.07, 0, Math.PI * 2); c.fill();
+      c.beginPath(); c.arc(cx - s * 0.45, cy - s * 0.1, s * 0.05, 0, Math.PI * 2); c.fill();
+      c.beginPath(); c.arc(cx + s * 0.15, cy - s * 0.65, s * 0.06, 0, Math.PI * 2); c.fill();
+      break;
+
+    case 'golden_alchemist':
+      // Capuz de Alquimista
+      c.fillStyle = '#451A03';
+      c.beginPath(); c.arc(cx, cy - s * 0.15, s * 0.42, 0, Math.PI * 2); c.fill();
+
+      // Monóculo Dourado com Lente Arcana
+      c.strokeStyle = '#FBBF24'; c.lineWidth = s * 0.06;
+      c.beginPath(); c.arc(cx + s * 0.14, cy - s * 0.14, s * 0.15, 0, Math.PI * 2); c.stroke();
+      c.fillStyle = 'rgba(253, 224, 71, 0.9)';
+      c.beginPath(); c.arc(cx + s * 0.14, cy - s * 0.14, s * 0.10, 0, Math.PI * 2); c.fill();
+
+      // Olho Esquerdo nas Sombras
+      c.fillStyle = '#D97706';
+      c.beginPath(); c.arc(cx - s * 0.14, cy - s * 0.14, s * 0.07, 0, Math.PI * 2); c.fill();
+      break;
+
+    case 'mystic_creature':
+      // Cabeça Draconiana
+      c.fillStyle = '#042F2C';
+      c.beginPath();
+      c.moveTo(cx, cy - s * 0.75);
+      c.lineTo(cx + s * 0.4, cy - s * 0.1);
+      c.lineTo(cx + s * 0.2, cy + s * 0.35);
+      c.lineTo(cx, cy + s * 0.45);
+      c.lineTo(cx - s * 0.2, cy + s * 0.35);
+      c.lineTo(cx - s * 0.4, cy - s * 0.1);
+      c.closePath(); c.fill();
+
+      // Chifres Draconianos de Jade
+      c.fillStyle = '#0D9488';
+      c.beginPath();
+      c.moveTo(cx - s * 0.25, cy - s * 0.5);
+      c.quadraticCurveTo(cx - s * 0.7, cy - s * 0.95, cx - s * 0.85, cy - s * 0.8);
+      c.quadraticCurveTo(cx - s * 0.4, cy - s * 0.4, cx - s * 0.15, cy - s * 0.3);
+      c.closePath(); c.fill();
+
+      c.beginPath();
+      c.moveTo(cx + s * 0.25, cy - s * 0.5);
+      c.quadraticCurveTo(cx + s * 0.7, cy - s * 0.95, cx + s * 0.85, cy - s * 0.8);
+      c.quadraticCurveTo(cx + s * 0.4, cy - s * 0.4, cx + s * 0.15, cy - s * 0.3);
+      c.closePath(); c.fill();
+
+      // Olhos de Dragão em Fenda Dourada
+      c.fillStyle = '#FCD34D';
+      c.beginPath();
+      c.ellipse(cx - s * 0.4, cy - s * 0.08, s * 0.12, s * 0.07, 0, 0, Math.PI * 2);
+      c.ellipse(cx + s * 0.4, cy - s * 0.08, s * 0.12, s * 0.07, 0, 0, Math.PI * 2);
+      c.fill();
+      c.strokeStyle = '#000'; c.lineWidth = s * 0.03;
+      c.beginPath();
+      c.moveTo(cx - s * 0.4, cy - s * 0.14); c.lineTo(cx - s * 0.4, cy - s * 0.02);
+      c.moveTo(cx + s * 0.4, cy - s * 0.14); c.lineTo(cx + s * 0.4, cy - s * 0.02);
+      c.stroke();
+      break;
   }
-  tRects = [];
-  for (let i = 0; i < 7; i++) {
-    tRects.push({ x: gap + i * (cw + gap), y: tabY, w: cw, h: h - tabY - 80 });
-  }
-}
-window.addEventListener('resize', resize);
 
-function setScenery(scenery) {
-  currentScenery = scenery;
-  currentSceneryId = scenery.id;
-  localStorage.setItem('pac_scenery', scenery.id);
-  initAmbientParticles();
-}
+  // 5. Moldura Nobre Externa com Rebites Cardeais
+  c.strokeStyle = avatar.border;
+  c.lineWidth = r * 0.08;
+  c.beginPath(); c.arc(cx, cy, r - c.lineWidth * 0.5, 0, Math.PI * 2); c.stroke();
 
-function startLevel(lvl) {
-  currentLevel = lvl;
-  localStorage.setItem('pac_cur_lvl', lvl);
-  moves = 0; seconds = 0; isWon = false;
-  undoStack = [];
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => { seconds++; updateHud(); }, 1000);
+  // Aura Interna
+  c.strokeStyle = avatar.border;
+  c.lineWidth = r * 0.04;
+  c.globalAlpha = 0.55;
+  c.beginPath(); c.arc(cx, cy, r - r * 0.1, 0, Math.PI * 2); c.stroke();
+  c.globalAlpha = 1.0;
 
-  // Desbloqueio e Aplicação Automática do Tema pelo Nível
-  const autoTheme = SCENERIES.slice().reverse().find(s => lvl >= s.minLevel) || SCENERIES[0];
-  setScenery(autoTheme);
-
-  // Baralho Completo de 52 Cartas
-  let deck = [];
-  let id = 0;
-  SUITS.forEach(s => {
-    RANKS.forEach(r => {
-      deck.push({ id: id++, suit: s, rank: r, faceUp: false });
-    });
+  // 4 Rebites de Ouro / Prata
+  const rivetR = r * 0.055;
+  c.fillStyle = '#FFF';
+  [
+    {x: cx, y: cy - r + r * 0.04},
+    {x: cx, y: cy + r - r * 0.04},
+    {x: cx - r + r * 0.04, y: cy},
+    {x: cx + r - r * 0.04, y: cy}
+  ].forEach(pt => {
+    c.beginPath(); c.arc(pt.x, pt.y, rivetR, 0, Math.PI * 2); c.fill();
   });
 
-  // Embaralhamento Determinístico por Nível (Rejogabilidade perfeita)
-  let seed = 10007 * lvl + 99991;
-  for (let i = deck.length - 1; i > 0; i--) {
-    seed = (seed * 9301 + 49297) % 233280;
-    let j = Math.floor((seed / 233280) * (i + 1));
-    let t = deck[i]; deck[i] = deck[j]; deck[j] = t;
-  }
-
-  stock = []; waste = [];
-  foundations = [[], [], [], []];
-  tableaus = [[], [], [], [], [], [], []];
-
-  let cIdx = 0;
-  for (let col = 0; col < 7; col++) {
-    for (let row = 0; row <= col; row++) {
-      let c = deck[cIdx++];
-      c.faceUp = (row === col);
-      tableaus[col].push(c);
-    }
-  }
-  while (cIdx < deck.length) {
-    let c = deck[cIdx++];
-    c.faceUp = false;
-    stock.push(c);
-  }
-  updateHud();
+  c.restore();
 }
 
-// --- DESENHO DOS 5 CENÁRIOS CINEMATOGRÁFICOS ---
+function drawEyes(c, cx, cy, span, color) {
+  c.fillStyle = color;
+  c.beginPath(); c.arc(cx - span * 0.5, cy, span * 0.2, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(cx + span * 0.5, cy, span * 0.2, 0, Math.PI * 2); c.fill();
+}
+
+function drawGlowingEyes(c, cx, cy, span, color) {
+  c.save();
+  c.fillStyle = color; c.globalAlpha = 0.45;
+  c.beginPath(); c.arc(cx - span * 0.5, cy, span * 0.35, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(cx + span * 0.5, cy, span * 0.35, 0, Math.PI * 2); c.fill();
+
+  c.fillStyle = '#FFFFFF'; c.globalAlpha = 1.0;
+  c.beginPath(); c.arc(cx - span * 0.5, cy, span * 0.16, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(cx + span * 0.5, cy, span * 0.16, 0, Math.PI * 2); c.fill();
+  c.restore();
+}
+
+// ==========================================
+// 3. RENDERIZADOR DE CARTAS DARK FANTASY
+// ==========================================
+
+function drawCard(card, x, y, isElevated) {
+  ctx.save();
+
+  // Sombra Dinâmica 3D
+  if (isElevated) {
+    ctx.shadowColor = currentSkin.acc + 'aa';
+    ctx.shadowBlur = 24; ctx.shadowOffsetY = 14;
+  } else {
+    ctx.shadowColor = 'rgba(0,0,0,0.45)';
+    ctx.shadowBlur = 7; ctx.shadowOffsetY = 4;
+  }
+
+  if (!card.faceUp) {
+    // --- VERSO DA CARTA (Multi-camadas e Arte Exclusiva da Skin) ---
+    drawCardBackArt(ctx, currentSkin, x, y, cw, ch);
+  } else {
+    // --- FACE DA CARTA (Pergaminho Nobre, Figuras e Ás Monumental) ---
+    drawCardFaceArt(ctx, card, currentSkin, x, y, cw, ch);
+  }
+
+  if (isElevated) {
+    ctx.strokeStyle = currentSkin.acc;
+    ctx.lineWidth = 3.2;
+    roundRect(ctx, x, y, cw, ch, 7);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+function drawCardBackArt(c, skin, x, y, w, h) {
+  // 1. Fundo Gradiente Nobre
+  let g = c.createLinearGradient(x, y, x + w, y + h);
+  g.addColorStop(0, skin.p1);
+  g.addColorStop(1, skin.p2);
+  c.fillStyle = g;
+  c.strokeStyle = 'rgba(255,255,255,0.45)';
+  c.lineWidth = 1.4;
+  roundRect(c, x, y, w, h, 7);
+  c.fill(); c.stroke();
+
+  // 2. Moldura Interna em Ouro Nobre com Brilho
+  c.strokeStyle = skin.acc;
+  c.lineWidth = 2.2;
+  roundRect(c, x + 4, y + 4, w - 8, h - 8, 5);
+  c.stroke();
+
+  // Segunda Borda Interna de Acabamento
+  c.strokeStyle = skin.acc + '66';
+  c.lineWidth = 1.0;
+  roundRect(c, x + 7.5, y + 7.5, w - 15, h - 15, 4);
+  c.stroke();
+
+  // 4 Rebites de Canto
+  c.fillStyle = skin.acc;
+  const dotR = 1.6;
+  c.beginPath(); c.arc(x + 5.5, y + 5.5, dotR, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(x + w - 5.5, y + 5.5, dotR, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(x + 5.5, y + h - 5.5, dotR, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.arc(x + w - 5.5, y + h - 5.5, dotR, 0, Math.PI * 2); c.fill();
+
+  // 3. Emblema Central e Geometria Sagrada da Coleção
+  drawSkinPattern(c, skin.pattern, x + w / 2, y + h / 2, w * 0.32, skin.acc);
+}
+
+function drawCardFaceArt(c, card, skin, x, y, w, h) {
+  // Pergaminho nobre harmonizado com a coleção
+  let parchmentG = c.createLinearGradient(x, y, x + w, y + h);
+  switch (skin.pattern) {
+    case 'golden': parchmentG.addColorStop(0, '#FFFDF5'); parchmentG.addColorStop(1, '#FAF0D7'); break;
+    case 'arcane': parchmentG.addColorStop(0, '#F8FAFC'); parchmentG.addColorStop(1, '#EDE9FE'); break;
+    case 'nature': parchmentG.addColorStop(0, '#F7FDF9'); parchmentG.addColorStop(1, '#ECFDF5'); break;
+    case 'ice':    parchmentG.addColorStop(0, '#F0F9FF'); parchmentG.addColorStop(1, '#E0F2FE'); break;
+    case 'flame':  parchmentG.addColorStop(0, '#FFF8F0'); parchmentG.addColorStop(1, '#FEE6D6'); break;
+    case 'shadow': parchmentG.addColorStop(0, '#F5F5F7'); parchmentG.addColorStop(1, '#E4E4E7'); break;
+    case 'cosmic': parchmentG.addColorStop(0, '#FAF5FF'); parchmentG.addColorStop(1, '#F3E8FF'); break;
+    case 'royal':  parchmentG.addColorStop(0, '#FFF1F2'); parchmentG.addColorStop(1, '#FFE4E6'); break;
+    default:       parchmentG.addColorStop(0, '#FFFDF8'); parchmentG.addColorStop(1, '#F3ECE0'); break;
+  }
+  c.fillStyle = parchmentG;
+  c.strokeStyle = '#D1D5DB';
+  c.lineWidth = 1.2;
+  roundRect(c, x, y, w, h, 7);
+  c.fill(); c.stroke();
+
+  // Moldura Interna em Tom de Destaque da Skin
+  c.strokeStyle = skin.acc + 'bb';
+  c.lineWidth = 1.8;
+  roundRect(c, x + 3.5, y + 3.5, w - 7, h - 7, 5);
+  c.stroke();
+
+  // Ornamentos nos 4 Cantos
+  drawFaceCornerOrnaments(c, skin.pattern, x, y, w, h, skin.acc);
+
+  // Índices (Valor e Naipe Superior)
+  const isRed = card.suit.isRed;
+  c.fillStyle = isRed ? '#DC2626' : '#0F172A';
+  c.font = `bold ${w * 0.25}px -apple-system, serif`;
+  c.textAlign = 'left'; c.textBaseline = 'top';
+  c.fillText(card.rank.label, x + 5.5, y + 5);
+
+  c.font = `${w * 0.18}px sans-serif`;
+  c.fillText(card.suit.symbol, x + 5.5, y + 5 + w * 0.24);
+
+  // Centro da Carta
+  if (card.rank.val === 1) {
+    // Ás Monumental com Halo Radiante
+    c.save();
+    c.strokeStyle = skin.acc + '66';
+    c.lineWidth = 2.4;
+    c.beginPath(); c.arc(x + w / 2, y + h / 2, w * 0.30, 0, Math.PI * 2); c.stroke();
+    c.restore();
+
+    c.fillStyle = isRed ? '#DC2626' : '#0F172A';
+    c.font = `${w * 0.46}px sans-serif`;
+    c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.fillText(card.suit.symbol, x + w / 2, y + h / 2);
+  } else if (card.rank.val > 10) {
+    // Figuras da Corte (Valete, Dama, Rei) com Brasão Nobre Heráldico
+    drawCourtCardBox(c, card, skin, x, y, w, h, isRed);
+  } else {
+    // Cartas Numéricas com Naipe Central Nobre
+    c.fillStyle = isRed ? '#DC2626' : '#0F172A';
+    c.font = `${w * 0.36}px sans-serif`;
+    c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.fillText(card.suit.symbol, x + w / 2, y + h / 2);
+  }
+}
+
+function drawCourtCardBox(c, card, skin, x, y, w, h, isRed) {
+  const boxW = w * 0.64;
+  const boxH = h * 0.52;
+  const bx = x + w * 0.18;
+  const by = y + h * 0.24;
+
+  // Caixa Nobre
+  c.strokeStyle = skin.acc;
+  c.lineWidth = 1.8;
+  roundRect(c, bx, by, boxW, boxH, 6);
+  c.stroke();
+  c.fillStyle = skin.acc + '20';
+  c.fill();
+
+  // Marca d'água do naipe
+  c.fillStyle = isRed ? 'rgba(220, 38, 38, 0.12)' : 'rgba(15, 23, 42, 0.08)';
+  c.font = `${w * 0.32}px sans-serif`;
+  c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText(card.suit.symbol, x + w / 2, y + h / 2 - 2);
+
+  // Letra da Corte Nobre
+  c.fillStyle = isRed ? '#DC2626' : '#0F172A';
+  c.font = `serif bold ${w * 0.40}px`;
+  c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText(card.rank.label, x + w / 2, y + h / 2 - 3);
+
+  // Naipe sob a Letra
+  c.font = `${w * 0.18}px sans-serif`;
+  c.fillText(card.suit.symbol, x + w / 2, y + h * 0.67);
+}
+
+function drawFaceCornerOrnaments(c, pattern, x, y, w, h, acc) {
+  c.save();
+  c.strokeStyle = acc; c.fillStyle = acc; c.lineWidth = 1.3;
+  const s = w * 0.04;
+  const pts = [
+    {cx: x + 6.5, cy: y + 6.5},
+    {cx: x + w - 6.5, cy: y + 6.5},
+    {cx: x + 6.5, cy: y + h - 6.5},
+    {cx: x + w - 6.5, cy: y + h - 6.5}
+  ];
+  pts.forEach(p => {
+    c.beginPath();
+    c.moveTo(p.cx, p.cy - s); c.lineTo(p.cx + s * 0.7, p.cy); c.lineTo(p.cx, p.cy + s); c.lineTo(p.cx - s * 0.7, p.cy);
+    c.closePath(); c.stroke();
+  });
+  c.restore();
+}
+
+function drawSkinPattern(c, pattern, cx, cy, size, acc) {
+  c.save();
+  c.strokeStyle = acc;
+  c.fillStyle = acc + '33';
+  c.lineWidth = 1.6;
+  c.beginPath();
+
+  switch(pattern) {
+    case 'classic':
+      c.moveTo(cx, cy - size); c.lineTo(cx + size, cy); c.lineTo(cx, cy + size); c.lineTo(cx - size, cy); c.closePath();
+      c.stroke();
+      c.arc(cx, cy, size * 0.38, 0, Math.PI * 2); c.stroke();
+      break;
+
+    case 'golden':
+      c.moveTo(cx, cy - size); c.lineTo(cx + size, cy); c.lineTo(cx, cy + size); c.lineTo(cx - size, cy); c.closePath();
+      c.stroke();
+      c.arc(cx, cy, size * 0.45, 0, Math.PI * 2); c.stroke();
+      c.moveTo(cx - size * 0.75, cy); c.lineTo(cx + size * 0.75, cy);
+      c.moveTo(cx, cy - size * 0.75); c.lineTo(cx, cy + size * 0.75);
+      c.stroke();
+      break;
+
+    case 'arcane':
+      // Estrela de 8 Pontas e Runa Circular
+      c.arc(cx, cy, size * 0.88, 0, Math.PI * 2); c.stroke();
+      c.moveTo(cx, cy - size * 0.8); c.lineTo(cx + size * 0.8, cy); c.lineTo(cx, cy + size * 0.8); c.lineTo(cx - size * 0.8, cy); c.closePath(); c.stroke();
+      c.moveTo(cx - size * 0.55, cy - size * 0.55); c.lineTo(cx + size * 0.55, cy - size * 0.55);
+      c.lineTo(cx + size * 0.55, cy + size * 0.55); c.lineTo(cx - size * 0.55, cy + size * 0.55); c.closePath(); c.stroke();
+      break;
+
+    case 'shadow':
+      c.moveTo(cx - size * 0.7, cy - size * 0.7); c.lineTo(cx + size * 0.7, cy - size * 0.7);
+      c.lineTo(cx + size * 0.7, cy); c.lineTo(cx, cy + size * 0.95); c.lineTo(cx - size * 0.7, cy); c.closePath(); c.stroke(); c.fill();
+      c.moveTo(cx, cy - size * 0.4); c.lineTo(cx, cy + size * 0.5);
+      c.moveTo(cx - size * 0.32, cy - size * 0.05); c.lineTo(cx + size * 0.32, cy - size * 0.05); c.stroke();
+      break;
+
+    case 'nature':
+      c.ellipse(cx, cy, size * 0.55, size * 0.9, 0, 0, Math.PI * 2); c.stroke();
+      c.ellipse(cx, cy, size * 0.9, size * 0.55, 0, 0, Math.PI * 2); c.stroke();
+      c.arc(cx, cy, size * 0.25, 0, Math.PI * 2); c.fill();
+      break;
+
+    case 'ice':
+      c.moveTo(cx, cy - size); c.lineTo(cx, cy + size);
+      c.moveTo(cx - size, cy); c.lineTo(cx + size, cy);
+      c.moveTo(cx - size * 0.7, cy - size * 0.7); c.lineTo(cx + size * 0.7, cy + size * 0.7);
+      c.moveTo(cx - size * 0.7, cy + size * 0.7); c.lineTo(cx + size * 0.7, cy - size * 0.7);
+      c.stroke();
+      c.arc(cx, cy, size * 0.32, 0, Math.PI * 2); c.stroke();
+      break;
+
+    case 'flame':
+      c.moveTo(cx, cy - size * 0.95);
+      c.quadraticCurveTo(cx + size * 0.7, cy, cx, cy + size * 0.85);
+      c.quadraticCurveTo(cx - size * 0.7, cy, cx, cy - size * 0.95);
+      c.closePath(); c.stroke(); c.fill();
+      c.arc(cx, cy + size * 0.2, size * 0.22, 0, Math.PI * 2); c.stroke();
+      break;
+
+    case 'cosmic':
+      c.arc(cx, cy, size * 0.35, 0, Math.PI * 2); c.fill();
+      c.ellipse(cx, cy, size * 0.95, size * 0.45, Math.PI / 4, 0, Math.PI * 2); c.stroke();
+      c.ellipse(cx, cy, size * 0.95, size * 0.45, -Math.PI / 4, 0, Math.PI * 2); c.stroke();
+      break;
+
+    case 'royal':
+      c.moveTo(cx - size * 0.85, cy + size * 0.45); c.lineTo(cx + size * 0.85, cy + size * 0.45);
+      c.lineTo(cx + size * 0.75, cy - size * 0.4); c.lineTo(cx + size * 0.38, cy);
+      c.lineTo(cx, cy - size * 0.7); c.lineTo(cx - size * 0.38, cy);
+      c.lineTo(cx - size * 0.75, cy - size * 0.4); c.closePath(); c.stroke(); c.fill();
+      break;
+  }
+  c.restore();
+}
+
+function roundRect(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.lineTo(x + w - r, y);
+  c.quadraticCurveTo(x + w, y, x + w, y + r);
+  c.lineTo(x + w, y + h - r);
+  c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  c.lineTo(x + r, y + h);
+  c.quadraticCurveTo(x, y + h, x, y + h - r);
+  c.lineTo(x, y + r);
+  c.quadraticCurveTo(x, y, x + r, y);
+  c.closePath();
+}
+
+// ==========================================
+// 4. MESA DE JOGO E CENÁRIOS VIVOS
+// ==========================================
+
 function drawLiveBackground(w, h, now) {
-  // Gradiente de Fundo
+  // Fundo Base do Cenário Ativo
   let bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-  bgGrad.addColorStop(0, currentScenery.bgTop);
-  bgGrad.addColorStop(1, currentScenery.bgBot);
+  switch (currentScenery.id) {
+    case 'frozen':   bgGrad.addColorStop(0, '#061626'); bgGrad.addColorStop(1, '#0C2A44'); break;
+    case 'desert':   bgGrad.addColorStop(0, '#2D1606'); bgGrad.addColorStop(1, '#1A0C03'); break;
+    case 'medieval': bgGrad.addColorStop(0, '#150820'); bgGrad.addColorStop(1, '#09030E'); break;
+    case 'cosmic':   bgGrad.addColorStop(0, '#09041A'); bgGrad.addColorStop(1, '#040209'); break;
+    default:         bgGrad.addColorStop(0, '#041B10'); bgGrad.addColorStop(1, '#020C07'); break; // Forest
+  }
   ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, w, h);
 
-  // Efeitos Específicos por Cenário
-  if (currentScenery.id === 'forest') {
-    // Floresta Encantada: Raios crepusculares, névoa e vaga-lumes
-    let beamG = ctx.createLinearGradient(0, 0, w, h * 0.7);
-    beamG.addColorStop(0, 'rgba(52, 211, 153, 0.12)');
-    beamG.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = beamG;
-    ctx.fillRect(0, 0, w, h * 0.7);
+  // Feltro Nobre Central com Iluminação Radial Suave
+  let feltG = ctx.createRadialGradient(w * 0.5, h * 0.45, w * 0.1, w * 0.5, h * 0.45, w * 0.85);
+  feltG.addColorStop(0, 'rgba(16, 185, 129, 0.12)');
+  feltG.addColorStop(0.65, 'rgba(6, 78, 59, 0.08)');
+  feltG.addColorStop(1, 'rgba(0,0,0,0.55)');
+  ctx.fillStyle = feltG;
+  ctx.fillRect(0, 0, w, h);
 
-    // Vaga-lumes Bioluminescentes Pulsantes
+  // Efeitos Ambientais por Cenário
+  if (currentScenery.id === 'forest') {
+    // Vagalumes
     ambientParticles.forEach(p => {
-      p.x += Math.sin(now * 0.001 + p.phase) * 0.6;
-      p.y -= 0.4;
+      p.y -= p.vy * 0.5; p.x += Math.sin(now * 0.002 + p.phase) * 0.4;
       if (p.y < 0) p.y = h;
       let pulse = Math.sin(now * 0.004 + p.phase) * 0.5 + 0.5;
-      ctx.fillStyle = `rgba(52, 211, 153, ${pulse * 0.45})`;
+      ctx.fillStyle = `rgba(52, 211, 153, ${pulse * 0.4})`;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 3 * pulse + 2, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = `rgba(253, 224, 71, ${pulse * 0.8 + 0.2})`;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
     });
   } else if (currentScenery.id === 'frozen') {
-    // Montanhas Geladas: Aurora Boreal ondulante e picos glaciais
-    let aShift = Math.sin(now * 0.0008) * 40;
-    let aG = ctx.createLinearGradient(w * 0.2 + aShift, 0, w * 0.8 - aShift, h * 0.45);
-    aG.addColorStop(0, 'rgba(56, 189, 248, 0.22)');
-    aG.addColorStop(0.5, 'rgba(167, 139, 250, 0.15)');
-    aG.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = aG;
-    ctx.fillRect(0, 0, w, h * 0.5);
-
-    // Cordilheira recortada
+    // Cordilheira e Neve
     ctx.fillStyle = 'rgba(8, 20, 32, 0.5)';
     ctx.beginPath();
     ctx.moveTo(0, h); ctx.lineTo(0, h * 0.76);
-    ctx.lineTo(w * 0.2, h * 0.65); ctx.lineTo(w * 0.48, h * 0.78);
+    ctx.lineTo(w * 0.25, h * 0.65); ctx.lineTo(w * 0.5, h * 0.78);
     ctx.lineTo(w * 0.75, h * 0.62); ctx.lineTo(w, h * 0.74);
     ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
 
-    // Flocos de Neve
     ambientParticles.forEach(p => {
-      p.y += p.vy * 1.5;
-      p.x += Math.sin(now * 0.001 + p.phase) * 0.7;
+      p.y += p.vy * 1.4; p.x += Math.sin(now * 0.001 + p.phase) * 0.6;
       if (p.y > h) p.y = 0;
-      ctx.fillStyle = 'rgba(224, 242, 254, 0.7)';
+      ctx.fillStyle = 'rgba(224, 242, 254, 0.75)';
       ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
     });
   } else if (currentScenery.id === 'desert') {
-    // Deserto Dourado: Sol Poente radiante, miragem e dunas
-    let sunP = Math.sin(now * 0.001) * 0.06 + 1.0;
-    let sG = ctx.createRadialGradient(w * 0.5, h * 0.65, 8, w * 0.5, h * 0.65, w * 0.55 * sunP);
-    sG.addColorStop(0, 'rgba(251, 191, 36, 0.3)');
-    sG.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = sG;
-    ctx.beginPath(); ctx.arc(w * 0.5, h * 0.65, w * 0.55 * sunP, 0, Math.PI * 2); ctx.fill();
-
-    // Dunas com Cristas
-    ctx.fillStyle = 'rgba(26, 10, 4, 0.55)';
-    ctx.beginPath();
-    ctx.moveTo(0, h); ctx.lineTo(0, h * 0.82);
-    ctx.quadraticCurveTo(w * 0.4, h * 0.86, w * 0.72, h * 0.78);
-    ctx.quadraticCurveTo(w * 0.88, h * 0.75, w, h * 0.79);
-    ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
-
-    // Poeira Dourada
+    // Dunas e Poeira Dourada
     ambientParticles.forEach(p => {
       p.x += 0.8; p.y += Math.sin(now * 0.002 + p.phase) * 0.4;
       if (p.x > w) p.x = 0;
-      ctx.fillStyle = 'rgba(251, 191, 36, 0.55)';
+      ctx.fillStyle = 'rgba(251, 191, 36, 0.6)';
       ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.9, 0, Math.PI * 2); ctx.fill();
     });
   } else if (currentScenery.id === 'medieval') {
-    // Reino Medieval: Fortaleza Gótica, janelas iluminadas e tochas
-    ctx.fillStyle = 'rgba(10, 3, 18, 0.6)';
-    ctx.beginPath();
+    // Fortaleza e Tochas
+    ctx.fillStyle = 'rgba(10, 3, 18, 0.65)';
     let cY = h * 0.82;
-    ctx.moveTo(0, h); ctx.lineTo(0, cY);
-    ctx.lineTo(w * 0.15, cY); ctx.lineTo(w * 0.15, cY - 55); ctx.lineTo(w * 0.24, cY - 55); ctx.lineTo(w * 0.24, cY - 18);
-    ctx.lineTo(w * 0.65, cY - 18); ctx.lineTo(w * 0.65, cY - 80); ctx.lineTo(w * 0.78, cY - 80); ctx.lineTo(w * 0.78, cY);
-    ctx.lineTo(w, cY); ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
-
-    // Janelas Iluminadas
-    ctx.fillStyle = 'rgba(253, 224, 71, 0.75)';
-    ctx.fillRect(w * 0.18, cY - 42, 10, 16);
-    ctx.fillRect(w * 0.70, cY - 62, 14, 20);
-
-    // Tochas Crepitantes
-    let tP = Math.sin(now * 0.009) * 0.15 + 0.85;
-    let tG = ctx.createRadialGradient(w * 0.21, cY - 50, 2, w * 0.21, cY - 50, 24 * tP);
-    tG.addColorStop(0, 'rgba(249, 115, 22, 0.6)');
-    tG.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = tG;
-    ctx.beginPath(); ctx.arc(w * 0.21, cY - 50, 24 * tP, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(0, h); ctx.lineTo(0, cY); ctx.lineTo(w * 0.15, cY);
+    ctx.lineTo(w * 0.15, cY - 45); ctx.lineTo(w * 0.24, cY - 45); ctx.lineTo(w * 0.24, cY - 15);
+    ctx.lineTo(w * 0.65, cY - 15); ctx.lineTo(w * 0.65, cY - 65); ctx.lineTo(w * 0.78, cY - 65);
+    ctx.lineTo(w * 0.78, cY); ctx.lineTo(w, cY); ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
   } else if (currentScenery.id === 'cosmic') {
-    // Noite Cósmica: Nebulosas profundas e constelações astrais
-    let nG1 = ctx.createRadialGradient(w * 0.4, h * 0.35, 12, w * 0.4, h * 0.35, w * 0.6);
-    nG1.addColorStop(0, 'rgba(129, 140, 248, 0.25)');
-    nG1.addColorStop(0.6, 'rgba(192, 132, 252, 0.15)');
-    nG1.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = nG1;
-    ctx.beginPath(); ctx.arc(w * 0.4, h * 0.35, w * 0.6, 0, Math.PI * 2); ctx.fill();
-
-    // Estrelas Cintilantes com Pontas de Brilho
+    // Estrelas Cintilantes
     ambientParticles.forEach(p => {
       let tw = Math.sin(now * 0.003 + p.phase) * 0.5 + 0.5;
-      ctx.fillStyle = `rgba(224, 231, 255, ${tw * 0.8 + 0.2})`;
+      ctx.fillStyle = `rgba(224, 231, 255, ${tw * 0.85 + 0.15})`;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.size * (0.8 + tw * 0.6), 0, Math.PI * 2); ctx.fill();
     });
   }
+
+  // Moldura Nobre de Ébano e Ouro nas Bordas da Mesa
+  ctx.strokeStyle = 'rgba(212, 175, 55, 0.22)';
+  ctx.lineWidth = 2.0;
+  ctx.strokeRect(6, 60, w - 12, h - 126);
 }
 
-// --- RENDERIZADOR PRINCIPAL DO JOGO ---
+function drawSlot(x, y, watermark) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.55)';
+  ctx.strokeStyle = 'rgba(212, 175, 55, 0.32)';
+  ctx.lineWidth = 1.6;
+  roundRect(ctx, x, y, cw, ch, 7);
+  ctx.fill(); ctx.stroke();
+
+  // Chanfro interno escavado
+  ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
+  ctx.lineWidth = 1.2;
+  roundRect(ctx, x + 2.5, y + 2.5, cw - 5, ch - 5, 5);
+  ctx.stroke();
+
+  if (watermark) {
+    ctx.fillStyle = 'rgba(212, 175, 55, 0.24)';
+    ctx.font = `bold ${cw * 0.38}px serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(watermark, x + cw / 2, y + ch / 2);
+  }
+  ctx.restore();
+}
+
+// ==========================================
+// 5. RENDERIZADOR PRINCIPAL DO JOGO
+// ==========================================
+
 function render(now) {
   const w = window.innerWidth;
   const h = window.innerHeight;
@@ -814,7 +1190,7 @@ function render(now) {
   // 1. Cenário e Atmosfera
   drawLiveBackground(w, h, now);
 
-  // 2. Slots Vazios (Mesa)
+  // 2. Slots Vazios
   drawSlot(stockRect.x, stockRect.y, '↺');
   drawSlot(wasteRect.x, wasteRect.y);
   fRects.forEach((r, idx) => {
@@ -825,7 +1201,7 @@ function render(now) {
   // 3. Monte de Compra (Stock)
   if (stock.length > 0) drawCard(stock[stock.length - 1], stockRect.x, stockRect.y);
 
-  // 4. Monte de Descarte (Waste)
+  // 4. Pilha de Descarte (Waste)
   if (waste.length > 0) {
     let top = (isDragging && dragSource === 'waste') ? waste[waste.length - 2] : waste[waste.length - 1];
     if (top) drawCard(top, wasteRect.x, wasteRect.y);
@@ -852,10 +1228,10 @@ function render(now) {
       shakeOffset = Math.sin(prog * Math.PI * 4) * 7 * (1 - prog);
     }
 
-    // Efeito Visual de Coluna Completa (Aura Dourada)
+    // Efeito de Coluna Completa (Aura Dourada)
     if (columnGlows[col] && (now - columnGlows[col]) < 1000) {
       let glowProg = (now - columnGlows[col]) / 1000;
-      let alpha = (1 - glowProg) * 0.6;
+      let alpha = (1 - glowProg) * 0.65;
       ctx.strokeStyle = `rgba(251, 191, 36, ${alpha})`;
       ctx.lineWidth = 4;
       roundRect(ctx, r.x - 3, r.y - 3, cw + 6, h - r.y - 80, 10);
@@ -867,23 +1243,15 @@ function render(now) {
       drawCard(c, r.x + shakeOffset, curY);
       curY += c.faceUp ? ch * 0.28 : ch * 0.18;
     }
-
-    if (invalidShakeCol === col && (now - invalidShakeTime) < 250) {
-      ctx.strokeStyle = '#EF4444';
-      ctx.lineWidth = 3;
-      roundRect(ctx, r.x + shakeOffset - 2, r.y - 2, cw + 4, ch + 4, 8);
-      ctx.stroke();
-    }
   });
 
-  // 7. Realce de Destinos Válidos durante o Arraste
+  // 7. Realce de Destinos Válidos no Arraste
   if (isDragging && dragCards.length > 0) {
     let first = dragCards[0];
     let pulse = Math.sin(now * 0.008) * 0.35 + 0.65;
     ctx.strokeStyle = `rgba(52, 211, 153, ${pulse})`;
     ctx.lineWidth = 3.5;
 
-    // Destinos em Fundações
     if (dragCards.length === 1) {
       foundations.forEach((f, idx) => {
         if (canMoveToFoundation(first, f)) {
@@ -892,7 +1260,6 @@ function render(now) {
         }
       });
     }
-    // Destinos em Colunas
     tableaus.forEach((t, col) => {
       if (dragSource !== `t_${col}` && canMoveToTableau(first, t)) {
         let r = tRects[col];
@@ -903,7 +1270,7 @@ function render(now) {
     });
   }
 
-  // 8. Cartas Flutuando em Arraste com Sombra 3D
+  // 8. Cartas em Movimento com Elevação 3D
   if (isDragging && dragCards.length > 0) {
     let curX = dragCurX - dragOffX;
     let curY = dragCurY - dragOffY;
@@ -913,7 +1280,7 @@ function render(now) {
     });
   }
 
-  // 8.5. Efeito Visual de Dica Mágica Pulsante
+  // 8.5 Dica Mágica Pulsante
   if (hintEffect && (now - hintEffect.startTime) < 3200) {
     let elapsed = now - hintEffect.startTime;
     let pulse = Math.sin(elapsed * 0.008) * 0.35 + 0.65;
@@ -929,7 +1296,7 @@ function render(now) {
     ctx.restore();
   }
 
-  // 9. Faíscas e Partículas de Celebração & Drag Trail
+  // 9. Faíscas & Partículas Ativas
   for (let i = sparkParticles.length - 1; i >= 0; i--) {
     let p = sparkParticles[i];
     p.x += p.vx; p.y += p.vy;
@@ -940,60 +1307,27 @@ function render(now) {
       ctx.save();
       ctx.globalAlpha = Math.max(0, p.alpha);
       ctx.fillStyle = p.color;
-      ctx.strokeStyle = p.color;
-      ctx.lineWidth = 1.5;
-      if (p.shape === 'arcane') {
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y - p.size);
-        ctx.lineTo(p.x + p.size * 0.7, p.y);
-        ctx.lineTo(p.x, p.y + p.size);
-        ctx.lineTo(p.x - p.size * 0.7, p.y);
-        ctx.closePath();
-        ctx.stroke();
-      } else if (p.shape === 'nature') {
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y - p.size);
-        ctx.quadraticCurveTo(p.x + p.size, p.y, p.x, p.y + p.size);
-        ctx.quadraticCurveTo(p.x - p.size, p.y, p.x, p.y - p.size);
-        ctx.fill();
-      } else if (p.shape === 'ice') {
-        ctx.beginPath();
-        ctx.moveTo(p.x - p.size, p.y); ctx.lineTo(p.x + p.size, p.y);
-        ctx.moveTo(p.x, p.y - p.size); ctx.lineTo(p.x, p.y + p.size);
-        ctx.stroke();
-      } else if (p.shape === 'golden' || p.shape === 'cosmic' || p.shape === 'royal') {
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y - p.size);
-        ctx.lineTo(p.x + p.size * 0.3, p.y - p.size * 0.3);
-        ctx.lineTo(p.x + p.size, p.y);
-        ctx.lineTo(p.x + p.size * 0.3, p.y + p.size * 0.3);
-        ctx.lineTo(p.x, p.y + p.size);
-        ctx.lineTo(p.x - p.size * 0.3, p.y + p.size * 0.3);
-        ctx.lineTo(p.x - p.size, p.y);
-        ctx.lineTo(p.x - p.size * 0.3, p.y - p.size * 0.3);
-        ctx.closePath();
-        ctx.fill();
-      } else {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
-      }
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
     }
   }
 
-  // 10. Celebração de Vitória Temática Exclusiva da Skin Equipada
+  // 10. Celebração de Vitória Cinemática Personalizada por Skin
   if (isVictoryCelebrationActive) {
-    const celebrationElapsed = performance.now() - victoryCelebrationStartTime;
-    if (celebrationElapsed < 3600) {
-      drawSkinVictoryCelebration(victoryCelebrationSkin || currentSkin, celebrationElapsed, w, h);
+    let elapsed = now - victoryCelebrationStartTime;
+    if (elapsed < 3600) {
+      drawSkinVictoryCelebration(victoryCelebrationSkin, elapsed, w, h);
     } else {
       isVictoryCelebrationActive = false;
     }
-  } else if (isWon && Math.random() < 0.25) {
-    addSparkle(Math.random() * w, h * 0.15, currentSkin.acc, 6);
   }
 
   requestAnimationFrame(render);
 }
+
+// ==========================================
+// 6. CELEBRAÇÕES EXCLUSIVAS DE VITÓRIA
+// ==========================================
 
 function startSkinVictoryCelebration(skin) {
   isVictoryCelebrationActive = true;
@@ -1002,20 +1336,17 @@ function startSkinVictoryCelebration(skin) {
 
   const cx = window.innerWidth * 0.5;
   const cy = window.innerHeight * 0.42;
-  const count = 36;
+  const count = 48;
   for (let i = 0; i < count; i++) {
     const angle = (Math.PI * 2 * i) / count;
-    const speed = Math.random() * 5 + 3;
+    const speed = Math.random() * 6 + 3.5;
     sparkParticles.push({
-      x: cx,
-      y: cy,
+      x: cx, y: cy,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
-      size: Math.random() * 5 + 3,
-      alpha: 1.0,
-      fadeSpeed: 0.015,
-      color: (i % 2 === 0) ? skin.acc : (skin.trail || skin.acc),
-      shape: skin.pattern
+      size: Math.random() * 6 + 4,
+      alpha: 1.0, fadeSpeed: 0.015,
+      color: (i % 2 === 0) ? skin.acc : '#FFF'
     });
   }
 }
@@ -1026,7 +1357,7 @@ function drawSkinVictoryCelebration(skin, elapsed, w, h) {
   const cy = h * 0.42;
 
   ctx.save();
-  const waveRadius = w * prog * 0.85;
+  const waveRadius = w * prog * 0.9;
   const alpha = Math.max(0, (1.0 - prog) * 0.85);
   ctx.strokeStyle = skin.acc;
   ctx.globalAlpha = alpha;
@@ -1040,400 +1371,89 @@ function drawSkinVictoryCelebration(skin, elapsed, w, h) {
     ctx.globalAlpha = Math.max(0, (1.0 - p2) * 0.6);
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.arc(cx, cy, w * p2 * 0.85, 0, Math.PI * 2);
+    ctx.arc(cx, cy, w * p2 * 0.9, 0, Math.PI * 2);
     ctx.stroke();
   }
   ctx.restore();
 
-  if (Math.random() < 0.65) {
+  // Emissão contínua exclusiva por celebração
+  if (Math.random() < 0.7) {
     switch(skin.celebration) {
       case 'ARCANE_SURGE':
         sparkParticles.push({
-          x: Math.random() * w,
-          y: h * 0.85,
-          vx: Math.sin(elapsed * 0.005) * 2.5,
-          vy: -(Math.random() * 4.5 + 2),
-          size: 6, alpha: 1.0, fadeSpeed: 0.02,
-          color: skin.acc, shape: 'arcane'
+          x: Math.random() * w, y: h * 0.85,
+          vx: Math.sin(elapsed * 0.005) * 3,
+          vy: -(Math.random() * 5 + 3),
+          size: 7, alpha: 1.0, fadeSpeed: 0.02, color: skin.acc
         });
         break;
       case 'GOLDEN_MAJESTY':
         sparkParticles.push({
-          x: Math.random() * w,
-          y: 0,
+          x: Math.random() * w, y: 0,
           vx: (Math.random() - 0.5) * 2,
-          vy: Math.random() * 4 + 2.5,
-          size: 5, alpha: 1.0, fadeSpeed: 0.02,
-          color: '#FBBF24', shape: 'golden'
+          vy: Math.random() * 5 + 3,
+          size: 6, alpha: 1.0, fadeSpeed: 0.018, color: '#FBBF24'
         });
         break;
       case 'LIVING_FOREST':
         const angle = elapsed * 0.008 + Math.random() * 3;
-        const r = Math.random() * w * 0.35;
+        const r = Math.random() * w * 0.4;
         sparkParticles.push({
           x: cx + Math.cos(angle) * r,
           y: cy + Math.sin(angle) * r,
-          vx: (Math.random() - 0.5) * 2.5,
-          vy: -(Math.random() * 3.5 + 1),
-          size: 7, alpha: 1.0, fadeSpeed: 0.02,
-          color: '#34D399', shape: 'nature'
+          vx: (Math.random() - 0.5) * 3,
+          vy: -(Math.random() * 4 + 2),
+          size: 8, alpha: 1.0, fadeSpeed: 0.02, color: '#34D399'
         });
         break;
       case 'GLACIAL_BURST':
         sparkParticles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
+          x: Math.random() * w, y: Math.random() * h,
           vx: (Math.random() - 0.5) * 3,
           vy: (Math.random() - 0.5) * 3,
-          size: 6, alpha: 1.0, fadeSpeed: 0.025,
-          color: '#7DD3FC', shape: 'ice'
+          size: 7, alpha: 1.0, fadeSpeed: 0.025, color: '#7DD3FC'
         });
         break;
-      case 'ABYSSAL_SHADOW':
+      case 'ANCESTRAL_FLAME':
         sparkParticles.push({
-          x: Math.random() * w,
-          y: Math.random() * h * 0.8 + h * 0.1,
-          vx: (Math.random() - 0.5) * 2.5,
-          vy: -(Math.random() * 2 + 0.5),
-          size: 9, alpha: 0.8, fadeSpeed: 0.02,
-          color: '#C084FC', shape: 'circle'
+          x: Math.random() * w, y: h * 0.8,
+          vx: (Math.random() - 0.5) * 4,
+          vy: -(Math.random() * 6 + 3),
+          size: 8, alpha: 1.0, fadeSpeed: 0.02, color: (Math.random() < 0.6 ? '#FB923C' : '#EF4444')
         });
         break;
       case 'COSMIC_SUPERNOVA':
         sparkParticles.push({
-          x: Math.random() * w,
-          y: Math.random() * h * 0.5,
-          vx: Math.random() * 4 + 2,
-          vy: Math.random() * 4 + 2,
-          size: 6, alpha: 1.0, fadeSpeed: 0.025,
-          color: '#E879F9', shape: 'cosmic'
+          x: Math.random() * w, y: Math.random() * h * 0.5,
+          vx: (Math.random() * 6 + 2),
+          vy: (Math.random() * 6 + 2),
+          size: 7, alpha: 1.0, fadeSpeed: 0.022, color: '#E879F9'
         });
         break;
-      case 'ROYAL_TRIUMPH':
+      case 'ABYSSAL_SHADOW':
         sparkParticles.push({
-          x: Math.random() * w,
-          y: Math.random() * h * 0.3,
-          vx: (Math.random() - 0.5) * 3,
-          vy: Math.random() * 3.5 + 1.5,
-          size: 6, alpha: 1.0, fadeSpeed: 0.02,
-          color: Math.random() < 0.5 ? '#F59E0B' : '#E11D48', shape: 'royal'
+          x: Math.random() * w, y: Math.random() * h * 0.8 + h * 0.1,
+          vx: (Math.random() - 0.5) * 3.5,
+          vy: -(Math.random() * 3 + 1),
+          size: 11, alpha: 0.9, fadeSpeed: 0.015, color: '#C084FC'
         });
         break;
       default:
         sparkParticles.push({
-          x: Math.random() * w,
-          y: Math.random() * h * 0.4,
-          vx: (Math.random() - 0.5) * 3.5,
-          vy: -(Math.random() * 3 + 1),
-          size: 5, alpha: 1.0, fadeSpeed: 0.02,
-          color: Math.random() < 0.5 ? '#60A5FA' : '#E2E8F0', shape: 'circle'
+          x: Math.random() * w, y: Math.random() * h * 0.4,
+          vx: (Math.random() - 0.5) * 4,
+          vy: Math.random() * 4 + 2,
+          size: 6, alpha: 1.0, fadeSpeed: 0.02, color: (Math.random() < 0.5 ? '#F59E0B' : '#E11D48')
         });
         break;
     }
   }
 }
 
-function emitSkinDragTrail(x, y) {
-  sparkParticles.push({
-    x: x + (Math.random() - 0.5) * cw * 0.4,
-    y: y + (Math.random() - 0.5) * ch * 0.4,
-    vx: (Math.random() - 0.5) * 1.5,
-    vy: -(Math.random() * 1.2 + 0.5),
-    size: Math.random() * 3.5 + 2,
-    alpha: 0.85,
-    fadeSpeed: 0.035,
-    color: currentSkin.trail || currentSkin.acc,
-    shape: currentSkin.pattern
-  });
-}
+// ==========================================
+// 7. MECÂNICAS DA PACIÊNCIA KLONDIKE
+// ==========================================
 
-function addSparkle(x, y, color = '#FBBF24', count = 8) {
-  for (let i = 0; i < count; i++) {
-    sparkParticles.push({
-      x: x, y: y,
-      vx: (Math.random() - 0.5) * 4.5,
-      vy: -(Math.random() * 3.5 + 1),
-      size: Math.random() * 3 + 2,
-      alpha: 1.0,
-      color: color
-    });
-  }
-}
-
-function drawSlot(x, y, watermark) {
-  ctx.save();
-  ctx.fillStyle = 'rgba(0,0,0,0.52)';
-  roundRect(ctx, x, y, cw, ch, 7);
-  ctx.fill();
-
-  ctx.strokeStyle = 'rgba(0,0,0,0.7)';
-  ctx.lineWidth = 2.5;
-  roundRect(ctx, x, y, cw, ch, 7);
-  ctx.stroke();
-
-  ctx.strokeStyle = currentSkin.acc + '66';
-  ctx.lineWidth = 1.8;
-  roundRect(ctx, x + 1.5, y + 1.5, cw - 3, ch - 3, 5.5);
-  ctx.stroke();
-
-  const b = cw * 0.18;
-  ctx.strokeStyle = currentSkin.acc + '88';
-  ctx.lineWidth = 2.0;
-  ctx.beginPath();
-  ctx.moveTo(x, y + b); ctx.lineTo(x, y); ctx.lineTo(x + b, y);
-  ctx.moveTo(x + cw - b, y); ctx.lineTo(x + cw, y); ctx.lineTo(x + cw, y + b);
-  ctx.moveTo(x, y + ch - b); ctx.lineTo(x, y + ch); ctx.lineTo(x + b, y + ch);
-  ctx.moveTo(x + cw - b, y + ch); ctx.lineTo(x + cw, y + ch); ctx.lineTo(x + cw, y + ch - b);
-  ctx.stroke();
-
-  if (watermark) {
-    ctx.fillStyle = currentSkin.acc + '88';
-    ctx.font = `bold ${cw * 0.38}px serif`;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(watermark, x + cw / 2, y + ch / 2);
-  }
-  ctx.restore();
-}
-
-// --- RENDERIZAÇÃO ARTÍSTICA DA CARTA ---
-function drawCard(card, x, y, isElevated) {
-  ctx.save();
-  if (isElevated) {
-    ctx.shadowColor = currentSkin.acc + 'aa';
-    ctx.shadowBlur = 22; ctx.shadowOffsetY = 12;
-  } else {
-    ctx.shadowColor = 'rgba(0,0,0,0.38)';
-    ctx.shadowBlur = 6; ctx.shadowOffsetY = 3;
-  }
-
-  if (!card.faceUp) {
-    // Verso da Carta com a Skin Ativa
-    let g = ctx.createLinearGradient(x, y, x + cw, y + ch);
-    g.addColorStop(0, currentSkin.p1);
-    g.addColorStop(1, currentSkin.p2);
-    ctx.fillStyle = g;
-    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-    ctx.lineWidth = 1.4;
-    roundRect(ctx, x, y, cw, ch, 7);
-    ctx.fill(); ctx.stroke();
-
-    // Moldura Interna em Ouro/Acento com Brilho
-    ctx.strokeStyle = currentSkin.acc;
-    ctx.lineWidth = 2.0;
-    roundRect(ctx, x + 4, y + 4, cw - 8, ch - 8, 5);
-    ctx.stroke();
-
-    // Segunda borda interna sutil
-    ctx.strokeStyle = currentSkin.acc + '55';
-    ctx.lineWidth = 1.0;
-    roundRect(ctx, x + 7, y + 7, cw - 14, ch - 14, 4);
-    ctx.stroke();
-
-    // Padrão Geométrico Exclusivo da Skin
-    drawSkinPattern(ctx, currentSkin.pattern, x + cw / 2, y + ch / 2, cw * 0.30, currentSkin.acc);
-  } else {
-    // Face Frontal com Tom Pergaminho Nobre Harmonizado com a Skin
-    let parchmentG = ctx.createLinearGradient(x, y, x + cw, y + ch);
-    if (currentSkin.pattern === 'golden') {
-      parchmentG.addColorStop(0, '#FFFDF5'); parchmentG.addColorStop(1, '#FAF0D7');
-    } else if (currentSkin.pattern === 'arcane') {
-      parchmentG.addColorStop(0, '#F8FAFC'); parchmentG.addColorStop(1, '#EDE9FE');
-    } else if (currentSkin.pattern === 'nature') {
-      parchmentG.addColorStop(0, '#F7FDF9'); parchmentG.addColorStop(1, '#ECFDF5');
-    } else if (currentSkin.pattern === 'ice') {
-      parchmentG.addColorStop(0, '#F0F9FF'); parchmentG.addColorStop(1, '#E0F2FE');
-    } else if (currentSkin.pattern === 'shadow') {
-      parchmentG.addColorStop(0, '#F5F5F7'); parchmentG.addColorStop(1, '#E4E4E7');
-    } else if (currentSkin.pattern === 'cosmic') {
-      parchmentG.addColorStop(0, '#FAF5FF'); parchmentG.addColorStop(1, '#F3E8FF');
-    } else if (currentSkin.pattern === 'royal') {
-      parchmentG.addColorStop(0, '#FFF1F2'); parchmentG.addColorStop(1, '#FFE4E6');
-    } else {
-      parchmentG.addColorStop(0, '#FFFDF8'); parchmentG.addColorStop(1, '#F3ECE0');
-    }
-    ctx.fillStyle = parchmentG;
-    ctx.strokeStyle = '#D1D5DB';
-    ctx.lineWidth = 1.2;
-    roundRect(ctx, x, y, cw, ch, 7);
-    ctx.fill(); ctx.stroke();
-
-    // Moldura Interna de Filigrana com a cor de destaque da Skin
-    ctx.strokeStyle = currentSkin.acc + 'cc';
-    ctx.lineWidth = 1.8;
-    roundRect(ctx, x + 3.5, y + 3.5, cw - 7, ch - 7, 5);
-    ctx.stroke();
-
-    // Ornamentos nos 4 cantos da face da carta
-    drawFaceCornerOrnaments(ctx, currentSkin.pattern, x, y, cw, ch, currentSkin.acc);
-
-    // Índices da Carta (Valor & Naipe)
-    ctx.fillStyle = card.suit.isRed ? '#DC2626' : '#0F172A';
-    ctx.font = `bold ${cw * 0.25}px -apple-system, serif`;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-    ctx.fillText(card.rank.label, x + 5.5, y + 5);
-
-    ctx.font = `${cw * 0.18}px sans-serif`;
-    ctx.fillText(card.suit.symbol, x + 5.5, y + 5 + cw * 0.24);
-
-    // Ilustração Central Nobre
-    if (card.rank.val > 10) {
-      // Figuras da Corte (Valete, Rainha, Rei) com Caixa Nobre na cor da Skin
-      ctx.strokeStyle = currentSkin.acc;
-      ctx.lineWidth = 1.8;
-      roundRect(ctx, x + cw * 0.18, y + ch * 0.24, cw * 0.64, ch * 0.52, 6);
-      ctx.stroke();
-
-      ctx.fillStyle = currentSkin.acc + '20';
-      ctx.fill();
-
-      ctx.fillStyle = card.suit.isRed ? '#DC2626' : '#0F172A';
-      ctx.font = `serif bold ${cw * 0.40}px`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(card.rank.label, x + cw / 2, y + ch / 2 - 2);
-
-      ctx.font = `${cw * 0.18}px sans-serif`;
-      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch * 0.67);
-    } else if (card.rank.val === 1) {
-      // Ás Monumental com Halo Radiante
-      ctx.save();
-      ctx.strokeStyle = currentSkin.acc + '55';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.arc(x + cw / 2, y + ch / 2, cw * 0.32, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
-
-      ctx.font = `${cw * 0.46}px sans-serif`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2);
-    } else {
-      ctx.font = `${cw * 0.36}px sans-serif`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(card.suit.symbol, x + cw / 2, y + ch / 2);
-    }
-  }
-
-  // Realce de elevação com energia da skin
-  if (isElevated) {
-    ctx.strokeStyle = currentSkin.acc;
-    ctx.lineWidth = 3;
-    roundRect(ctx, x, y, cw, ch, 7);
-    ctx.stroke();
-  }
-
-  ctx.restore();
-}
-
-function drawFaceCornerOrnaments(c, pattern, x, y, w, h, acc) {
-  c.save();
-  c.strokeStyle = acc;
-  c.fillStyle = acc;
-  c.lineWidth = 1.4;
-  const s = w * 0.04;
-  const pts = [
-    {cx: x + 6.5, cy: y + 6.5},
-    {cx: x + w - 6.5, cy: y + 6.5},
-    {cx: x + 6.5, cy: y + h - 6.5},
-    {cx: x + w - 6.5, cy: y + h - 6.5}
-  ];
-  pts.forEach(p => {
-    if (pattern === 'arcane') {
-      c.beginPath();
-      c.moveTo(p.cx, p.cy - s); c.lineTo(p.cx + s*0.7, p.cy); c.lineTo(p.cx, p.cy + s); c.lineTo(p.cx - s*0.7, p.cy);
-      c.closePath(); c.stroke();
-    } else if (pattern === 'nature') {
-      c.beginPath();
-      c.moveTo(p.cx, p.cy - s); c.quadraticCurveTo(p.cx + s, p.cy, p.cx, p.cy + s); c.quadraticCurveTo(p.cx - s, p.cy, p.cx, p.cy - s);
-      c.closePath(); c.fill();
-    } else if (pattern === 'ice') {
-      c.beginPath();
-      c.moveTo(p.cx - s, p.cy); c.lineTo(p.cx + s, p.cy);
-      c.moveTo(p.cx, p.cy - s); c.lineTo(p.cx, p.cy + s);
-      c.stroke();
-    } else if (pattern === 'golden' || pattern === 'royal' || pattern === 'cosmic') {
-      c.beginPath();
-      c.moveTo(p.cx, p.cy - s); c.lineTo(p.cx + s*0.3, p.cy - s*0.3);
-      c.lineTo(p.cx + s, p.cy); c.lineTo(p.cx + s*0.3, p.cy + s*0.3);
-      c.lineTo(p.cx, p.cy + s); c.lineTo(p.cx - s*0.3, p.cy + s*0.3);
-      c.lineTo(p.cx - s, p.cy); c.lineTo(p.cx - s*0.3, p.cy - s*0.3);
-      c.closePath(); c.fill();
-    } else {
-      c.beginPath(); c.arc(p.cx, p.cy, s * 0.6, 0, Math.PI * 2); c.fill();
-    }
-  });
-  c.restore();
-}
-
-function drawSkinPattern(c, pattern, cx, cy, size, acc) {
-  c.save();
-  c.strokeStyle = acc;
-  c.fillStyle = acc + '33';
-  c.lineWidth = 1.5;
-  c.beginPath();
-  if (pattern === 'classic') {
-    c.moveTo(cx, cy - size); c.lineTo(cx + size, cy); c.lineTo(cx, cy + size); c.lineTo(cx - size, cy); c.closePath();
-    c.stroke();
-    c.arc(cx, cy, size * 0.35, 0, Math.PI * 2); c.stroke();
-  } else if (pattern === 'golden') {
-    c.moveTo(cx, cy - size); c.lineTo(cx + size, cy); c.lineTo(cx, cy + size); c.lineTo(cx - size, cy); c.closePath();
-    c.stroke();
-    c.arc(cx, cy, size * 0.45, 0, Math.PI * 2); c.stroke();
-    // Raios radiantes
-    c.moveTo(cx - size * 0.7, cy); c.lineTo(cx + size * 0.7, cy);
-    c.moveTo(cx, cy - size * 0.7); c.lineTo(cx, cy + size * 0.7);
-    c.stroke();
-  } else if (pattern === 'arcane') {
-    c.arc(cx, cy, size * 0.85, 0, Math.PI * 2); c.stroke();
-    // Estrela de 8 pontas mística
-    c.moveTo(cx, cy - size * 0.75); c.lineTo(cx + size * 0.75, cy); c.lineTo(cx, cy + size * 0.75); c.lineTo(cx - size * 0.75, cy); c.closePath(); c.stroke();
-    c.moveTo(cx - size * 0.5, cy - size * 0.5); c.lineTo(cx + size * 0.5, cy - size * 0.5);
-    c.lineTo(cx + size * 0.5, cy + size * 0.5); c.lineTo(cx - size * 0.5, cy + size * 0.5); c.closePath(); c.stroke();
-  } else if (pattern === 'shadow') {
-    c.moveTo(cx - size * 0.65, cy - size * 0.65); c.lineTo(cx + size * 0.65, cy - size * 0.65);
-    c.lineTo(cx + size * 0.65, cy); c.lineTo(cx, cy + size * 0.95); c.lineTo(cx - size * 0.65, cy); c.closePath(); c.stroke(); c.fill();
-    // Cruz gótica interna
-    c.moveTo(cx, cy - size * 0.4); c.lineTo(cx, cy + size * 0.5);
-    c.moveTo(cx - size * 0.3, cy - size * 0.1); c.lineTo(cx + size * 0.3, cy - size * 0.1); c.stroke();
-  } else if (pattern === 'nature') {
-    c.ellipse(cx, cy, size * 0.55, size * 0.9, 0, 0, Math.PI * 2); c.stroke();
-    c.ellipse(cx, cy, size * 0.9, size * 0.55, 0, 0, Math.PI * 2); c.stroke();
-    c.arc(cx, cy, size * 0.25, 0, Math.PI * 2); c.fill();
-  } else if (pattern === 'ice') {
-    c.moveTo(cx, cy - size); c.lineTo(cx, cy + size);
-    c.moveTo(cx - size, cy); c.lineTo(cx + size, cy);
-    c.moveTo(cx - size * 0.7, cy - size * 0.7); c.lineTo(cx + size * 0.7, cy + size * 0.7);
-    c.moveTo(cx - size * 0.7, cy + size * 0.7); c.lineTo(cx + size * 0.7, cy - size * 0.7);
-    c.stroke();
-    c.arc(cx, cy, size * 0.3, 0, Math.PI * 2); c.stroke();
-  } else if (pattern === 'cosmic') {
-    c.arc(cx, cy, size * 0.35, 0, Math.PI * 2); c.fill();
-    c.ellipse(cx, cy, size * 0.95, size * 0.45, Math.PI / 4, 0, Math.PI * 2); c.stroke();
-    c.ellipse(cx, cy, size * 0.95, size * 0.45, -Math.PI / 4, 0, Math.PI * 2); c.stroke();
-  } else if (pattern === 'royal') {
-    // Coroa imperial nobre
-    c.moveTo(cx - size * 0.8, cy + size * 0.45); c.lineTo(cx + size * 0.8, cy + size * 0.45);
-    c.lineTo(cx + size * 0.7, cy - size * 0.4); c.lineTo(cx + size * 0.35, cy);
-    c.lineTo(cx, cy - size * 0.65); c.lineTo(cx - size * 0.35, cy);
-    c.lineTo(cx - size * 0.7, cy - size * 0.4); c.closePath(); c.stroke(); c.fill();
-  }
-  c.restore();
-}
-
-function roundRect(c, x, y, w, h, r) {
-  c.beginPath();
-  c.moveTo(x + r, y);
-  c.lineTo(x + w - r, y);
-  c.quadraticCurveTo(x + w, y, x + w, y + r);
-  c.lineTo(x + w, y + h - r);
-  c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  c.lineTo(x + r, y + h);
-  c.quadraticCurveTo(x, y + h, x, y + h - r);
-  c.lineTo(x, y + r);
-  c.quadraticCurveTo(x, y, x + r, y);
-  c.closePath();
-}
-
-// --- REGRAS DO KLONDIKE & MECÂNICAS ---
 function canMoveToTableau(card, target) {
   if (target.length === 0) return card.rank.val === 13;
   let top = target[target.length - 1];
@@ -1480,7 +1500,7 @@ function checkWin() {
     document.getElementById('vicStats').innerHTML = `
       <div><strong>Skin Equipada:</strong> ${currentSkin.name} (${currentSkin.collection})</div>
       <div><strong>Efeito Especial:</strong> ${currentSkin.effectSummary}</div>
-      <div><strong>Avatar Ativo:</strong> ${currentAvatar.emoji} ${currentAvatar.name} (${currentAvatar.title})</div>
+      <div><strong>Avatar Ativo:</strong> ${currentAvatar.name} (${currentAvatar.title})</div>
       <div><strong>Recompensa de Fase:</strong> ${coinsEarned > 0 ? '+10 Moedas de Ouro 🪙' : 'Fase já premiada anteriormente'}</div>
       <div><strong>Saldo Total:</strong> ${coinsBalance} Moedas 🪙</div>
       <div><strong>Movimentos:</strong> ${moves} • <strong>Tempo:</strong> ${Math.floor(seconds/60)}m ${seconds%60}s</div>
@@ -1493,7 +1513,7 @@ function checkWin() {
   }
 }
 
-// --- DESFAZER (UNDO) ---
+// Desfazer (Undo)
 function saveState() {
   const snapshot = {
     stock: stock.map(c => ({...c})),
@@ -1512,16 +1532,12 @@ function performUndo() {
     return;
   }
   const snap = undoStack.pop();
-  stock = snap.stock;
-  waste = snap.waste;
-  foundations = snap.foundations;
-  tableaus = snap.tableaus;
-  moves = snap.moves;
+  stock = snap.stock; waste = snap.waste; foundations = snap.foundations; tableaus = snap.tableaus; moves = snap.moves;
   playSound('touch');
   updateHud();
 }
 
-// --- JOGADA INTELIGENTE POR TOQUE (TAP-TO-MOVE) ---
+// Toque Inteligente (Tap-to-Move)
 function handleSmartTap(card, source) {
   // 1. Tentar mover para Fundação
   for (let i = 0; i < 4; i++) {
@@ -1558,17 +1574,21 @@ function handleSmartTap(card, source) {
 }
 
 function getSubsequentCards(card, source) {
-  if (!source.startsWith('t_')) return [card];
-  let col = parseInt(source.split('_')[1]);
-  let idx = tableaus[col].findIndex(c => c.id === card.id);
-  return tableaus[col].slice(idx);
+  if (source === 'waste') return [card];
+  if (source.startsWith('f_')) return [card];
+  if (source.startsWith('t_')) {
+    let col = parseInt(source.split('_')[1]);
+    let idx = tableaus[col].findIndex(c => c.id === card.id);
+    return tableaus[col].slice(idx);
+  }
+  return [card];
 }
 
 function removeCardFromSource(card, source, count = 1) {
   if (source === 'waste') waste.pop();
   else if (source.startsWith('f_')) {
-    let fIdx = parseInt(source.split('_')[1]);
-    foundations[fIdx].pop();
+    let idx = parseInt(source.split('_')[1]);
+    foundations[idx].pop();
   } else if (source.startsWith('t_')) {
     let col = parseInt(source.split('_')[1]);
     tableaus[col].splice(tableaus[col].length - count, count);
@@ -1578,263 +1598,67 @@ function removeCardFromSource(card, source, count = 1) {
 function revealTopTableauCard(source) {
   if (source.startsWith('t_')) {
     let col = parseInt(source.split('_')[1]);
-    let t = tableaus[col];
-    if (t.length > 0 && !t[t.length - 1].faceUp) {
-      t[t.length - 1].faceUp = true;
-      addSparkle(tRects[col].x + cw/2, tRects[col].y + (t.length - 1) * ch * 0.28, '#34D399', 6);
+    if (tableaus[col].length > 0) {
+      let top = tableaus[col][tableaus[col].length - 1];
+      if (!top.faceUp) {
+        top.faceUp = true;
+        addSparkle(tRects[col].x + cw/2, tRects[col].y + (tableaus[col].length-1)*ch*0.28, currentSkin.acc, 6);
+      }
     }
   }
 }
 
 function checkColumnCompletion(col) {
   let t = tableaus[col];
-  if (t.length > 0 && t.every(c => c.faceUp)) {
-    // Efeito de Coluna Completa
-    columnGlows[col] = performance.now();
-    playSound('column');
-    addSparkle(tRects[col].x + cw/2, tRects[col].y + t.length * ch * 0.2, '#FBBF24', 16);
-  }
-}
-
-// Auto-Move
-function autoMoveStep() {
-  // Move cartas disponíveis do waste ou tableaus para fundações
-  if (waste.length > 0) {
-    let top = waste[waste.length - 1];
-    for (let i = 0; i < 4; i++) {
-      if (canMoveToFoundation(top, foundations[i])) {
-        handleSmartTap(top, 'waste');
-        return true;
+  if (t.length >= 13 && t.every(c => c.faceUp)) {
+    let isComplete = true;
+    for (let i = 0; i < t.length - 1; i++) {
+      if (t[i].rank.val !== t[i+1].rank.val + 1 || t[i].suit.isRed === t[i+1].suit.isRed) {
+        isComplete = false; break;
       }
     }
-  }
-  for (let c = 0; c < 7; c++) {
-    let t = tableaus[c];
-    if (t.length > 0) {
-      let top = t[t.length - 1];
-      if (top.faceUp) {
-        for (let i = 0; i < 4; i++) {
-          if (canMoveToFoundation(top, foundations[i])) {
-            handleSmartTap(top, `t_${c}`);
-            return true;
-          }
-        }
-      }
-    }
-  }
-  return false;
-}
-
-// --- TRATAMENTO DE TOQUE E ARRASTE (TOUCH & MOUSE) ---
-function getPointerPos(e) {
-  let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  let clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  return { x: clientX, y: clientY };
-}
-
-canvas.addEventListener('pointerdown', (e) => {
-  const pos = getPointerPos(e);
-  touchStartX = pos.x; touchStartY = pos.y;
-  dragCurX = pos.x; dragCurY = pos.y;
-
-  // 1. Toque no Stock (Monte de Compra)
-  if (pos.x >= stockRect.x && pos.x <= stockRect.x + stockRect.w &&
-      pos.y >= stockRect.y && pos.y <= stockRect.y + stockRect.h) {
-    saveState();
-    if (stock.length > 0) {
-      let c = stock.pop();
-      c.faceUp = true;
-      waste.push(c);
-      playSound('touch');
-    } else {
-      while (waste.length > 0) {
-        let c = waste.pop();
-        c.faceUp = false;
-        stock.push(c);
-      }
+    if (isComplete) {
+      columnGlows[col] = performance.now();
       playSound('place');
-    }
-    moves++;
-    updateHud();
-    return;
-  }
-
-  // 2. Toque no Waste (Descarte)
-  if (waste.length > 0 &&
-      pos.x >= wasteRect.x && pos.x <= wasteRect.x + wasteRect.w &&
-      pos.y >= wasteRect.y && pos.y <= wasteRect.y + wasteRect.h) {
-    isDragging = true;
-    dragCards = [waste[waste.length - 1]];
-    dragSource = 'waste';
-    dragOffX = pos.x - wasteRect.x;
-    dragOffY = pos.y - wasteRect.y;
-    playSound('touch');
-    return;
-  }
-
-  // 3. Toque nas Fundações
-  for (let i = 0; i < 4; i++) {
-    let r = fRects[i];
-    if (foundations[i].length > 0 &&
-        pos.x >= r.x && pos.x <= r.x + r.w &&
-        pos.y >= r.y && pos.y <= r.y + r.h) {
-      isDragging = true;
-      dragCards = [foundations[i][foundations[i].length - 1]];
-      dragSource = `f_${i}`;
-      dragOffX = pos.x - r.x;
-      dragOffY = pos.y - r.y;
-      playSound('touch');
-      return;
+      addSparkle(tRects[col].x + cw/2, tRects[col].y + ch, '#FBBF24', 16);
     }
   }
+}
 
-  // 4. Toque nos Tableaus
-  for (let c = 0; c < 7; c++) {
-    let r = tRects[c];
-    let t = tableaus[c];
-    if (pos.x >= r.x && pos.x <= r.x + r.w && pos.y >= r.y) {
-      if (t.length > 0) {
-        let cardY = r.y;
-        for (let i = 0; i < t.length; i++) {
-          let nextY = (i === t.length - 1) ? cardY + ch : (cardY + (t[i].faceUp ? ch * 0.28 : ch * 0.18));
-          if (pos.y >= cardY && pos.y <= nextY) {
-            let card = t[i];
-            if (card.faceUp) {
-              isDragging = true;
-              dragCards = t.slice(i);
-              dragSource = `t_${c}`;
-              dragOffX = pos.x - r.x;
-              dragOffY = pos.y - cardY;
-              playSound('touch');
-              return;
-            }
-          }
-          cardY = nextY;
-        }
-      }
-    }
+function addSparkle(x, y, color, count = 6) {
+  for (let i = 0; i < count; i++) {
+    sparkParticles.push({
+      x: x + (Math.random() - 0.5) * cw * 0.4,
+      y: y + (Math.random() - 0.5) * ch * 0.4,
+      vx: (Math.random() - 0.5) * 3,
+      vy: (Math.random() - 0.5) * 3,
+      size: Math.random() * 4 + 2,
+      alpha: 1.0, fadeSpeed: 0.03, color: color
+    });
   }
-});
+}
 
-canvas.addEventListener('pointermove', (e) => {
-  if (!isDragging) return;
-  const pos = getPointerPos(e);
-  dragCurX = pos.x; dragCurY = pos.y;
-  if (Math.random() < 0.45) {
-    emitSkinDragTrail(dragCurX, dragCurY);
-  }
-});
+// ==========================================
+// 8. GALERIA DA LOJA & PRÉVIA INTERATIVA
+// ==========================================
 
-canvas.addEventListener('pointerup', (e) => {
-  if (!isDragging) return;
-  isDragging = false;
-  const pos = getPointerPos(e);
-  const dist = Math.hypot(pos.x - touchStartX, pos.y - touchStartY);
+let activeShopTab = 'skins';
 
-  // Se foi apenas um toque rápido (Tap), aciona Smart Tap
-  if (dist < 10 && dragCards.length === 1) {
-    if (handleSmartTap(dragCards[0], dragSource)) {
-      dragCards = []; dragSource = null;
-      return;
-    }
-  }
-
-  let dropSuccess = false;
-  let first = dragCards[0];
-
-  // 1. Tentar Soltar em Fundação
-  if (dragCards.length === 1) {
-    for (let i = 0; i < 4; i++) {
-      let r = fRects[i];
-      if (pos.x >= r.x - 10 && pos.x <= r.x + r.w + 10 &&
-          pos.y >= r.y - 10 && pos.y <= r.y + r.h + 10) {
-        if (canMoveToFoundation(first, foundations[i])) {
-          saveState();
-          removeCardFromSource(first, dragSource);
-          foundations[i].push(first);
-          moves++;
-          playSound('place');
-          addSparkle(r.x + cw/2, r.y + ch/2, '#FBBF24', 8);
-          revealTopTableauCard(dragSource);
-          dropSuccess = true;
-          checkWin();
-          break;
-        }
-      }
-    }
-  }
-
-  // 2. Tentar Soltar em Tableau
-  if (!dropSuccess) {
-    for (let c = 0; c < 7; c++) {
-      let r = tRects[c];
-      if (pos.x >= r.x - 10 && pos.x <= r.x + r.w + 10 && pos.y >= r.y - 10) {
-        if (dragSource !== `t_${c}` && canMoveToTableau(first, tableaus[c])) {
-          saveState();
-          removeCardFromSource(first, dragSource, dragCards.length);
-          tableaus[c].push(...dragCards);
-          moves++;
-          playSound('place');
-          revealTopTableauCard(dragSource);
-          checkColumnCompletion(c);
-          dropSuccess = true;
-          break;
-        }
-      }
-    }
-  }
-
-  // Feedback de Jogada Inválida
-  if (!dropSuccess) {
-    if (dragSource.startsWith('t_')) {
-      invalidShakeCol = parseInt(dragSource.split('_')[1]);
-      invalidShakeTime = performance.now();
-      playSound('invalid');
-    }
-  }
-
-  dragCards = []; dragSource = null;
-  updateHud();
-});
-
-// --- RENDERIZAÇÃO DA PRÉVIA AMPLIADA DA LOJA ---
-function drawPreviewCard(skin) {
+function drawPreview() {
   const pCanvas = document.getElementById('previewCanvas');
   const pCtx = pCanvas.getContext('2d');
   const pw = pCanvas.width;
   const ph = pCanvas.height;
   pCtx.clearRect(0, 0, pw, ph);
 
-  // Aura mística suave da skin
-  pCtx.save();
-  pCtx.strokeStyle = skin.acc;
-  pCtx.globalAlpha = 0.55;
-  pCtx.lineWidth = 3;
-  roundRect(pCtx, 1, 1, pw - 2, ph - 2, 13);
-  pCtx.stroke();
-  pCtx.restore();
-
-  // Verso da Carta
-  let g = pCtx.createLinearGradient(0, 0, pw, ph);
-  g.addColorStop(0, skin.p1);
-  g.addColorStop(1, skin.p2);
-  pCtx.fillStyle = g;
-  pCtx.strokeStyle = 'rgba(255,255,255,0.4)';
-  pCtx.lineWidth = 2;
-  roundRect(pCtx, 2, 2, pw - 4, ph - 4, 12);
-  pCtx.fill(); pCtx.stroke();
-
-  // Moldura Interna em Ouro
-  pCtx.strokeStyle = skin.acc;
-  roundRect(pCtx, 8, 8, pw - 16, ph - 16, 8);
-  pCtx.stroke();
-
-  // Padrão Central
-  drawSkinPattern(pCtx, skin.pattern, pw / 2, ph / 2, pw * 0.28, skin.acc);
+  if (activePreviewItem.archetype) {
+    // É um Avatar! Desenha retrato em alta definição
+    drawAvatarPortrait(pCtx, activePreviewItem, pw / 2, ph / 2, Math.min(pw, ph) * 0.44);
+  } else {
+    // É uma Skin de Carta! Desenha verso ornamental em alta definição
+    drawCardBackArt(pCtx, activePreviewItem, 6, 6, pw - 12, ph - 12);
+  }
 }
-
-// --- INTERFACE DA LOJA & GALERIA ---
-let activeShopTab = 'skins';
 
 function renderShopList() {
   const container = document.getElementById('shopListContainer');
@@ -1852,7 +1676,7 @@ function renderShopList() {
         document.getElementById('prevColl').innerText = `COLEÇÃO: ${skin.collection}`;
         document.getElementById('prevTitle').innerText = skin.name;
         document.getElementById('prevDesc').innerText = `${skin.desc}\n✨ Efeito: ${skin.effectSummary}`;
-        drawPreviewCard(skin);
+        drawPreview();
         renderShopList();
       };
 
@@ -1866,14 +1690,25 @@ function renderShopList() {
       }
 
       item.innerHTML = `
-        <div class="shop-item-info">
-          <div class="shop-item-coll">${skin.collection}</div>
-          <div class="shop-item-name">${skin.name}</div>
-          <div class="shop-item-desc">${skin.desc}</div>
+        <div class="shop-item-left">
+          <canvas class="shop-item-thumb-card" id="thumb_skin_${skin.id}" width="28" height="38"></canvas>
+          <div class="shop-item-info">
+            <div class="shop-item-coll">${skin.collection}</div>
+            <div class="shop-item-name">${skin.name}</div>
+            <div class="shop-item-desc">${skin.desc}</div>
+          </div>
         </div>
         ${btnHtml}
       `;
       container.appendChild(item);
+
+      setTimeout(() => {
+        let tc = document.getElementById(`thumb_skin_${skin.id}`);
+        if (tc) {
+          let tctx = tc.getContext('2d');
+          drawCardBackArt(tctx, skin, 1, 1, 26, 36);
+        }
+      }, 0);
     });
   } else {
     AVATARS.forEach(avatar => {
@@ -1881,7 +1716,15 @@ function renderShopList() {
       let isEquipped = (equippedAvatarId === avatar.id);
 
       let item = document.createElement('div');
-      item.className = 'shop-item';
+      item.className = `shop-item ${activePreviewItem.id === avatar.id ? 'selected' : ''}`;
+      item.onclick = () => {
+        activePreviewItem = avatar;
+        document.getElementById('prevColl').innerText = `COLEÇÃO: ${avatar.collection}`;
+        document.getElementById('prevTitle').innerText = avatar.name;
+        document.getElementById('prevDesc').innerText = `${avatar.title} • ${avatar.desc}`;
+        drawPreview();
+        renderShopList();
+      };
 
       let btnHtml = '';
       if (isEquipped) {
@@ -1893,15 +1736,25 @@ function renderShopList() {
       }
 
       item.innerHTML = `
-        <div style="font-size:28px; margin-right:8px;">${avatar.emoji}</div>
-        <div class="shop-item-info">
-          <div class="shop-item-coll">${avatar.collection}</div>
-          <div class="shop-item-name">${avatar.name}</div>
-          <div class="shop-item-desc">${avatar.title}</div>
+        <div class="shop-item-left">
+          <canvas class="shop-item-thumb" id="thumb_av_${avatar.id}" width="36" height="36"></canvas>
+          <div class="shop-item-info">
+            <div class="shop-item-coll">${avatar.collection}</div>
+            <div class="shop-item-name">${avatar.name}</div>
+            <div class="shop-item-desc">${avatar.title}</div>
+          </div>
         </div>
         ${btnHtml}
       `;
       container.appendChild(item);
+
+      setTimeout(() => {
+        let tc = document.getElementById(`thumb_av_${avatar.id}`);
+        if (tc) {
+          let tctx = tc.getContext('2d');
+          drawAvatarPortrait(tctx, avatar, 18, 18, 17);
+        }
+      }, 0);
     });
   }
 }
@@ -1918,10 +1771,11 @@ function buySkin(id, price) {
   localStorage.setItem('pac_coins', coinsBalance);
   localStorage.setItem('pac_unlocked_skins', JSON.stringify(unlockedSkins));
   localStorage.setItem('pac_skin', id);
-  playSound('coin');
-  showToast(`Nova Skin ${currentSkin.name} desbloqueada e equipada!`);
+  playSound('place');
+  showToast(`✨ Nova Skin Desbloqueada: ${currentSkin.name}!`);
   updateHud();
   renderShopList();
+  drawPreview();
 }
 
 function equipSkin(id) {
@@ -1930,7 +1784,9 @@ function equipSkin(id) {
   localStorage.setItem('pac_skin', id);
   playSound('touch');
   showToast(`Skin ${currentSkin.name} equipada com sucesso!`);
+  updateHud();
   renderShopList();
+  drawPreview();
 }
 
 function buyAvatar(id, price) {
@@ -1945,10 +1801,11 @@ function buyAvatar(id, price) {
   localStorage.setItem('pac_coins', coinsBalance);
   localStorage.setItem('pac_unlocked_avatars', JSON.stringify(unlockedAvatars));
   localStorage.setItem('pac_avatar', id);
-  playSound('coin');
-  showToast(`Avatar ${currentAvatar.name} desbloqueado e equipado!`);
+  playSound('place');
+  showToast(`✨ Novo Avatar Heroico Descoberto: ${currentAvatar.name}!`);
   updateHud();
   renderShopList();
+  drawPreview();
 }
 
 function equipAvatar(id) {
@@ -1959,68 +1816,35 @@ function equipAvatar(id) {
   showToast(`Avatar ${currentAvatar.name} equipado com sucesso!`);
   updateHud();
   renderShopList();
+  drawPreview();
 }
 
-// --- VÍDEO RECOMPENSADO (SIMULAÇÃO ADMOB) ---
-let isWatchingAd = false;
-document.getElementById('btnWatchAd').addEventListener('click', () => {
-  if (isWatchingAd) return;
-  isWatchingAd = true;
-  const modal = document.getElementById('modalAdProgress');
-  const fill = document.getElementById('adProgressFill');
-  const count = document.getElementById('adCountDown');
-  modal.style.display = 'flex';
-  fill.style.width = '0%';
+// ==========================================
+// 9. CENÁRIOS E DICA MÁGICA
+// ==========================================
 
-  let secondsLeft = 3;
-  count.innerText = `Concluindo em ${secondsLeft}s...`;
-
-  const interval = setInterval(() => {
-    secondsLeft--;
-    fill.style.width = `${((3 - secondsLeft) / 3) * 100}%`;
-    if (secondsLeft > 0) {
-      count.innerText = `Concluindo em ${secondsLeft}s...`;
-    } else {
-      clearInterval(interval);
-      modal.style.display = 'none';
-      isWatchingAd = false;
-      coinsBalance += 3;
-      localStorage.setItem('pac_coins', coinsBalance);
-      playSound('coin');
-      addSparkle(window.innerWidth / 2, window.innerHeight / 2, '#FBBF24', 20);
-      showToast('Recompensa concedida: +3 Moedas de Ouro! 🪙');
-      updateHud();
-      renderShopList();
-    }
-  }, 1000);
-});
-
-// --- CENÁRIOS MODAL ---
 function renderSceneryList() {
-  const container = document.getElementById('sceneryList');
+  const container = document.getElementById('sceneryListContainer');
   container.innerHTML = '';
-  SCENERIES.forEach(s => {
-    let isUnlocked = currentLevel >= s.minLevel;
-    let isActive = (currentSceneryId === s.id);
-
+  SCENERIES.forEach(scenery => {
+    let isUnlocked = (highestLevel >= scenery.minLevel);
+    let isCurrent = (currentSceneryId === scenery.id);
     let item = document.createElement('div');
     item.className = 'shop-item';
-    item.style.marginBottom = '8px';
 
     let btnHtml = '';
-    if (isActive) {
+    if (isCurrent) {
       btnHtml = `<button class="shop-item-btn" style="background:#10B981; color:#FFF;" disabled>Ativo ✓</button>`;
     } else if (isUnlocked) {
-      btnHtml = `<button class="shop-item-btn btn-blue" onclick="selectScenery('${s.id}')">Selecionar</button>`;
+      btnHtml = `<button class="shop-item-btn btn-blue" onclick="selectScenery('${scenery.id}')">Selecionar</button>`;
     } else {
-      btnHtml = `<button class="shop-item-btn btn-gray" disabled>Nível ${s.minLevel}+</button>`;
+      btnHtml = `<button class="shop-item-btn btn-gray" disabled>Nível ${scenery.minLevel}</button>`;
     }
 
     item.innerHTML = `
       <div class="shop-item-info">
-        <div class="shop-item-coll">NÍVEL ${s.minLevel}+</div>
-        <div class="shop-item-name" style="color:${s.accent};">${s.name}</div>
-        <div class="shop-item-desc">${s.desc}</div>
+        <div class="shop-item-name">${scenery.name}</div>
+        <div class="shop-item-desc">${scenery.desc}</div>
       </div>
       ${btnHtml}
     `;
@@ -2029,50 +1853,409 @@ function renderSceneryList() {
 }
 
 function selectScenery(id) {
-  let s = SCENERIES.find(x => x.id === id);
-  if (s) {
-    setScenery(s);
-    playSound('touch');
-    showToast(`Cenário alterado para: ${s.name}`);
-    document.getElementById('modalScenery').style.display = 'none';
+  currentSceneryId = id;
+  currentScenery = SCENERIES.find(s => s.id === id);
+  localStorage.setItem('pac_scenery', id);
+  playSound('touch');
+  document.getElementById('modalScenery').style.display = 'none';
+  showToast(`Cenário ${currentScenery.name} ativado!`);
+}
+
+function findHintMove() {
+  // 1. Waste para Fundação
+  if (waste.length > 0) {
+    let wTop = waste[waste.length - 1];
+    for (let f = 0; f < 4; f++) {
+      if (canMoveToFoundation(wTop, foundations[f])) {
+        return { fromRect: wasteRect, toRect: fRects[f] };
+      }
+    }
+  }
+  // 2. Coluna para Fundação
+  for (let c = 0; c < 7; c++) {
+    if (tableaus[c].length > 0) {
+      let tTop = tableaus[c][tableaus[c].length - 1];
+      if (tTop.faceUp) {
+        for (let f = 0; f < 4; f++) {
+          if (canMoveToFoundation(tTop, foundations[f])) {
+            return {
+              fromRect: { x: tRects[c].x, y: tRects[c].y + (tableaus[c].length - 1) * (ch * 0.28), w: cw, h: ch },
+              toRect: fRects[f]
+            };
+          }
+        }
+      }
+    }
+  }
+  // 3. Waste para Coluna
+  if (waste.length > 0) {
+    let wTop = waste[waste.length - 1];
+    for (let c = 0; c < 7; c++) {
+      if (canMoveToTableau(wTop, tableaus[c])) {
+        let targetY = tableaus[c].length === 0 ? tRects[c].y : tRects[c].y + (tableaus[c].length - 1) * (ch * 0.28);
+        return { fromRect: wasteRect, toRect: { x: tRects[c].x, y: targetY, w: cw, h: ch } };
+      }
+    }
+  }
+  // 4. Coluna para Coluna
+  for (let c = 0; c < 7; c++) {
+    let t = tableaus[c];
+    for (let i = 0; i < t.length; i++) {
+      if (t[i].faceUp) {
+        if (i === 0 && t[i].rank.val === 13) continue;
+        for (let targetCol = 0; targetCol < 7; targetCol++) {
+          if (c !== targetCol && canMoveToTableau(t[i], tableaus[targetCol])) {
+            let targetY = tableaus[targetCol].length === 0 ? tRects[targetCol].y : tRects[targetCol].y + (tableaus[targetCol].length - 1) * (ch * 0.28);
+            return {
+              fromRect: { x: tRects[c].x, y: tRects[c].y + i * (ch * 0.28), w: cw, h: ch },
+              toRect: { x: tRects[targetCol].x, y: targetY, w: cw, h: ch }
+            };
+          }
+        }
+      }
+    }
+  }
+  return null;
+}
+
+// ==========================================
+// 10. INICIALIZAÇÃO, DIMENSÕES E EVENTOS
+// ==========================================
+
+function updateHud() {
+  document.getElementById('lblLevel').innerHTML = `NÍVEL <span>${currentLevel}</span>`;
+  document.getElementById('lblCoins').innerText = coinsBalance;
+  document.getElementById('shopCoinsBalance').innerText = coinsBalance;
+  document.getElementById('lblMoves').innerText = moves;
+
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  document.getElementById('lblTime').innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+  document.getElementById('hudAvatarName').innerText = currentAvatar.name;
+  document.getElementById('hudAvatarTitle').innerText = currentAvatar.title;
+
+  // Renderiza retrato no Medalhão da mesa
+  let hCanvas = document.getElementById('hudAvatarCanvas');
+  if (hCanvas) {
+    let hctx = hCanvas.getContext('2d');
+    hctx.clearRect(0, 0, 44, 44);
+    drawAvatarPortrait(hctx, currentAvatar, 22, 22, 20);
   }
 }
 
-// --- EVENTOS DE MODAIS & BOTÕES ---
-document.getElementById('tabSkins').onclick = () => {
-  activeShopTab = 'skins';
-  document.getElementById('tabSkins').className = 'shop-tab active';
-  document.getElementById('tabAvatars').className = 'shop-tab';
-  renderShopList();
-};
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 2400);
+}
 
-document.getElementById('tabAvatars').onclick = () => {
-  activeShopTab = 'avatars';
-  document.getElementById('tabAvatars').className = 'shop-tab active';
-  document.getElementById('tabSkins').className = 'shop-tab';
-  renderShopList();
-};
+function playSound(type) {
+  if (!soundEnabled) return;
+  try {
+    const actx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = actx.createOscillator();
+    const gain = actx.createGain();
+    osc.connect(gain);
+    gain.connect(actx.destination);
 
+    if (type === 'touch') {
+      osc.frequency.setValueAtTime(440, actx.currentTime);
+      gain.gain.setValueAtTime(0.08, actx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.08);
+      osc.start(); osc.stop(actx.currentTime + 0.08);
+    } else if (type === 'place') {
+      osc.frequency.setValueAtTime(320, actx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(560, actx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.12, actx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.12);
+      osc.start(); osc.stop(actx.currentTime + 0.12);
+    } else if (type === 'victory') {
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+        const o = actx.createOscillator();
+        const g = actx.createGain();
+        o.connect(g); g.connect(actx.destination);
+        o.frequency.setValueAtTime(freq, actx.currentTime + i * 0.12);
+        g.gain.setValueAtTime(0.18, actx.currentTime + i * 0.12);
+        g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + i * 0.12 + 0.35);
+        o.start(actx.currentTime + i * 0.12);
+        o.stop(actx.currentTime + i * 0.12 + 0.35);
+      });
+    }
+  } catch(e) {}
+}
+
+function initAmbientParticles() {
+  ambientParticles = [];
+  const count = 38;
+  for (let i = 0; i < count; i++) {
+    ambientParticles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vy: Math.random() * 0.8 + 0.4,
+      size: Math.random() * 2.2 + 1.2,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function resize() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  canvas.width = w; canvas.height = h;
+
+  hGap = Math.max(4, w * 0.016);
+  cw = (w - hGap * 8) / 7;
+  ch = cw * 1.42;
+
+  topY = 66;
+  tabY = topY + ch + Math.max(14, h * 0.022);
+
+  stockRect = { x: hGap, y: topY, w: cw, h: ch };
+  wasteRect = { x: hGap * 2 + cw, y: topY, w: cw, h: ch };
+
+  fRects = [];
+  for (let i = 0; i < 4; i++) {
+    fRects.push({ x: hGap * (4 + i) + cw * (3 + i), y: topY, w: cw, h: ch });
+  }
+
+  tRects = [];
+  for (let c = 0; c < 7; c++) {
+    tRects.push({ x: hGap * (1 + c) + cw * c, y: tabY, w: cw, h: ch });
+  }
+}
+
+function startNewGame() {
+  // Cria baralho padrão de 52 cartas
+  let deck = [];
+  let id = 0;
+  SUITS.forEach(suit => {
+    RANKS.forEach(rank => {
+      deck.push({ id: id++, suit: suit, rank: rank, faceUp: false });
+    });
+  });
+
+  // Embaralha com algoritmo de Fisher-Yates
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+
+  // Distribui as 7 colunas (Tableaus)
+  tableaus = [[], [], [], [], [], [], []];
+  for (let col = 0; col < 7; col++) {
+    for (let row = col; row < 7; row++) {
+      tableaus[row].push(deck.pop());
+    }
+  }
+  tableaus.forEach(t => {
+    if (t.length > 0) t[t.length - 1].faceUp = true;
+  });
+
+  stock = deck;
+  waste = [];
+  foundations = [[], [], [], []];
+  undoStack = [];
+  moves = 0; seconds = 0; isWon = false;
+  isVictoryCelebrationActive = false;
+  sparkParticles = [];
+  columnGlows = [];
+
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    if (!isWon) { seconds++; updateHud(); }
+  }, 1000);
+
+  updateHud();
+}
+
+// ==========================================
+// 11. GESTOS E EVENTOS DE TOQUE / MOUSE
+// ==========================================
+
+function getPointerPos(e) {
+  if (e.touches && e.touches.length > 0) {
+    return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }
+  return { x: e.clientX, y: e.clientY };
+}
+
+function onPointerDown(e) {
+  const p = getPointerPos(e);
+  dragStartX = p.x; dragStartY = p.y;
+  dragCurX = p.x; dragCurY = p.y;
+
+  // 1. Toque no Monte de Compra (Stock)
+  if (p.x >= stockRect.x && p.x <= stockRect.x + cw && p.y >= stockRect.y && p.y <= stockRect.y + ch) {
+    saveState();
+    if (stock.length > 0) {
+      let card = stock.pop();
+      card.faceUp = true;
+      waste.push(card);
+      moves++;
+      playSound('touch');
+    } else if (waste.length > 0) {
+      while (waste.length > 0) {
+        let card = waste.pop();
+        card.faceUp = false;
+        stock.push(card);
+      }
+      moves++;
+      playSound('touch');
+    }
+    updateHud();
+    return;
+  }
+
+  // 2. Toque no Descarte (Waste)
+  if (waste.length > 0 && p.x >= wasteRect.x && p.x <= wasteRect.x + cw && p.y >= wasteRect.y && p.y <= wasteRect.y + ch) {
+    let top = waste[waste.length - 1];
+    isDragging = true; dragCards = [top]; dragSource = 'waste';
+    dragOffX = p.x - wasteRect.x; dragOffY = p.y - wasteRect.y;
+    return;
+  }
+
+  // 3. Toque em Fundação
+  for (let i = 0; i < 4; i++) {
+    let r = fRects[i];
+    if (foundations[i].length > 0 && p.x >= r.x && p.x <= r.x + cw && p.y >= r.y && p.y <= r.y + ch) {
+      let top = foundations[i][foundations[i].length - 1];
+      isDragging = true; dragCards = [top]; dragSource = `f_${i}`;
+      dragOffX = p.x - r.x; dragOffY = p.y - r.y;
+      return;
+    }
+  }
+
+  // 4. Toque em Tableau (Coluna)
+  for (let c = 0; c < 7; c++) {
+    let r = tRects[c];
+    let t = tableaus[c];
+    if (t.length > 0 && p.x >= r.x && p.x <= r.x + cw) {
+      let curY = r.y;
+      for (let i = 0; i < t.length; i++) {
+        let nextY = (i === t.length - 1) ? curY + ch : curY + (t[i].faceUp ? ch * 0.28 : ch * 0.18);
+        if (p.y >= curY && p.y <= nextY) {
+          if (t[i].faceUp) {
+            isDragging = true; dragCards = t.slice(i); dragSource = `t_${c}`;
+            dragOffX = p.x - r.x; dragOffY = p.y - curY;
+            return;
+          }
+        }
+        curY = nextY;
+      }
+    }
+  }
+}
+
+function onPointerMove(e) {
+  if (!isDragging) return;
+  const p = getPointerPos(e);
+  dragCurX = p.x; dragCurY = p.y;
+}
+
+function onPointerUp(e) {
+  if (!isDragging) return;
+  const p = getPointerPos(e);
+  const dist = Math.hypot(p.x - dragStartX, p.y - dragStartY);
+
+  if (dist < 8) {
+    // Foi um toque rápido! Executa jogada inteligente Tap-to-Move
+    handleSmartTap(dragCards[0], dragSource);
+    isDragging = false; dragCards = []; dragSource = null;
+    return;
+  }
+
+  // Soltura por Arraste (Drag & Drop)
+  let placed = false;
+  let first = dragCards[0];
+
+  // 1. Soltar em Fundação (apenas 1 carta)
+  if (dragCards.length === 1) {
+    for (let i = 0; i < 4; i++) {
+      let r = fRects[i];
+      if (p.x >= r.x - cw*0.3 && p.x <= r.x + cw*1.3 && p.y >= r.y - ch*0.3 && p.y <= r.y + ch*1.3) {
+        if (canMoveToFoundation(first, foundations[i])) {
+          saveState();
+          removeCardFromSource(first, dragSource);
+          foundations[i].push(first);
+          moves++;
+          placed = true;
+          playSound('place');
+          addSparkle(r.x + cw/2, r.y + ch/2, '#FBBF24', 8);
+          revealTopTableauCard(dragSource);
+          updateHud();
+          checkWin();
+          break;
+        }
+      }
+    }
+  }
+
+  // 2. Soltar em Tableau
+  if (!placed) {
+    for (let c = 0; c < 7; c++) {
+      let r = tRects[c];
+      let t = tableaus[c];
+      let targetY = t.length === 0 ? r.y : r.y + (t.length - 1) * (ch * 0.28);
+      if (p.x >= r.x - cw*0.3 && p.x <= r.x + cw*1.3 && p.y >= targetY - ch*0.3 && p.y <= targetY + ch*1.4) {
+        if (dragSource !== `t_${c}` && canMoveToTableau(first, t)) {
+          saveState();
+          removeCardFromSource(first, dragSource, dragCards.length);
+          t.push(...dragCards);
+          moves++;
+          placed = true;
+          playSound('place');
+          revealTopTableauCard(dragSource);
+          updateHud();
+          checkColumnCompletion(c);
+          break;
+        }
+      }
+    }
+  }
+
+  if (!placed && dragSource.startsWith('t_')) {
+    // Feedback de movimento inválido (shake)
+    let col = parseInt(dragSource.split('_')[1]);
+    invalidShakeCol = col;
+    invalidShakeTime = performance.now();
+  }
+
+  isDragging = false; dragCards = []; dragSource = null;
+}
+
+// Listeners Globais
+window.addEventListener('resize', resize);
+canvas.addEventListener('touchstart', onPointerDown, {passive: false});
+window.addEventListener('touchmove', onPointerMove, {passive: false});
+window.addEventListener('touchend', onPointerUp, {passive: false});
+canvas.addEventListener('mousedown', onPointerDown);
+window.addEventListener('mousemove', onPointerMove);
+window.addEventListener('mouseup', onPointerUp);
+
+// Botões do HUD
+document.getElementById('btnUndo').onclick = performUndo;
+document.getElementById('btnRestart').onclick = () => { startNewGame(); showToast('Partida Reiniciada'); };
+document.getElementById('btnHint').onclick = () => {
+  let hint = findHintMove();
+  if (hint) {
+    hintEffect = { fromRect: hint.fromRect, toRect: hint.toRect, startTime: performance.now() };
+    playSound('touch');
+    showToast('✨ Dica Mágica Revelada no Tabuleiro!');
+  } else {
+    showToast('Nenhum movimento estratégico no momento');
+  }
+};
 document.getElementById('btnShop').onclick = () => {
   activePreviewItem = currentSkin;
-  document.getElementById('prevColl').innerText = `COLEÇÃO: ${currentSkin.collection}`;
-  document.getElementById('prevTitle').innerText = currentSkin.name;
-  document.getElementById('prevDesc').innerText = `${currentSkin.desc}\n✨ Efeito: ${currentSkin.effectSummary}`;
-  drawPreviewCard(currentSkin);
+  drawPreview();
   renderShopList();
   document.getElementById('modalShop').style.display = 'flex';
-};
-document.getElementById('btnCoinsBadge').onclick = () => {
-  document.getElementById('btnShop').click();
-};
-document.getElementById('avatar-medallion').onclick = () => {
-  document.getElementById('tabAvatars').click();
-  document.getElementById('btnShop').click();
 };
 document.getElementById('btnCloseShop').onclick = () => {
   document.getElementById('modalShop').style.display = 'none';
 };
-
 document.getElementById('btnScenery').onclick = () => {
   renderSceneryList();
   document.getElementById('modalScenery').style.display = 'flex';
@@ -2080,113 +2263,77 @@ document.getElementById('btnScenery').onclick = () => {
 document.getElementById('btnCloseScenery').onclick = () => {
   document.getElementById('modalScenery').style.display = 'none';
 };
-
-let hintEffect = null;
-
-function findHint() {
-  // 1. Descarte para Fundação
-  if (waste.length > 0) {
-    let top = waste[waste.length - 1];
-    for (let f = 0; f < 4; f++) {
-      if (canMoveToFoundation(top, foundations[f])) {
-        return { fromRect: wasteRect, toRect: fRects[f], desc: 'Mover ' + top.rank.label + top.suit.symbol + ' para Fundação' };
-      }
-    }
-  }
-
-  // 2. Coluna para Fundação
-  for (let c = 0; c < 7; c++) {
-    let t = tableaus[c];
-    if (t.length > 0) {
-      let top = t[t.length - 1];
-      if (top.faceUp) {
-        for (let f = 0; f < 4; f++) {
-          if (canMoveToFoundation(top, foundations[f])) {
-            let y = tRects[c].y + (t.length - 1) * (ch * 0.28);
-            return { fromRect: { x: tRects[c].x, y: y, w: cw, h: ch }, toRect: fRects[f], desc: 'Mover ' + top.rank.label + top.suit.symbol + ' para Fundação' };
-          }
-        }
-      }
-    }
-  }
-
-  // 3. Descarte para Coluna
-  if (waste.length > 0) {
-    let top = waste[waste.length - 1];
-    for (let c = 0; c < 7; c++) {
-      let t = tableaus[c];
-      if (canMoveToTableau(top, t)) {
-        let y = t.length === 0 ? tRects[c].y : tRects[c].y + (t.length - 1) * (ch * 0.28);
-        return { fromRect: wasteRect, toRect: { x: tRects[c].x, y: y, w: cw, h: ch }, desc: 'Mover ' + top.rank.label + top.suit.symbol + ' para Coluna ' + (c + 1) };
-      }
-    }
-  }
-
-  // 4. Sequência entre Colunas
-  for (let c1 = 0; c1 < 7; c1++) {
-    let t1 = tableaus[c1];
-    for (let i = 0; i < t1.length; i++) {
-      if (!t1[i].faceUp) continue;
-      let card = t1[i];
-      for (let c2 = 0; c2 < 7; c2++) {
-        if (c1 === c2) continue;
-        let t2 = tableaus[c2];
-        if (canMoveToTableau(card, t2)) {
-          if (card.rank.val === 13 && i === 0 && t2.length === 0) continue;
-          let y1 = tRects[c1].y + i * (ch * 0.28);
-          let y2 = t2.length === 0 ? tRects[c2].y : tRects[c2].y + (t2.length - 1) * (ch * 0.28);
-          return { fromRect: { x: tRects[c1].x, y: y1, w: cw, h: ch }, toRect: { x: tRects[c2].x, y: y2, w: cw, h: ch }, desc: 'Mover sequência para Coluna ' + (c2 + 1) };
-        }
-      }
-    }
-  }
-
-  // 5. Comprar do monte
-  if (stock.length > 0) {
-    return { fromRect: stockRect, toRect: wasteRect, desc: 'Comprar carta do monte' };
-  } else if (waste.length > 0) {
-    return { fromRect: wasteRect, toRect: stockRect, desc: 'Reciclar cartas do descarte' };
-  }
-
-  return null;
-}
-
-document.getElementById('btnUndo').onclick = performUndo;
-document.getElementById('btnHint').onclick = () => {
-  let hint = findHint();
-  if (hint) {
-    hintEffect = { fromRect: hint.fromRect, toRect: hint.toRect, startTime: performance.now() };
-    playSound('touch');
-    showToast('Dica: ' + hint.desc);
-    addSparkle(hint.fromRect.x + cw / 2, hint.fromRect.y + ch / 2, '#F59E0B', 8);
-  } else {
-    let steps = 0;
-    while (autoMoveStep() && steps < 20) { steps++; }
-    if (steps > 0) {
-      showToast('Movimentos automáticos seguros realizados!');
-    } else {
-      playSound('invalid');
-      showToast('Nenhum movimento evidente encontrado. Compre uma carta!');
-    }
-  }
+document.getElementById('avatar-medallion').onclick = () => {
+  activeShopTab = 'avatars';
+  document.getElementById('tabAvatars').classList.add('active');
+  document.getElementById('tabSkins').classList.remove('active');
+  activePreviewItem = currentAvatar;
+  drawPreview();
+  renderShopList();
+  document.getElementById('modalShop').style.display = 'flex';
 };
-document.getElementById('btnRestart').onclick = () => {
-  if (confirm('Deseja reiniciar a partida atual?')) startLevel(currentLevel);
+document.getElementById('btnCoinsBadge').onclick = () => {
+  document.getElementById('btnShop').click();
+};
+document.getElementById('btnAudioToggle').onclick = () => {
+  soundEnabled = !soundEnabled;
+  localStorage.setItem('pac_sound', soundEnabled);
+  document.getElementById('btnAudioToggle').innerText = soundEnabled ? '🔊' : '🔇';
+  showToast(soundEnabled ? 'Sons Ativados' : 'Sons Desativados');
+};
+
+document.getElementById('tabSkins').onclick = () => {
+  activeShopTab = 'skins';
+  document.getElementById('tabSkins').classList.add('active');
+  document.getElementById('tabAvatars').classList.remove('active');
+  activePreviewItem = currentSkin;
+  drawPreview();
+  renderShopList();
+};
+document.getElementById('tabAvatars').onclick = () => {
+  activeShopTab = 'avatars';
+  document.getElementById('tabAvatars').classList.add('active');
+  document.getElementById('tabSkins').classList.remove('active');
+  activePreviewItem = currentAvatar;
+  drawPreview();
+  renderShopList();
+};
+
+document.getElementById('btnWatchAd').onclick = () => {
+  showToast('Assistindo vídeo premiado... 🎬');
+  setTimeout(() => {
+    coinsBalance += 3;
+    localStorage.setItem('pac_coins', coinsBalance);
+    updateHud();
+    playSound('place');
+    showToast('🎉 Recompensa Concedida: +3 Moedas de Ouro 🪙!');
+    drawPreview();
+  }, 1200);
 };
 
 document.getElementById('btnNextLevel').onclick = () => {
   document.getElementById('modalVictory').style.display = 'none';
-  startLevel(currentLevel + 1);
-};
-document.getElementById('btnPlayAgain').onclick = () => {
-  document.getElementById('modalVictory').style.display = 'none';
-  startLevel(currentLevel);
+  currentLevel++;
+  localStorage.setItem('pac_cur_lvl', currentLevel);
+  // Muda cenário automaticamente se alcançou o marco
+  let matchingScenery = SCENERIES.slice().reverse().find(s => currentLevel >= s.minLevel);
+  if (matchingScenery) {
+    currentSceneryId = matchingScenery.id;
+    currentScenery = matchingScenery;
+    localStorage.setItem('pac_scenery', currentSceneryId);
+  }
+  startNewGame();
 };
 
-// --- INICIALIZAÇÃO ---
+document.getElementById('btnPlayAgain').onclick = () => {
+  document.getElementById('modalVictory').style.display = 'none';
+  startNewGame();
+};
+
+// Inicialização Principal
 resize();
-startLevel(currentLevel);
-drawPreviewCard(currentSkin);
+initAmbientParticles();
+startNewGame();
 requestAnimationFrame(render);
 </script>
 </body>

@@ -828,6 +828,7 @@ class SolitaireView @JvmOverloads constructor(
                 VictoryCelebrationType.ARCANE_SURGE -> Particle.Shape.RUNE
                 VictoryCelebrationType.LIVING_FOREST -> Particle.Shape.LEAF
                 VictoryCelebrationType.GLACIAL_BURST -> Particle.Shape.CRYSTAL
+                VictoryCelebrationType.ANCESTRAL_FLAME -> Particle.Shape.SPARK
                 VictoryCelebrationType.GOLDEN_MAJESTY,
                 VictoryCelebrationType.COSMIC_SUPERNOVA,
                 VictoryCelebrationType.ROYAL_TRIUMPH -> Particle.Shape.STAR
@@ -1004,6 +1005,24 @@ class SolitaireView @JvmOverloads constructor(
                             isTemporary = true,
                             life = 1.1f,
                             maxLife = 1.1f
+                        )
+                    )
+                }
+                VictoryCelebrationType.ANCESTRAL_FLAME -> {
+                    particleSystem.addParticle(
+                        Particle(
+                            x = (Math.random() * w).toFloat(),
+                            y = (Math.random() * h * 0.6f + h * 0.4f).toFloat(),
+                            vx = (Math.random().toFloat() - 0.5f) * 4f,
+                            vy = -(Math.random().toFloat() * 5.5f + 3f),
+                            size = 9f,
+                            alpha = 240,
+                            color = if (Math.random() < 0.6) 0xFFFB923C.toInt() else 0xFFEF4444.toInt(),
+                            shape = Particle.Shape.SPARK,
+                            rotationSpeed = 9f,
+                            isTemporary = true,
+                            life = 1f,
+                            maxLife = 1f
                         )
                     )
                 }

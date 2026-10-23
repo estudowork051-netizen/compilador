@@ -209,6 +209,7 @@ class CardRenderer {
             SkinPattern.SHADOW -> Pair(0xFFF5F5F7.toInt(), 0xFFE4E4E7.toInt())
             SkinPattern.COSMIC -> Pair(0xFFFAF5FF.toInt(), 0xFFF3E8FF.toInt())
             SkinPattern.ROYAL -> Pair(0xFFFFF1F2.toInt(), 0xFFFFE4E6.toInt())
+            SkinPattern.FLAME -> Pair(0xFFFFF8F0.toInt(), 0xFFFEE6D6.toInt())
             SkinPattern.CLASSIC -> Pair(0xFFFFFDF9.toInt(), 0xFFF3EFE6.toInt())
         }
 
@@ -333,6 +334,12 @@ class CardRenderer {
                 drawMiniCrown(canvas, left, bottom, s, paint)
                 drawMiniCrown(canvas, right, bottom, s, paint)
             }
+            SkinPattern.FLAME -> {
+                drawMiniFlame(canvas, left, top, s, paint)
+                drawMiniFlame(canvas, right, top, s, paint)
+                drawMiniFlame(canvas, left, bottom, s, paint)
+                drawMiniFlame(canvas, right, bottom, s, paint)
+            }
             SkinPattern.CLASSIC -> {
                 canvas.drawCircle(left, top, s * 0.7f, paint)
                 canvas.drawCircle(right, top, s * 0.7f, paint)
@@ -407,6 +414,15 @@ class CardRenderer {
         ornamentPath.lineTo(cx, cy - s * 0.7f)
         ornamentPath.lineTo(cx - s * 0.35f, cy)
         ornamentPath.lineTo(cx - s * 0.8f, cy - s * 0.5f)
+        ornamentPath.close()
+        canvas.drawPath(ornamentPath, paint)
+    }
+
+    private fun drawMiniFlame(canvas: Canvas, cx: Float, cy: Float, s: Float, paint: Paint) {
+        ornamentPath.reset()
+        ornamentPath.moveTo(cx, cy - s)
+        ornamentPath.quadTo(cx + s * 0.7f, cy, cx, cy + s * 0.7f)
+        ornamentPath.quadTo(cx - s * 0.7f, cy, cx, cy - s)
         ornamentPath.close()
         canvas.drawPath(ornamentPath, paint)
     }
@@ -654,6 +670,16 @@ class CardRenderer {
                 suitPath.lineTo(cx + crownW, cy + crownH * 0.5f)
                 suitPath.close()
                 canvas.drawPath(suitPath, cardBackPatternPaint)
+            }
+            SkinPattern.FLAME -> {
+                // Chama ancestral com ponta flamejante e brasas
+                val flameH = size * 0.95f
+                suitPath.moveTo(cx, cy - flameH)
+                suitPath.quadTo(cx + size * 0.7f, cy, cx, cy + size * 0.85f)
+                suitPath.quadTo(cx - size * 0.7f, cy, cx, cy - flameH)
+                suitPath.close()
+                canvas.drawPath(suitPath, cardBackPatternPaint)
+                canvas.drawCircle(cx, cy + size * 0.2f, size * 0.25f, cardBackPatternPaint)
             }
         }
     }

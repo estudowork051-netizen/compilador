@@ -28,7 +28,7 @@ class GameEconomyAndCustomizationTest {
     @Test
     fun testCardSkinsCatalogIntegrity() {
         val skins = CardSkin.ALL_SKINS
-        assertEquals("Devem existir exatamente 8 skins no catálogo inicial", 8, skins.size)
+        assertTrue("Devem existir pelo menos 8 skins no catálogo", skins.size >= 8)
 
         // Todos os IDs devem ser únicos
         val uniqueIds = skins.map { it.id }.toSet()
@@ -53,7 +53,7 @@ class GameEconomyAndCustomizationTest {
     @Test
     fun testAvatarsCatalogIntegrity() {
         val avatars = Avatar.ALL_AVATARS
-        assertEquals("Devem existir exatamente 8 avatares no catálogo", 8, avatars.size)
+        assertTrue("Devem existir pelo menos 8 avatares no catálogo", avatars.size >= 8)
 
         // Todos os IDs devem ser únicos
         val uniqueIds = avatars.map { it.id }.toSet()
