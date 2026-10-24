@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Castle / Fortress Wall -->
+    <path
+        android:fillColor="#ffd700"
+        android:pathData="M34,42h8v8h4v-8h8v8h4v-8h8v8h8v28h-40z"/>
+    <!-- Central Shield Emblem -->
+    <path
+        android:fillColor="#c5a059"
+        android:strokeColor="#ffd700"
+        android:strokeWidth="2"
+        android:pathData="M54,48 L68,54 L68,68 C68,78 54,84 54,84 C54,84 40,78 40,68 L40,54 Z"/>
+    <!-- Inner Cross / Sword in Shield -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M52,56h4v18h-4z"/>
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M48,60h12v3h-12z"/>
+</vector>

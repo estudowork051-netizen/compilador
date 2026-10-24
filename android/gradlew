@@ -1,0 +1,71 @@
+#!/bin/sh
+# ==============================================================================
+# Gradle Wrapper Script for Tower Defense RPG
+# Compatible with Linux, macOS, and CI environments (GitHub Actions)
+# ==============================================================================
+
+set -e
+
+# Resolve application directory
+APP_HOME=$(cd "$(dirname "$0")" && pwd)
+
+# 1. Determine Java executable
+if [ -n "$JAVA_HOME" ] && [ -x "$JAVA_HOME/bin/java" ]; then
+    JAVACMD="$JAVA_HOME/bin/java"
+elif command -v java >/dev/null 2>&1; then
+    JAVACMD="java"
+else
+    echo "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH." >&2
+    echo "Please set the JAVA_HOME variable in your environment to match the location of your Java installation." >&2
+    exit 1
+fi
+
+# 2. Check if Gradle is directly available in PATH
+if command -v gradle >/dev/null 2>&1; then
+    exec gradle "$@"
+fi
+
+# 3. Check for gradle-wrapper.jar
+WRAPPER_JAR="$APP_HOME/gradle/wrapper/gradle-wrapper.jar"
+if [ -f "$WRAPPER_JAR" ]; then
+    exec "$JAVACMD" -jar "$WRAPPER_JAR" "$@"
+fi
+
+# 4. Bootstrap / Download Gradle 8.2 if neither gradle nor wrapper jar are present
+GRADLE_VERSION="8.2"
+GRADLE_DIST="gradle-${GRADLE_VERSION}-bin.zip"
+GRADLE_URL="https://services.gradle.org/distributions/${GRADLE_DIST}"
+USER_HOME="${HOME:-/tmp}"
+GRADLE_DIR="${USER_HOME}/.gradle/wrapper/dists/gradle-${GRADLE_VERSION}"
+
+if [ ! -x "${GRADLE_DIR}/gradle-${GRADLE_VERSION}/bin/gradle" ]; then
+    echo "Downloading Gradle ${GRADLE_VERSION} from ${GRADLE_URL}..."
+    mkdir -p "${GRADLE_DIR}"
+    ZIP_FILE="${GRADLE_DIR}/${GRADLE_DIST}"
+    
+    if command -v curl >/dev/null 2>&1; then
+        curl -sSL -o "${ZIP_FILE}" "${GRADLE_URL}"
+    elif command -v wget >/dev/null 2>&1; then
+        wget -q -O "${ZIP_FILE}" "${GRADLE_URL}"
+    else
+        echo "ERROR: Neither curl nor wget found to download Gradle." >&2
+        exit 1
+    fi
+    
+    echo "Unpacking Gradle ${GRADLE_VERSION}..."
+    if command -v unzip >/dev/null 2>&1; then
+        unzip -q -o "${ZIP_FILE}" -d "${GRADLE_DIR}"
+    elif command -v tar >/dev/null 2>&1; then
+        # Try jar xf if available
+        (cd "${GRADLE_DIR}" && "${JAVACMD}" -cp "${ZIP_FILE}" || true)
+    fi
+    rm -f "${ZIP_FILE}"
+fi
+
+GRADLE_BIN="${GRADLE_DIR}/gradle-${GRADLE_VERSION}/bin/gradle"
+if [ -x "${GRADLE_BIN}" ]; then
+    exec "${GRADLE_BIN}" "$@"
+else
+    echo "ERROR: Could not locate gradle binary at ${GRADLE_BIN}." >&2
+    exit 1
+fi

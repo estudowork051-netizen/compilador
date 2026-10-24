@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#121418">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Reino Protetor — Tower Defense RPG</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app-container">
+
+    <!-- 1. MAIN MENU SCREEN -->
+    <div id="screen-main_menu" class="app-screen active">
+      <div class="menu-banner">
+        <div class="menu-title-shield">🛡️</div>
+        <h1 class="menu-title">REINO PROTETOR</h1>
+        <div class="menu-subtitle">TOWER DEFENSE RPG</div>
+      </div>
+
+      <div class="menu-profile-pill">
+        <div class="profile-stat" id="menu-player-level">Nível 1</div>
+        <div class="profile-stat" id="menu-player-coins">💰 300 Ouro</div>
+        <div class="profile-stat" id="menu-player-slots">1/1 Heróis</div>
+      </div>
+
+      <div class="menu-actions">
+        <button id="btn-menu-play" class="btn btn-primary btn-menu">⚔️ JOGAR</button>
+        <button id="btn-menu-continue" class="btn btn-secondary btn-menu">▶️ CONTINUAR</button>
+        <button id="btn-menu-heroes" class="btn btn-secondary btn-menu">🧙 HERÓIS</button>
+        <button id="btn-menu-shop" class="btn btn-secondary btn-menu">🏪 LOJA</button>
+        <button id="btn-menu-settings" class="btn btn-secondary btn-menu">⚙️ CONFIGURAÇÕES</button>
+      </div>
+
+      <div class="menu-version-note">v1.0.0 — Offline Mobile Edition</div>
+    </div>
+
+    <!-- 2. STAGE SELECT SCREEN -->
+    <div id="screen-stage_select" class="app-screen">
+      <div class="screen-header">
+        <button id="btn-stage-back" class="btn btn-icon">⬅️</button>
+        <h2>SELEÇÃO DE FASES</h2>
+        <div style="width: 44px;"></div>
+      </div>
+      <div id="stages-list" class="stages-container">
+        <!-- Stages injected dynamically -->
+      </div>
+    </div>
+
+    <!-- 3. HERO COLLECTION SCREEN -->
+    <div id="screen-hero_collection" class="app-screen">
+      <div class="screen-header">
+        <button id="btn-heroes-back" class="btn btn-icon">⬅️</button>
+        <h2>COLEÇÃO DE HERÓIS</h2>
+        <div style="width: 44px;"></div>
+      </div>
+      <div id="heroes-slots-status" class="hero-collection-header">
+        Espaços de Equipe: 1 / 1
+      </div>
+      <div id="heroes-grid" class="heroes-grid">
+        <!-- Heroes injected dynamically -->
+      </div>
+    </div>
+
+    <!-- 4. SHOP SCREEN -->
+    <div id="screen-shop" class="app-screen">
+      <div class="screen-header">
+        <button id="btn-shop-back" class="btn btn-icon">⬅️</button>
+        <h2>LOJA REAL</h2>
+        <div style="width: 44px;"></div>
+      </div>
+      <div class="shop-header-banner">
+        <span>Seu Saldo:</span>
+        <span id="shop-coins-counter" class="shop-coins">💰 300 Ouro</span>
+      </div>
+      <div id="shop-items" class="shop-items-container">
+        <!-- Shop items injected dynamically -->
+      </div>
+    </div>
+
+    <!-- 5. SETTINGS SCREEN -->
+    <div id="screen-settings" class="app-screen">
+      <div class="screen-header">
+        <button id="btn-settings-back" class="btn btn-icon">⬅️</button>
+        <h2>CONFIGURAÇÕES</h2>
+        <div style="width: 44px;"></div>
+      </div>
+      <div class="settings-content">
+        <div class="setting-row">
+          <span class="setting-label">🔊 Efeitos Sonoros</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-sound" checked>
+          </label>
+        </div>
+        <div class="setting-row">
+          <span class="setting-label">🎵 Música de Fundo</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-music" checked>
+          </label>
+        </div>
+        <div style="margin-top: 30px;">
+          <button id="btn-reset-progress" class="btn btn-danger" style="width: 100%;">
+            ⚠️ REINICIAR TODO O PROGRESSO
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. BATTLE SCREEN -->
+    <div id="screen-battle" class="app-screen">
+      <!-- HUD TOP -->
+      <div class="battle-hud-top">
+        <div class="hud-group">
+          <div class="hud-item hud-hp">❤️ <span id="hud-base-hp">20/20</span></div>
+          <div class="hud-item hud-gold">💰 <span id="hud-gold">250</span></div>
+        </div>
+        <div class="hud-group">
+          <div class="hud-item hud-wave"><span id="hud-wave">Onda 1/5</span></div>
+          <button id="btn-battle-speed" class="btn btn-icon" style="min-width:38px; min-height:38px; font-size:0.85rem;">1x</button>
+          <button id="btn-battle-pause" class="btn btn-icon" style="min-width:38px; min-height:38px;">⏸️</button>
+        </div>
+      </div>
+
+      <!-- BOSS HEALTH BAR -->
+      <div id="hud-boss-container" class="hud-boss-bar-container">
+        <div class="boss-bar-title">⚠️ OGRO DAS RUÍNAS — DEVASTADOR ANCESTRAL ⚠️</div>
+        <div class="boss-bar-track">
+          <div id="hud-boss-fill" class="boss-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- CANVAS VIEWPORT -->
+      <div class="battle-viewport">
+        <canvas id="battle-canvas" width="540" height="720"></canvas>
+      </div>
+
+      <!-- HERO ACTION BAR BOTTOM -->
+      <div id="battle-hero-bar" class="battle-hero-bar">
+        <!-- Hero skill buttons injected dynamically -->
+      </div>
+
+      <!-- TOWER ACTIONS MODAL -->
+      <div id="modal-tower-actions" class="game-modal">
+        <div class="modal-box">
+          <h3 class="modal-title">DEFESA</h3>
+
+          <!-- Build options -->
+          <div id="tower-build-options" class="tower-build-buttons">
+            <button id="btn-build-archer" class="tower-option-btn">
+              <span>🏹 Torre Arqueira</span>
+              <span>💰 100</span>
+            </button>
+            <button id="btn-build-magic" class="tower-option-btn">
+              <span>🔮 Torre Mágica</span>
+              <span>💰 140</span>
+            </button>
+            <button id="btn-build-cannon" class="tower-option-btn">
+              <span>💣 Torre de Canhão</span>
+              <span>💰 160</span>
+            </button>
+          </div>
+
+          <!-- Manage options -->
+          <div id="tower-manage-options" class="tower-build-buttons" style="display: none;">
+            <p id="tower-manage-info" style="font-size: 0.85rem; color: #b0bec5;"></p>
+            <button id="btn-upgrade-tower" class="btn btn-primary">MELHORAR</button>
+            <button id="btn-sell-tower" class="btn btn-danger">VENDER</button>
+          </div>
+
+          <button id="btn-close-tower-modal" class="btn btn-secondary">FECHAR</button>
+        </div>
+      </div>
+
+      <!-- PAUSE MODAL -->
+      <div id="modal-pause" class="game-modal">
+        <div class="modal-box">
+          <h3 class="modal-title">JOGO PAUSADO</h3>
+          <div class="modal-actions">
+            <button id="btn-pause-resume" class="btn btn-primary">▶️ RETOMAR</button>
+            <button id="btn-pause-restart" class="btn btn-secondary">🔄 REINICIAR</button>
+            <button id="btn-pause-quit" class="btn btn-danger">🚪 SAIR DA BATALHA</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VICTORY MODAL -->
+      <div id="modal-victory" class="game-modal">
+        <div class="modal-box">
+          <h3 class="modal-title">🏆 VITÓRIA GLORIOSA!</h3>
+          <p>O território foi defendido com sucesso contra as forças invasoras!</p>
+          <div class="rewards-box">
+            <span id="victory-gold-reward">+200 Ouro</span>
+            <span id="victory-xp-reward">+180 XP</span>
+          </div>
+          <div id="victory-levelup-note" style="display:none; color:#ffd700; font-size:0.85rem; font-weight:700;"></div>
+          <div class="modal-actions">
+            <button id="btn-victory-advance" class="btn btn-primary">AVANÇAR</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEFEAT MODAL -->
+      <div id="modal-defeat" class="game-modal">
+        <div class="modal-box">
+          <h3 class="modal-title defeat">💀 BASE DESTRUÍDA</h3>
+          <p id="defeat-summary">As muralhas sucumbiram ao ataque inimigo.</p>
+          <div class="modal-actions">
+            <button id="btn-defeat-retry" class="btn btn-primary">🔄 TENTAR NOVAMENTE</button>
+            <button id="btn-defeat-quit" class="btn btn-secondary">🚪 RETORNAR AO MENU</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="bundle.js"></script>
+</body>
+</html>

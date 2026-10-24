@@ -1,0 +1,15 @@
+{
+  "name": "tower-defense-rpg",
+  "version": "1.0.0",
+  "description": "Medieval Fantasy Tower Defense RPG for Android",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:verbose": "node test/run_all_tests.js",
+    "build": "node scripts/bundle.js"
+  },
+  "keywords": ["tower-defense", "rpg", "android", "game"],
+  "author": "RPG Studio",
+  "license": "MIT"
+}

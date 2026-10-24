@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.TowerDefenseRPG" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">#121418</item>
+        <item name="android:statusBarColor">#121418</item>
+        <item name="android:navigationBarColor">#0b0c0e</item>
+    </style>
+
+    <style name="Theme.TowerDefenseRPG.Fullscreen" parent="Theme.TowerDefenseRPG">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>
