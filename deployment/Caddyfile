@@ -1,0 +1,31 @@
+{
+    email {$ACME_EMAIL:admin@example.com}
+}
+
+{$DOMAIN_NAME:localhost} {
+    encode gzip zstd
+
+    # Roteamento WebSocket de sinalização WebRTC
+    handle /ws/signaling* {
+        reverse_proxy signaling-server:5000 {
+            header_up Host {host}
+            header_up X-Real-IP {remote}
+            header_up X-Forwarded-For {remote}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    handle /api/signaling/ws* {
+        reverse_proxy signaling-server:5000 {
+            header_up Host {host}
+            header_up X-Real-IP {remote}
+            header_up X-Forwarded-For {remote}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # Roteamento geral de APIs REST (Health, ICE Servers, Discovery)
+    handle /* {
+        reverse_proxy signaling-server:5000
+    }
+}

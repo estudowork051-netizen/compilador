@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <!--
+      Mantem os artefatos do servidor em um caminho curto, relativo a raiz do
+      repositorio. Isso evita o limite legado de MAX_PATH do MSBuild em
+      workspaces Windows com caminhos longos.
+    -->
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../.build/signaling/obj/</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)../.build/signaling/bin/</BaseOutputPath>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildThisFileDirectory)**/bin/**;$(MSBuildThisFileDirectory)**/obj/**</DefaultItemExcludes>
+  </PropertyGroup>
+</Project>

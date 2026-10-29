@@ -1,0 +1,25 @@
+# ==============================================================================
+# RemoteDesk — Exemplo de Arquivo de Configuração do ngrok (ngrok.yml)
+# ==============================================================================
+# Para usar este arquivo:
+# 1. Copie este arquivo ou adicione seu conteúdo ao arquivo de configuração oficial:
+#    ngrok config edit
+#    (Geralmente localizado em %USERPROFILE%\AppData\Local\ngrok\ngrok.yml)
+# 2. Substitua SEU_AUTHTOKEN_AQUI pelo seu token obtido em:
+#    https://dashboard.ngrok.com/get-started/your-authtoken
+#    (Ou configure diretamente via terminal: ngrok config add-authtoken <seu_token>)
+# ==============================================================================
+
+version: "2"
+authtoken: SEU_AUTHTOKEN_AQUI
+
+tunnels:
+  remotedesk_signaling:
+    proto: http
+    addr: 5000
+    # inspect: false # Opcional: desativa gravação de tráfego na interface local para máxima performance
+    # domain: seu-subdominio-estatico.ngrok-free.app # Opcional: caso utilize o subdomínio estático gratuito do ngrok
+    host_header: "localhost:5000"
+    request_header:
+      add:
+        - "ngrok-skip-browser-warning: true"

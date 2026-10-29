@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- FUNDO PROFUNDO CYBER-ZOMBIE (#0F0818) -->
+    <path
+        android:fillColor="#0F0818"
+        android:pathData="M0,0 h108 v108 h-108 z" />
+
+    <!-- MALHA RETRO-TECH / CIRCUITO SUAVE EM ROXO MÉDIO -->
+    <path
+        android:strokeColor="#2A1B3D"
+        android:strokeWidth="1.2"
+        android:pathData="M16,24 h76 M16,54 h76 M16,84 h76 M24,16 v76 M54,16 v76 M84,16 v76" />
+
+    <!-- MONITOR / TELA REMOTA RETRO COM BORDAS ARREDONDADAS -->
+    <path
+        android:fillColor="#140C20"
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.5"
+        android:pathData="M22,22 h64 a 6 6 0 0 1 6 6 v42 a 6 6 0 0 1 -6 6 h-64 a 6 6 0 0 1 -6 -6 v-42 a 6 6 0 0 1 6 -6 z" />
+
+    <!-- BASE DO MONITOR -->
+    <path
+        android:fillColor="#2A1B3D"
+        android:strokeColor="#70C92B"
+        android:strokeWidth="1.5"
+        android:pathData="M44,76 h20 l3,8 h-26 z" />
+    <path
+        android:fillColor="#70C92B"
+        android:pathData="M38,84 h32 v3 h-32 z" />
+
+    <!-- DETALHE INTERNO DA TELA: MÃO CYBER-ZOMBIE SURGINDO DO TERMINAL -->
+    <!-- Brilho verde neon de energia no display -->
+    <path
+        android:fillColor="#1E3A2F"
+        android:pathData="M26,26 h56 v36 h-56 z" />
+
+    <!-- Traços de energia / circuito orgânico dentro da tela -->
+    <path
+        android:strokeColor="#70C92B"
+        android:strokeWidth="1.0"
+        android:strokeLineCap="round"
+        android:pathData="M30,52 C38,44 46,58 54,48 C62,38 70,50 78,42" />
+
+    <!-- Mão estilizada cibernética emergindo do centro da tela -->
+    <!-- Pulso e palma -->
+    <path
+        android:fillColor="#3DF4B7"
+        android:pathData="M50,56 c-1,-3 0,-6 4,-6 c4,0 5,3 4,6 c0,3 -2,5 -4,5 c-2,0 -4,-2 -4,-5 z" />
+    <!-- Dedo indicador -->
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M51,46 v-8" />
+    <!-- Dedo médio com pulso de energia -->
+    <path
+        android:strokeColor="#70C92B"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M54,45 v-11" />
+    <!-- Dedo anelar -->
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M57,46 v-8" />
+    <!-- Polegar cibernético -->
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:pathData="M48,51 l-5,-3" />
+
+    <!-- LEDS DE STATUS DO TERMINAL (VERDE LIMA E VERDE MENTA) -->
+    <path
+        android:fillColor="#70C92B"
+        android:pathData="M78,72 a 2 2 0 1 0 4 0 a 2 2 0 1 0 -4 0" />
+    <path
+        android:fillColor="#3DF4B7"
+        android:pathData="M72,72 a 1.5 1.5 0 1 0 3 0 a 1.5 1.5 0 1 0 -3 0" />
+</vector>

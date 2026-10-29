@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp"
+    android:height="44dp"
+    android:viewportWidth="160"
+    android:viewportHeight="44">
+
+    <!-- LINHAS ONDULADAS NA BASE: ENERGIA, RAÍZES E MOVIMENTO RETRO-TECH -->
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="1.5"
+        android:strokeAlpha="0.8"
+        android:strokeLineCap="round"
+        android:pathData="M12,38 C28,42 42,34 60,39 C78,43 96,35 116,40 C132,43 144,37 154,39" />
+    <path
+        android:strokeColor="#70C92B"
+        android:strokeWidth="1.0"
+        android:strokeAlpha="0.5"
+        android:strokeLineCap="round"
+        android:pathData="M18,41 C34,44 48,38 68,42 C88,45 108,39 128,43 C140,45 148,41 156,42" />
+
+    <!-- TEXTO 'by ' EM CINZA CLARO RETRO-TECH -->
+    <!-- Letra 'b' -->
+    <path
+        android:fillColor="#D0D5CE"
+        android:pathData="M16,14 h4 v6 c1.2,-1.5 2.8,-2.2 4.6,-2.2 c3.4,0 5.8,2.6 5.8,6.8 c0,4.2 -2.4,6.8 -5.8,6.8 c-1.8,0 -3.4,-0.7 -4.6,-2.2 v2 h-4 z M20,24.6 c0,2.6 1.4,4.2 3.5,4.2 c2.1,0 3.5,-1.6 3.5,-4.2 c0,-2.6 -1.4,-4.2 -3.5,-4.2 c-2.1,0 -3.5,1.6 -3.5,4.2 z" />
+    <!-- Letra 'y' -->
+    <path
+        android:fillColor="#D0D5CE"
+        android:pathData="M33,18 h4 l2.8,7.6 l2.8,-7.6 h4 l-5.2,12.2 c-1.2,2.8 -2.8,4.2 -5.4,4.2 c-1.0,0 -2.0,-0.2 -2.8,-0.6 v-3.2 c0.6,0.2 1.2,0.4 1.8,0.4 c1.4,0 2.2,-0.8 2.8,-2.2 z" />
+
+    <!-- MARCA 'HOD' -->
+    <!-- Letra 'H' EM BRANCO -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,12 h4.5 v7.5 h9 v-7.5 h4.5 v19.2 h-4.5 v-7.5 h-9 v7.5 h-4.5 z" />
+
+    <!-- LETRA 'O' EM VERDE MENTA NEON (#3DF4B7) COM BRILHO -->
+    <!-- Anel externo e interno do O -->
+    <path
+        android:fillColor="#3DF4B7"
+        android:pathData="M84.5,11 c6.8,0 12,5 12,10.6 c0,5.6 -5.2,10.6 -12,10.6 c-6.8,0 -12,-5 -12,-10.6 c0,-5.6 5.2,-10.6 12,-10.6 z M84.5,15.2 c-4.2,0 -7.2,3 -7.2,6.4 c0,3.4 3,6.4 7.2,6.4 c4.2,0 7.2,-3 7.2,-6.4 c0,-3.4 -3,-6.4 -7.2,-6.4 z" />
+
+    <!-- MÃO ESTILIZADA CYBER-ZOMBIE SURGINDO DE DENTRO DO 'O' -->
+    <!-- Pulso e palma emergindo da cavidade interna do O -->
+    <path
+        android:fillColor="#70C92B"
+        android:pathData="M82,23.5 c0,-2 1,-4.5 2.5,-5.5 c1.5,1 2.5,3.5 2.5,5.5 c0,2.5 -1.2,4.5 -2.5,4.5 c-1.3,0 -2.5,-2 -2.5,-4.5 z" />
+    <!-- Dedos estilizados estendendo-se para cima rompendo o anel -->
+    <!-- Polegar -->
+    <path
+        android:fillColor="#3DF4B7"
+        android:pathData="M81.2,19.2 c-1.2,-0.8 -2.2,-0.2 -2.4,0.8 c-0.2,0.9 0.4,1.8 1.4,2.2 l1.4,0.6 z" />
+    <!-- Dedo indicador -->
+    <path
+        android:fillColor="#3DF4B7"
+        android:pathData="M82.8,17.5 c-0.4,-2.2 0.2,-4.2 0.9,-4.4 c0.7,-0.2 1.4,1.4 1.7,3.6 l0.2,2.2 h-2.2 z" />
+    <!-- Dedo médio (mais alto, rompendo o topo) -->
+    <path
+        android:fillColor="#70C92B"
+        android:pathData="M84.5,16.5 c0,-3.2 0.6,-5.5 1.2,-5.5 c0.6,0 1.2,2.3 1.2,5.5 l-0.2,3.2 h-2.0 z" />
+    <!-- Dedos anelar e mínimo -->
+    <path
+        android:fillColor="#3DF4B7"
+        android:pathData="M86.5,17.8 c0.3,-2.0 0.9,-3.6 1.5,-3.4 c0.6,0.2 0.8,1.8 0.5,3.8 l-0.6,2.2 h-1.8 z" />
+    <path
+        android:fillColor="#3DF4B7"
+        android:pathData="M88.2,19.8 c0.6,-1.2 1.4,-1.8 1.9,-1.5 c0.5,0.3 0.5,1.4 -0.1,2.6 l-0.8,1.4 h-1.4 z" />
+
+    <!-- LETRA 'D' EM BRANCO -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M101.5,12 h8 c6.2,0 10.5,4.2 10.5,9.6 c0,5.4 -4.3,9.6 -10.5,9.6 h-8 z M106,16.2 v10.8 h3.5 c3.5,0 6,-2.4 6,-5.4 c0,-3.0 -2.5,-5.4 -6,-5.4 z" />
+
+    <!-- DETALHES RETRO-TECH ORGÂNICOS / RAÍZES SUTIS -->
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:pathData="M84.5,32.2 c0,3.5 -2.5,5.5 -4.5,7.5" />
+    <path
+        android:strokeColor="#70C92B"
+        android:strokeWidth="1.0"
+        android:strokeLineCap="round"
+        android:pathData="M86.5,32.0 c1,3.0 3.5,4.8 5.5,6.8" />
+</vector>

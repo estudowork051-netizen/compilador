@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardWindowItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/card_background"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/divider"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- CONTAINER DO ÍCONE COM INDICADOR DE SELEÇÃO E FOCO -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
+
+            <!-- ÍCONE PRINCIPAL DO APLICATIVO (ELEMENTO VISUAL DOMINANTE) -->
+            <ImageView
+                android:id="@+id/ivWindowIcon"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_app_generic" />
+
+            <!-- BADGE INDICADOR DE SELEÇÃO -->
+            <ImageView
+                android:id="@+id/ivSelectedBadge"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|end"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_check_circle"
+                android:visibility="gone" />
+
+            <!-- BADGE DE JANELA ATIVA COM FOCO NO WINDOWS -->
+            <TextView
+                android:id="@+id/tvActiveBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@drawable/bg_status_badge"
+                android:paddingStart="6dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="6dp"
+                android:paddingBottom="2dp"
+                android:text="EM FOCO"
+                android:textColor="@color/status_green"
+                android:textSize="9sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- TÍTULO DA JANELA (SECUNDÁRIO, DESTACADO) -->
+        <TextView
+            android:id="@+id/tvWindowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            tools:text="Google Chrome" />
+
+        <!-- NOME DO PROCESSO / EXECUTÁVEL (SUBTEXTO INFORMATIVO) -->
+        <TextView
+            android:id="@+id/tvProcessName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/bg_status_badge"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            android:paddingStart="6dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="1dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"
+            tools:text="chrome.exe" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

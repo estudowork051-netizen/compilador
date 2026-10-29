@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- FUNDO CIRCULAR PROFUNDO CYBER-ZOMBIE -->
+    <path
+        android:fillColor="#0F0818"
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="1.5"
+        android:pathData="M54,54 m-50,0 a 50 50 0 1 0 100 0 a 50 50 0 1 0 -100 0" />
+
+    <!-- MALHA RETRO-TECH CIRCULAR INTERNA -->
+    <path
+        android:strokeColor="#2A1B3D"
+        android:strokeWidth="1.0"
+        android:pathData="M24,54 h60 M54,24 v60" />
+
+    <!-- MONITOR / TELA REMOTA RETRO -->
+    <path
+        android:fillColor="#140C20"
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.5"
+        android:pathData="M26,26 h56 a 5 5 0 0 1 5 5 v36 a 5 5 0 0 1 -5 5 h-56 a 5 5 0 0 1 -5 -5 v-36 a 5 5 0 0 1 5 -5 z" />
+
+    <!-- BASE DO MONITOR -->
+    <path
+        android:fillColor="#2A1B3D"
+        android:strokeColor="#70C92B"
+        android:strokeWidth="1.2"
+        android:pathData="M46,72 h16 l2,6 h-20 z" />
+    <path
+        android:fillColor="#70C92B"
+        android:pathData="M40,78 h28 v2.5 h-28 z" />
+
+    <!-- BRILHO INTERNO DA TELA -->
+    <path
+        android:fillColor="#1E3A2F"
+        android:pathData="M30,30 h48 v28 h-48 z" />
+
+    <!-- MÃO CIBERNÉTICA / RETRO-TECH SURGINDO DO CENTRO -->
+    <path
+        android:fillColor="#3DF4B7"
+        android:pathData="M50,52 c-1,-2 0,-5 4,-5 c4,0 5,3 4,5 c0,2 -2,4 -4,4 c-2,0 -4,-2 -4,-4 z" />
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:pathData="M51,44 v-7" />
+    <path
+        android:strokeColor="#70C92B"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:pathData="M54,43 v-9" />
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:pathData="M57,44 v-7" />
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M48,48 l-4,-3" />
+
+    <!-- LED INDICADOR -->
+    <path
+        android:fillColor="#70C92B"
+        android:pathData="M74,68 a 1.8 1.8 0 1 0 3.6 0 a 1.8 1.8 0 1 0 -3.6 0" />
+</vector>

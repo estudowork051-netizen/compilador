@@ -1,0 +1,17 @@
+# Multi-stage Dockerfile para o Servidor de Sinalização e Relé WebRTC RemoteDesk
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY ["signaling-server/src/RemoteDesk.SignalingServer/RemoteDesk.SignalingServer.csproj", "RemoteDesk.SignalingServer/"]
+RUN dotnet restore "RemoteDesk.SignalingServer/RemoteDesk.SignalingServer.csproj"
+
+COPY signaling-server/src/RemoteDesk.SignalingServer/ RemoteDesk.SignalingServer/
+WORKDIR "/src/RemoteDesk.SignalingServer"
+RUN dotnet publish "RemoteDesk.SignalingServer.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+EXPOSE 5000
+ENV ASPNETCORE_URLS=http://+:5000
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "RemoteDesk.SignalingServer.dll"]

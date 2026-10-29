@@ -1,0 +1,186 @@
+name: RemoteDesk CI — Build & Artifacts
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Componente a ser compilado"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - android
+          - windows
+          - server
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    name: Compilar Aplicativo Android (APK)
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.target == 'all' || github.event.inputs.target == 'android' }}
+    steps:
+      - name: Clonar Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "gradle"
+
+      - name: Configurar Android SDK (API 34 e Build-Tools)
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-34 build-tools;34.0.0"
+
+      - name: Configurar Gradle (versão 8.5)
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: "8.5"
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Preparar Permissões e Gradle Wrapper
+        run: |
+          chmod +x android-app/gradlew scripts/build_runner.py scripts/build_all.sh
+          cd android-app
+          if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
+            echo "Gerando gradle-wrapper.jar via Gradle 8.5..."
+            gradle wrapper --gradle-version 8.5
+          fi
+
+      - name: Compilar APK de Depuração e Gerar Logs
+        run: |
+          python3 scripts/build_runner.py android --strict
+
+      - name: Disponibilizar APK de Depuração como Artefato
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: remotedesk-android-debug-apk
+          path: android-app/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Publicar Log de Compilação do Android
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: log-android-build
+          path: logs/android_build.log
+          if-no-files-found: ignore
+
+  build-windows-agent:
+    name: Compilar Agente Windows (.NET 8)
+    runs-on: windows-latest
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.target == 'all' || github.event.inputs.target == 'windows' }}
+    steps:
+      - name: Clonar Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET 8.0 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compilar Agente Windows e Executar Autoteste
+        shell: cmd
+        env:
+          DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER: "1"
+        run: |
+          python scripts\build_runner.py windows --strict
+
+      - name: Disponibilizar Binários do Agente Windows como Artefato
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: remotedesk-windows-agent-binaries
+          path: windows-agent/src/RemoteDesk.Agent/bin/Debug/net8.0/
+          if-no-files-found: error
+
+      - name: Publicar Log de Compilação do Agente Windows
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: log-windows-agent-build
+          path: logs/windows_agent_build.log
+          if-no-files-found: ignore
+
+  build-signaling-server:
+    name: Compilar Servidor de Sinalização (.NET 8)
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.target == 'all' || github.event.inputs.target == 'server' }}
+    steps:
+      - name: Clonar Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET 8.0 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Conceder Permissões
+        run: chmod +x scripts/build_runner.py
+
+      - name: Compilar Servidor de Sinalização e Testar Endpoint /health
+        run: |
+          python3 scripts/build_runner.py server --strict
+
+      - name: Disponibilizar Binários do Servidor como Artefato
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: remotedesk-signaling-server-binaries
+          path: .build/signaling/bin/Debug/net8.0/
+          if-no-files-found: error
+          include-hidden-files: true
+
+      - name: Publicar Log de Compilação do Servidor
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: log-signaling-server-build
+          path: logs/signaling_server_build.log
+          if-no-files-found: ignore
+
+  summary:
+    name: Resumo Geral e Notificação de Status
+    runs-on: ubuntu-latest
+    needs: [build-android, build-windows-agent, build-signaling-server]
+    if: always()
+    steps:
+      - name: Publicar Resumo nos Logs do GitHub Actions
+        run: |
+          echo "## 🚀 RemoteDesk — Resumo da Compilação na Nuvem" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Componente | Status no Workflow | Artefato Produzido |" >> $GITHUB_STEP_SUMMARY
+          echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Android App** | ${{ needs.build-android.result }} | \`app-debug.apk\` (artefato: \`remotedesk-android-debug-apk\`) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Windows Agent** | ${{ needs.build-windows-agent.result }} | Binários \`net8.0\` (artefato: \`remotedesk-windows-agent-binaries\`) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Signaling Server** | ${{ needs.build-signaling-server.result }} | Binários \`net8.0\` (artefato: \`remotedesk-signaling-server-binaries\`) |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Como baixar os artefatos gerados:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Acesse a aba **Actions** do seu repositório no GitHub." >> $GITHUB_STEP_SUMMARY
+          echo "2. Clique na execução mais recente deste workflow." >> $GITHUB_STEP_SUMMARY
+          echo "3. Role até o final da página (seção **Artifacts**) para baixar o APK ou os logs." >> $GITHUB_STEP_SUMMARY

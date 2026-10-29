@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DoHsktoP</string>
+    <string name="app_tagline">Acesso rápido, direto e seguro ao seu computador</string>
+
+    <!-- Cabeçalho e Identificação Oficial DoHsktoP -->
+    <string name="welcome_title">DoHsktoP</string>
+    <string name="welcome_subtitle">Acesso rápido, direto e seguro ao seu computador</string>
+    <string name="brand_by_hod">by HOD</string>
+
+    <!-- Indicador de Status -->
+    <string name="status_label">Status da Conexão:</string>
+    <string name="status_ready">Pronto para conectar</string>
+    <string name="status_connecting">Conectando ao computador...</string>
+    <string name="status_validating">Validando código de pareamento...</string>
+    <string name="status_connected">Conectado ao Computador</string>
+    <string name="status_loading_windows">Carregando programas abertos...</string>
+
+    <!-- Card de Conexão -->
+    <string name="card_connect_title">Conectar a um Computador</string>
+    <string name="card_connect_subtitle">Conecte-se ao seu computador Windows para acessar seus aplicativos remotamente.</string>
+    <string name="label_pairing_code">PIN de Pareamento / Acesso</string>
+    <string name="hint_pairing_code">PIN exibido no Windows Agent (ex: 492 813)</string>
+    <string name="label_host">Endereço IP / Host do PC</string>
+    <string name="hint_host">10.0.2.2 ou IP local do PC</string>
+    <string name="label_port">Porta Local</string>
+    <string name="hint_port">5050</string>
+    <string name="label_access_pin">PIN de Acesso (Opcional / Fallback)</string>
+    <string name="hint_access_pin">PIN exibido no console do Windows Agent</string>
+    <string name="btn_connect">Conectar ao Computador</string>
+    <string name="btn_disconnect">Desconectar</string>
+    <string name="btn_refresh">Atualizar Lista</string>
+
+    <!-- Configurações Avançadas de Servidor e Rede -->
+    <string name="advanced_settings_toggle">Configurações Avançadas de Servidor e Rede</string>
+    <string name="label_signaling_url">Servidor de Sinalização</string>
+    <string name="hint_signaling_url">http://10.0.2.2:5000</string>
+    <string name="desc_signaling_url">Endereço do backend responsável pelo pareamento e negociação WebRTC.</string>
+
+    <!-- Visualização de Programas em Grade -->
+    <string name="title_open_windows">Programas Abertos (%1$d)</string>
+    <string name="desc_open_windows_grid">Selecione o ícone de um aplicativo para gerenciar sua janela.</string>
+    <string name="empty_windows_title">Nenhum programa detectado</string>
+    <string name="empty_windows_desc">Abra os aplicativos desejados no computador e toque em Atualizar.</string>
+    <string name="selected_window_title">Programa Selecionado</string>
+    <string name="selected_window_details">Processo: %1$s • PID: %2$d • Tamanho: %3$dx%4$d</string>
+    <string name="selected_window_handle">Identificador: %1$s • Estado: %2$s</string>
+    <string name="selected_window_next_step">Janela selecionada para controle. Toque no botão abaixo para iniciar a transmissão em tempo real.</string>
+    <string name="btn_bring_to_front">Trazer Janela ao Foco no Windows</string>
+
+    <!-- Ajuda e Orientação ao Usuário (Guia Rápido Oficial) -->
+    <string name="help_card_title">Como obter o PIN e conectar</string>
+    <string name="help_step_1">1. No seu computador Windows, execute o RemoteDesk Agent.</string>
+    <string name="help_step_2">2. O PIN de pareamento (6 dígitos) é exibido no console. Você também pode consultá-lo no terminal com: RemoteDesk.Agent --pin</string>
+    <string name="help_step_3">3. Insira o PIN acima e toque em "Conectar ao Computador". O pareamento será salvo para conexões futuras com 1 clique.</string>
+
+    <!-- Mensagens de Feedback e Validação -->
+    <string name="err_empty_code">Por favor, insira o PIN de pareamento exibido no Windows Agent.</string>
+    <string name="err_invalid_code_length">O código precisa ter 6 a 9 dígitos (ex: 492 813).</string>
+    <string name="err_connection_failed">Não foi possível conectar ao computador. Verifique se o Agente Windows está aberto na rede local.</string>
+    <string name="feedback_ready_title">Código %1$s Reconhecido</string>
+    <string name="feedback_ready_body">Formato de pareamento verificado com sucesso. Comunicação direta pronta para transmissão.</string>
+    <string name="app_version_footer">DoHsktoP v1.0.0 • Comunicação Direta P2P</string>
+
+    <!-- Transmissão ao Vivo e Visualização de Janelas -->
+    <string name="btn_start_live_stream">Transmitir Janela em Tempo Real</string>
+    <string name="btn_close_live_stream">Encerrar</string>
+    <string name="btn_back_to_grid">← Programas</string>
+    <string name="live_badge">● AO VIVO</string>
+    <string name="live_connecting">Iniciando transmissão contínua da janela...</string>
+    <string name="window_minimized_title">Janela Minimizada no PC</string>
+    <string name="window_minimized_desc">Esta janela está minimizada na barra de tarefas do Windows. Restaure-a para visualizar seu conteúdo em tempo real.</string>
+    <string name="btn_restore_window">Restaurar Janela no PC</string>
+    <string name="window_closed_title">Janela Encerrada</string>
+    <string name="window_closed_desc">A janela foi fechada no Windows. O stream foi encerrado com sucesso.</string>
+    <string name="desc_live_window_stream">Área de exibição remota da janela selecionada</string>
+    <string name="live_viewer_note">Visualização em tempo real na dimensão de referência 382 × 706</string>
+    <string name="btn_scale_fit">Ajustar (Fit)</string>
+    <string name="btn_scale_reading">Modo Leitura</string>
+    <string name="btn_scale_reset">1:1</string>
+
+    <!-- Controle Remoto de Mouse e Teclado -->
+    <string name="btn_mode_click">Clique</string>
+    <string name="btn_mode_right_click">Dir.</string>
+    <string name="btn_mode_drag">Arrastar</string>
+    <string name="btn_mode_scroll">Rolar</string>
+    <string name="btn_keyboard">Teclado</string>
+    <string name="btn_special_keys">Teclas</string>
+    <string name="live_viewer_note_stage6">Controle remoto ativo: toques e gestos são enviados diretamente à janela no Windows.</string>
+    <string name="keyboard_input_hint">Digite aqui para enviar texto ao Windows</string>
+
+    <!-- Autenticação Pessoal e Pareamento Persistente (Etapa 7) -->
+    <string name="label_paired_device">Dispositivo Pareado e Autorizado</string>
+    <string name="desc_paired_device">Este celular está vinculado com segurança ao computador.</string>
+    <string name="btn_unpair">Desparear</string>
+    <string name="status_reconnecting">Reconectando ao computador (tentativa %1$d de %2$d)...</string>
+    <string name="btn_cancel_reconnect">Cancelar</string>
+    <string name="err_device_revoked">A autorização deste celular foi revogada no computador. Realize o pareamento novamente com o código fixo.</string>
+    <string name="err_rate_limited">Muitas tentativas consecutivas incorretas. Aguarde 30 segundos antes de tentar novamente.</string>
+    <string name="label_fixed_code">Código Fixo do Computador</string>
+    <string name="hint_fixed_code">Código do PC (ex: 70C92B)</string>
+    <string name="btn_auto_connect">Conectar ao Computador</string>
+</resources>

@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  signaling-server:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.signaling
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - REMOTEDESK_STUN_SERVERS=stun:stun.l.google.com:19302,stun:${PUBLIC_IP_OR_DOMAIN:-localhost}:3478
+      - REMOTEDESK_TURN_SERVER=turn:${PUBLIC_IP_OR_DOMAIN:-localhost}:3478?transport=udp,turn:${PUBLIC_IP_OR_DOMAIN:-localhost}:3478?transport=tcp
+      - REMOTEDESK_TURN_SECRET=${TURN_SECRET:-remotedesk_super_secret_turn_key_2026}
+    ports:
+      - "5000:5000"
+    networks:
+      - remotedesk-net
+
+  coturn:
+    image: coturn/coturn:latest
+    restart: unless-stopped
+    volumes:
+      - ./turnserver.conf:/etc/coturn/turnserver.conf:ro
+    network_mode: "host"
+    environment:
+      - TURN_SECRET=${TURN_SECRET:-remotedesk_super_secret_turn_key_2026}
+      - REALM=${DOMAIN_NAME:-remotedesk.local}
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME:-localhost}
+      - ACME_EMAIL=${ACME_EMAIL:-admin@example.com}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - remotedesk-net
+    depends_on:
+      - signaling-server
+
+networks:
+  remotedesk-net:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:

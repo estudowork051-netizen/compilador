@@ -1,0 +1,42 @@
+# RemoteDesk Root Gitignore
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+bin/
+obj/
+build/
+.build/
+*.apk
+*.aab
+*.exe
+*.dll
+
+# Gradle
+.gradle/
+local.properties
+
+# Logs
+logs/*.log
+logs/diagnostics/
+!logs/.gitkeep
+
+# Runtime session files
+scripts/ngrok/.agent.pid
+scripts/ngrok/.ngrok.pid
+scripts/ngrok/.ngrok-url.txt
+scripts/ngrok/.signaling.pid
+windows-agent/src/RemoteDesk.Agent/.ngrok-url.txt

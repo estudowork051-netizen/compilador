@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- MONITOR RETRO-TECH NO CENTRO DA ÁREA SEGURA (72x72 CENTRAL) -->
+    <path
+        android:fillColor="#140C20"
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.5"
+        android:pathData="M24,24 h60 a 5 5 0 0 1 5 5 v38 a 5 5 0 0 1 -5 5 h-60 a 5 5 0 0 1 -5 -5 v-38 a 5 5 0 0 1 5 -5 z" />
+
+    <!-- SUPORTE -->
+    <path
+        android:fillColor="#2A1B3D"
+        android:strokeColor="#70C92B"
+        android:strokeWidth="1.2"
+        android:pathData="M45,72 h18 l2,6 h-22 z" />
+    <path
+        android:fillColor="#70C92B"
+        android:pathData="M38,78 h32 v2.5 h-32 z" />
+
+    <!-- BRILHO INTERNO -->
+    <path
+        android:fillColor="#1E3A2F"
+        android:pathData="M28,28 h52 v30 h-52 z" />
+
+    <!-- MÃO CYBER-ZOMBIE EMERGENTE -->
+    <path
+        android:fillColor="#3DF4B7"
+        android:pathData="M50,51 c-1,-2 0,-5 4,-5 c4,0 5,3 4,5 c0,2 -2,4 -4,4 c-2,0 -4,-2 -4,-4 z" />
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:pathData="M51,43 v-7" />
+    <path
+        android:strokeColor="#70C92B"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:pathData="M54,42 v-9" />
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:pathData="M57,43 v-7" />
+    <path
+        android:strokeColor="#3DF4B7"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M48,47 l-4,-3" />
+
+    <!-- LED INDICADOR -->
+    <path
+        android:fillColor="#70C92B"
+        android:pathData="M75,67 a 1.8 1.8 0 1 0 3.6 0 a 1.8 1.8 0 1 0 -3.6 0" />
+</vector>
