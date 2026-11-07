@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LifeFlow — Minha Rotina (Prévia Interativa)</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="device-wrapper" id="phone-frame">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span id="status-time">09:41</span>
+            <div class="status-bar-icons">
+                <!-- WiFi Icon -->
+                <svg viewBox="0 0 24 24"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.32c3.78 0 7.22 1.48 9.77 3.89L12 18.96 2.23 11.21C4.78 8.8 8.22 7.32 12 7.32z"/></svg>
+                <!-- Battery Icon -->
+                <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+        </div>
+
+        <div class="app-content">
+
+            <!-- ========================================================= -->
+            <!-- 1. SCREEN: ONBOARDING                                     -->
+            <!-- ========================================================= -->
+            <div id="screen-onboarding" class="screen">
+                <!-- Top Progress Bar -->
+                <div class="onboarding-top-bar">
+                    <button class="btn-icon" id="onboarding-btn-back" style="visibility: hidden;" aria-label="Voltar">
+                        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                    </button>
+                    <div class="step-progress">
+                        <div class="step-progress-dot active"></div>
+                        <div class="step-progress-dot"></div>
+                        <div class="step-progress-dot"></div>
+                        <div class="step-progress-dot"></div>
+                        <div class="step-progress-dot"></div>
+                        <div class="step-progress-dot"></div>
+                    </div>
+                    <div style="width: 44px;"></div>
+                </div>
+
+                <!-- Step 1: Boas-vindas -->
+                <div id="onboarding-step-1" class="onboarding-step-body">
+                    <div style="text-align: center;">
+                        <div class="welcome-art">
+                            <div class="welcome-art-inner">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                            </div>
+                        </div>
+                        <h1>Sua rotina, do seu jeito.</h1>
+                        <p class="subtitle" style="font-size: 15px; margin-top: 12px; padding: 0 10px;">
+                            Organize seu tempo, cuide das suas prioridades e encontre espaço para o que realmente importa.
+                        </p>
+                    </div>
+                    <div>
+                        <button class="btn-primary" id="onboarding-btn-start">
+                            <span>Começar</span>
+                            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Personalização -->
+                <div id="onboarding-step-2" class="onboarding-step-body hidden">
+                    <div>
+                        <h2>Como podemos chamar você?</h2>
+                        <p class="subtitle">
+                            Seu nome ou apelido será usado apenas para personalizar as saudações no aplicativo. O preenchimento é opcional.
+                        </p>
+                        <div style="margin-top: 32px;" class="form-group">
+                            <label class="form-label" for="onboarding-input-name">Seu nome ou apelido (opcional)</label>
+                            <input type="text" id="onboarding-input-name" class="input-field" placeholder="Ex: Carlos, Ana...">
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn-primary" id="onboarding-btn-name-next">Continuar sem informar</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Horários habituais -->
+                <div id="onboarding-step-3" class="onboarding-step-body hidden">
+                    <div>
+                        <h2>Como costuma ser seu dia?</h2>
+                        <p class="subtitle">
+                            Defina os horários aproximados em que costuma acordar e dormir. O LifeFlow aceita horários que atravessam a meia-noite.
+                        </p>
+                        <div style="margin-top: 24px;" class="form-group">
+                            <label class="form-label">Horário habitual de acordar</label>
+                            <button type="button" class="time-picker-button" id="onboarding-wake-btn">
+                                <span>08:00</span>
+                                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Horário habitual de dormir</label>
+                            <button type="button" class="time-picker-button" id="onboarding-sleep-btn">
+                                <span>00:00</span>
+                                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            </button>
+                        </div>
+
+                        <!-- Live Awake Window Indicator -->
+                        <div class="card" style="padding: 14px 16px; margin-top: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 13px; font-weight: 600;">Janela de vigília</span>
+                                <span id="onboarding-awake-duration" style="font-size: 13px; font-weight: 700; color: var(--secondary-color);">16h acordado</span>
+                            </div>
+                            <div class="awake-gauge">
+                                <div class="awake-gauge-bar"></div>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-secondary);">Calculado com segurança mesmo atravessando a meia-noite.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn-primary" id="onboarding-btn-times-next">Avançar</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Compromissos habituais -->
+                <div id="onboarding-step-4" class="onboarding-step-body hidden">
+                    <div>
+                        <h2>Você tem algum compromisso fixo?</h2>
+                        <p class="subtitle">
+                            Selecione as opções que fazem parte da sua rotina semanal. A configuração detalhada de recorrências será liberada posteriormente.
+                        </p>
+                        <div class="chips-grid">
+                            <div class="onboarding-chip" data-value="Trabalho">
+                                <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.1.89 2 2 2h16c1.1 0 2-.89 2-2V8c0-1.1-.9-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+                                <span>Trabalho</span>
+                            </div>
+                            <div class="onboarding-chip" data-value="Faculdade">
+                                <svg viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+                                <span>Faculdade</span>
+                            </div>
+                            <div class="onboarding-chip" data-value="Escola">
+                                <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+                                <span>Escola</span>
+                            </div>
+                            <div class="onboarding-chip" data-value="Treino">
+                                <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>
+                                <span>Treino</span>
+                            </div>
+                            <div class="onboarding-chip" data-value="Outro compromisso">
+                                <svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                <span>Outro compromisso</span>
+                            </div>
+                            <div class="onboarding-chip" data-value="Configurar depois">
+                                <svg viewBox="0 0 24 24"><path d="M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6zm10 14.5V20H8v-3.5l4-4 4 4z"/></svg>
+                                <span>Configurar depois</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn-primary" id="onboarding-btn-commitments-next">Avançar</button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Preferência de organização -->
+                <div id="onboarding-step-5" class="onboarding-step-body hidden">
+                    <div>
+                        <h2>Como prefere organizar sua rotina?</h2>
+                        <p class="subtitle">
+                            Você poderá alterar essa preferência a qualquer momento nas configurações.
+                        </p>
+                        <div style="margin-top: 24px;">
+                            <div class="org-mode-card selected" data-mode="MANUAL">
+                                <div class="org-mode-card-header">
+                                    <div class="org-mode-card-header-left">
+                                        <svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
+                                        <h3>Manual</h3>
+                                    </div>
+                                </div>
+                                <p class="subtitle">Você decide seus horários e atividades. Nós ajudamos com os cálculos e sugestões.</p>
+                            </div>
+
+                            <div class="org-mode-card" data-mode="AUTOMATIC">
+                                <div class="org-mode-card-header">
+                                    <div class="org-mode-card-header-left">
+                                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                                        <h3>Automático</h3>
+                                    </div>
+                                    <span class="badge">Próximas etapas</span>
+                                </div>
+                                <p class="subtitle">Receba sugestões de organização para seu dia e ajuste tudo como preferir.</p>
+                            </div>
+
+                            <div class="banner-info">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                                <div class="banner-info-content">
+                                    <h4>Nota sobre a automação</h4>
+                                    <p>A distribuição automática completa e o aprendizado com hábitos serão desenvolvidos nas etapas 4 e 5.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn-primary" id="onboarding-btn-org-next">Avançar</button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Finalização -->
+                <div id="onboarding-step-6" class="onboarding-step-body hidden">
+                    <div style="text-align: center;">
+                        <div class="welcome-art" style="margin: 20px auto 20px auto;">
+                            <div class="welcome-art-inner">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            </div>
+                        </div>
+                        <h1>Tudo pronto para começar!</h1>
+                        <p class="subtitle" style="font-size: 15px; margin-top: 10px;">
+                            Seu espaço de organização está preparado. Vamos construir uma rotina que funciona para você.
+                        </p>
+
+                        <div class="summary-box">
+                            <div class="summary-row" id="summary-row-name">
+                                <span class="label">Nome:</span>
+                                <span class="val" id="summary-val-name">-</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Horário acordado:</span>
+                                <span class="val" id="summary-val-times">08:00 às 00:00 (16h)</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Modo escolhido:</span>
+                                <span class="val" id="summary-val-mode">Manual</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Compromissos:</span>
+                                <span class="val" id="summary-val-commitments">Nenhum</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn-primary" id="onboarding-btn-finish">Entrar no aplicativo</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- 2. SCREEN: MAIN APP CONTAINER                             -->
+            <!-- ========================================================= -->
+            <div id="screen-main" class="screen hidden">
+
+                <!-- 2.1 TAB: HOME -->
+                <div id="tab-content-home" class="scroll-content">
+                    <!-- 1. Saudação personalizada -->
+                    <div style="padding: 12px 0 12px 0;">
+                        <h1 id="home-header-greeting">Bom dia! ☀️</h1>
+                        <p class="subtitle" id="home-header-date">Seu dia está tomando forma.</p>
+                    </div>
+
+                    <!-- 2. Seletor de ambiente (Manhã / Tarde / Noite) (B4) -->
+                    <div class="env-selector-row">
+                        <div class="env-chip active" data-env="morning">☀️ Manhã</div>
+                        <div class="env-chip" data-env="afternoon">🌿 Tarde</div>
+                        <div class="env-chip" data-env="night">🌙 Noite</div>
+                    </div>
+
+                    <!-- Active Focus Session Banner (Etapa 6) -->
+                    <div id="home-focus-card" class="card hidden" style="border: 1.5px solid var(--primary-color); background: rgba(117, 147, 123, 0.1); padding: 18px; border-radius: 20px; margin-bottom: 14px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;">⏱️</span>
+                                <span style="font-weight: 700; font-size: 14px; color: var(--primary-color);">Meu Momento de Foco</span>
+                            </div>
+                            <span class="badge" id="focus-banner-status" style="background-color: rgba(16, 185, 129, 0.2); color: #047857; font-weight: 700;">Em foco</span>
+                        </div>
+                        <div style="font-size: 16px; font-weight: 700; color: var(--text-primary);" id="focus-banner-title">Atividade em Foco</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin: 10px 0 4px 0;">
+                            <div style="font-size: 32px; font-weight: 800; color: var(--primary-color); font-family: monospace;" id="focus-banner-timer">25:00</div>
+                            <span style="font-size: 12px; color: var(--text-secondary);">restantes</span>
+                        </div>
+                        <div style="background-color: var(--surface-variant); height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 14px;">
+                            <div id="focus-banner-progress" style="background-color: var(--primary-color); height: 100%; width: 0%;"></div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-outlined" id="focus-banner-btn-pause" style="flex: 1; padding: 8px; font-size: 12px;">Pausar</button>
+                            <button class="btn-outlined" id="focus-banner-btn-extend" style="flex: 1; padding: 8px; font-size: 12px;">+15 min</button>
+                            <button class="btn-primary" id="focus-banner-btn-done" style="flex: 1; padding: 8px; font-size: 12px; background-color: #10B981; border: none;">Concluir</button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Nature Hero Card principal (Identidade de Natureza) (B4.2) -->
+                    <div class="nature-routine-card nature-gradient-morning" id="home-nature-routine-card" style="border-radius: 22px; padding: 18px; margin-bottom: 16px; border: 1px solid var(--outline-color);">
+                        <!-- Top Row: Atmosfera & Relógio ao vivo -->
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 18px;" id="home-nature-period-icon">☀️</span>
+                                <span style="font-weight: 700; font-size: 13px;" id="home-nature-atmosphere">Manhã</span>
+                            </div>
+                            <div style="background-color: var(--surface-color); padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 6px; border: 1px solid var(--outline-color);">
+                                <span style="color: var(--primary-color);">🕒</span>
+                                <span id="home-nature-clock">09:00</span>
+                            </div>
+                        </div>
+
+                        <!-- Main Status Box -->
+                        <div class="nature-status-box" style="margin: 14px 0;">
+                            <div style="font-size: 11px; font-weight: 700; color: var(--primary-color); display: flex; align-items: center; gap: 4px;" id="home-nature-status-badge">
+                                <span>🌿</span>
+                                <span id="home-nature-status-kicker">PRÓXIMA ATIVIDADE</span>
+                            </div>
+                            <div style="font-size: 17px; font-weight: 800; margin-top: 4px; color: var(--text-primary);" id="home-nature-status-title">
+                                Nenhuma atividade agora
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;" id="home-nature-status-sub">
+                                Seu dia está livre. Toque em 'Organizar meu dia' para começar.
+                            </div>
+                        </div>
+
+                        <!-- Bottom Row: Pílulas de Tempo & Botão Respirar (B4.3) -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                            <div style="display: flex; gap: 8px;">
+                                <div class="nature-pill">
+                                    <span style="font-size: 14px;">🍃</span>
+                                    <div>
+                                        <div class="nature-pill-lbl">Tempo livre</div>
+                                        <div class="nature-pill-val" id="home-nature-free-text">8h 00m</div>
+                                    </div>
+                                </div>
+                                <div class="nature-pill">
+                                    <span style="font-size: 14px;">⏱️</span>
+                                    <div>
+                                        <div class="nature-pill-lbl">Planejado</div>
+                                        <div class="nature-pill-val" id="home-nature-planned-text">0 min</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="home-btn-breathe" class="btn-outlined" style="border-radius: 16px; padding: 6px 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 4px; background: rgba(255, 255, 255, 0.4);">
+                                <span>🍃</span>
+                                <span>Respirar</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4. Mood Bar (B5) -->
+                    <div class="mood-bar-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">Como você está agora?</span>
+                            <span style="font-size: 11px; color: var(--text-secondary);">Seu momento</span>
+                        </div>
+                        <div class="mood-options-row">
+                            <div class="mood-chip" data-mood="calm">
+                                <span style="font-size: 20px;">🍃</span>
+                                <span>Calmo</span>
+                            </div>
+                            <div class="mood-chip" data-mood="focused">
+                                <span style="font-size: 20px;">⚡</span>
+                                <span>Focado</span>
+                            </div>
+                            <div class="mood-chip" data-mood="tired">
+                                <span style="font-size: 20px;">☕</span>
+                                <span>Cansado</span>
+                            </div>
+                            <div class="mood-chip" data-mood="inspired">
+                                <span style="font-size: 20px;">✨</span>
+                                <span>Inspirado</span>
+                            </div>
+                        </div>
+                        <div id="mood-feedback" class="mood-feedback-banner hidden">
+                            <span id="mood-feedback-icon">🍃</span>
+                            <span id="mood-feedback-text">Que serenidade boa. Mantenha essa paz no seu ritmo.</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. Seção "Planejados de hoje" (SOMENTE atividades agendadas para o dia atual) -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 18px 0 10px 0;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h3 style="font-size: 16px; font-weight: 700;">Planejados de hoje</h3>
+                            <span class="badge" id="home-today-count-badge" style="background-color: var(--primary-container); color: var(--primary-color); font-weight: 700;">0</span>
+                        </div>
+                        <span class="badge" data-nav="planning" style="cursor: pointer; color: var(--primary-color); font-weight: 700;">Ver agenda</span>
+                    </div>
+
+                    <div id="home-scheduled-container" class="timeline-list"></div>
+
+                    <div id="home-scheduled-empty" class="card" style="padding: 20px; text-align: center; border-radius: 18px; margin-bottom: 14px;">
+                        <div style="font-size: 24px; margin-bottom: 6px;">🌱</div>
+                        <h4 style="font-size: 15px; font-weight: 700; color: var(--text-primary);">Nenhuma atividade planejada para hoje</h4>
+                        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Seu tempo está livre. Toque no botão abaixo para definir sua rotina.</p>
+                    </div>
+
+                    <!-- Sugestão inteligente (LifeFlow Context) -->
+                    <div id="home-recommendation-card" class="card recommendation-card hidden" style="margin-top: 14px; border: 1.5px solid var(--primary-color);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span class="badge" id="rec-badge" style="background-color: var(--primary-container); color: var(--primary-color); font-weight: 700;">✨ Uma ideia para agora</span>
+                            <button class="btn-icon" id="rec-btn-dismiss" aria-label="Dispensar ideia" style="width: 24px; height: 24px;">
+                                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                            </button>
+                        </div>
+                        <h4 id="rec-title" style="font-size: 15px; font-weight: 700;">Ler um livro</h4>
+                        <p id="rec-subtitle" style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Você tem 45 min livres antes do almoço.</p>
+                        <div class="card" id="rec-reason-box" style="padding: 6px 10px; margin: 8px 0 12px 0; background-color: var(--surface-variant); font-size: 12px; color: var(--text-secondary);">
+                            💡 Sugestão baseada na sua disponibilidade
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-primary" id="rec-btn-accept" style="flex: 1; padding: 10px 14px; font-size: 13px;">Adicionar ao dia</button>
+                            <button class="btn-outlined" id="rec-btn-later" style="padding: 10px 14px; font-size: 13px;">Dispensar</button>
+                        </div>
+                    </div>
+
+                    <!-- 6. Tracker de Hidratação Rápido (B8) -->
+                    <div class="hydration-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 20px;">💧</span>
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">Hidratação diária</div>
+                                    <div style="font-size: 11px; color: var(--text-secondary);" id="hydration-status-text">750 / 2.000 ml</div>
+                                </div>
+                            </div>
+                            <button id="btn-add-water" class="btn-outlined" style="border-radius: 14px; padding: 6px 12px; font-size: 12px; font-weight: 700; border-color: var(--primary-color); color: var(--primary-color);">
+                                +250 ml
+                            </button>
+                        </div>
+                        <div class="hydration-wave-container">
+                            <div class="hydration-wave-fill" id="hydration-wave-fill" style="width: 37.5%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Botão principal com shimmer "Organizar meu dia com IA" (B9) -->
+                    <button class="btn-primary btn-shimmer" id="home-btn-organize-day" style="width: 100%; height: 54px; font-size: 15px; font-weight: 700; border-radius: 18px; display: flex; align-items: center; justify-content: center; gap: 10px; margin: 20px 0 16px 0;">
+                        <span>✨</span>
+                        <span>Organizar meu dia com IA</span>
+                    </button>
+                </div>
+
+                <!-- 2.2 TAB: ATIVIDADES (GERENCIAMENTO) -->
+                <div id="tab-content-activities" class="scroll-content hidden">
+                    <div style="padding: 12px 0 16px 0; display: flex; align-items: center; gap: 10px;">
+                        <button class="btn-icon" id="activities-btn-back" aria-label="Voltar ao planejamento" style="width: 36px; height: 36px;">
+                            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                        </button>
+                        <div>
+                            <h1>Minhas Atividades</h1>
+                            <p class="subtitle">Gerencie, pesquise e organize suas atividades.</p>
+                        </div>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="form-group" style="margin-bottom: 12px;">
+                        <input type="text" id="activities-search-input" class="input-field" placeholder="Pesquisar por nome, categoria...">
+                    </div>
+
+                    <!-- Type Filter Chips -->
+                    <div class="filter-chips-row" style="margin-bottom: 8px;">
+                        <div class="filter-chip type-filter-chip selected" data-type="ALL">Todos os tipos</div>
+                        <div class="filter-chip type-filter-chip" data-type="FLEXIBLE">Flexível</div>
+                        <div class="filter-chip type-filter-chip" data-type="FIXED">Fixo</div>
+                        <div class="filter-chip type-filter-chip" data-type="HABIT">Meta semanal</div>
+                    </div>
+
+                    <!-- Category Filter Chips -->
+                    <div class="filter-chips-row" style="margin-bottom: 16px;">
+                        <div class="filter-chip cat-filter-chip selected" data-cat="ALL">Todas as categorias</div>
+                        <div class="filter-chip cat-filter-chip" data-cat="Casa">Casa</div>
+                        <div class="filter-chip cat-filter-chip" data-cat="Estudos">Estudos</div>
+                        <div class="filter-chip cat-filter-chip" data-cat="Saúde">Saúde</div>
+                        <div class="filter-chip cat-filter-chip" data-cat="Trabalho">Trabalho</div>
+                        <div class="filter-chip cat-filter-chip" data-cat="Lazer">Lazer</div>
+                        <div class="filter-chip cat-filter-chip" data-cat="Pessoal">Pessoal</div>
+                    </div>
+
+                    <!-- Activities List Container -->
+                    <div id="activities-list-container"></div>
+
+                    <!-- Activities Empty State -->
+                    <div id="activities-empty-state" class="empty-state">
+                        <div class="empty-state-icon-outer">
+                            <div class="empty-state-icon-inner">
+                                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                            </div>
+                        </div>
+                        <h3>Nenhuma atividade encontrada</h3>
+                        <p>Crie novas atividades ou altere os filtros para visualizar sua lista.</p>
+                        <button class="btn-primary" style="width: auto; padding: 0 24px;" id="activities-empty-btn">Criar atividade</button>
+                    </div>
+
+                    <button class="fab" id="activities-fab" aria-label="Nova atividade">
+                        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    </button>
+                </div>
+
+                <!-- 2.3 TAB: PLANEJAR -->
+                <div id="tab-content-planning" class="scroll-content hidden">
+                    <div style="padding: 12px 0 16px 0; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h1>Planejamento</h1>
+                            <p class="subtitle">Organize sua rotina e tempo disponível.</p>
+                        </div>
+                        <button type="button" class="btn-outlined" id="plan-btn-my-activities" style="padding: 6px 12px; font-size: 13px; font-weight: 600; border-radius: 12px; border-color: var(--primary-color); color: var(--primary-color);">
+                            Minhas atividades
+                        </button>
+                    </div>
+
+                    <!-- Weekly Navigator Bar -->
+                    <div class="week-nav-container" id="planning-week-bar">
+                        <div class="week-nav-header">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <button class="btn-icon" id="week-nav-prev" aria-label="Semana anterior" style="width: 32px; height: 32px;">
+                                    <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                                </button>
+                                <span class="week-nav-title" id="week-nav-month-year">Novembro 2026</span>
+                                <button class="btn-icon" id="week-nav-next" aria-label="Próxima semana" style="width: 32px; height: 32px;">
+                                    <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                                </button>
+                            </div>
+                            <button class="btn-outlined" id="week-nav-today-btn" style="padding: 4px 10px; font-size: 12px;">Hoje</button>
+                        </div>
+                        <div class="week-days-row" id="week-days-container"></div>
+                    </div>
+
+                    <!-- Dynamic Availability Summary Card -->
+                    <div class="card" id="planning-availability-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 id="plan-avail-title" style="font-size: 16px; font-weight: 700;">Seu dia está quase organizado!</h3>
+                            <span id="plan-avail-range" style="font-size: 12px; color: var(--text-secondary);">08:00 → 00:00</span>
+                        </div>
+
+                        <!-- Multi-color distribution bar -->
+                        <div class="time-distribution-bar">
+                            <div class="seg-fixed" id="plan-bar-fixed" style="width: 25%;"></div>
+                            <div class="seg-planned" id="plan-bar-planned" style="width: 35%;"></div>
+                            <div class="seg-free" id="plan-bar-free" style="width: 40%;"></div>
+                        </div>
+
+                        <!-- Stats Row -->
+                        <div class="stats-grid-row">
+                            <div class="stat-item-box">
+                                <div class="stat-item-label">
+                                    <div class="stat-dot" style="background-color: #6366F1;"></div>
+                                    <span>Disponível</span>
+                                </div>
+                                <span class="stat-item-val" id="plan-stat-available">10h</span>
+                            </div>
+                            <div class="stat-item-box">
+                                <div class="stat-item-label">
+                                    <div class="stat-dot" style="background-color: #10B981;"></div>
+                                    <span>Planejado</span>
+                                </div>
+                                <span class="stat-item-val" id="plan-stat-planned">4h 30min</span>
+                            </div>
+                            <div class="stat-item-box">
+                                <div class="stat-item-label">
+                                    <div class="stat-dot" style="background-color: #94A3B8;"></div>
+                                    <span>Livre restante</span>
+                                </div>
+                                <span class="stat-item-val" id="plan-stat-free">5h 30min</span>
+                            </div>
+                        </div>
+
+                        <div id="plan-avail-warning" class="warning-banner hidden">
+                            <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                            <span id="plan-avail-warning-text">Seu planejamento ultrapassou o tempo disponível.</span>
+                        </div>
+                    </div>
+
+                    <!-- Ações de Organização Automática (Etapa 4) -->
+                    <div style="display: flex; gap: 10px; margin-top: 14px;">
+                        <button class="btn-primary" id="btn-suggest-routine" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; font-weight: 700;">
+                            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: white;"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
+                            <span>Sugerir Rotina</span>
+                        </button>
+                        <button class="btn-outlined" id="btn-reorganize-day" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px; border-color: var(--primary-color); color: var(--primary-color); font-weight: 700;">
+                            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: var(--primary-color);"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                            <span>Reorganizar dia</span>
+                        </button>
+                    </div>
+
+                    <!-- Timeline Title -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 24px 0 12px 0;">
+                        <h3 style="font-size: 17px;">Agenda do dia</h3>
+                        <span id="plan-current-day-label" style="font-size: 13px; color: var(--text-secondary);">Hoje</span>
+                    </div>
+
+                    <!-- Daily Agenda Timeline -->
+                    <div id="planning-timeline-container" class="timeline-list"></div>
+
+                    <!-- Timeline Empty State -->
+                    <div id="planning-timeline-empty" class="empty-state hidden">
+                        <div class="empty-state-icon-outer">
+                            <div class="empty-state-icon-inner">
+                                <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+                            </div>
+                        </div>
+                        <h3>Nenhuma atividade agendada</h3>
+                        <p>Seu dia ainda está completamente livre. Escolha uma tarefa cadastrada e defina um horário.</p>
+                        <button class="btn-primary" style="width: auto; padding: 0 24px;" id="planning-empty-btn">Agendar primeira atividade</button>
+                    </div>
+
+                    <button class="fab" id="planning-btn-add" aria-label="Agendar atividade">
+                        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    </button>
+                </div>
+
+                <!-- 2.4 TAB: HÁBITOS (Etapa 5 / Seção 12) -->
+                <div id="tab-content-habits" class="scroll-content hidden">
+                    <div style="padding: 12px 0 16px 0;">
+                        <h1>Sua rotina está evoluindo</h1>
+                        <p class="subtitle">Padrões identificados com base na sua rotina real.</p>
+                    </div>
+
+                    <!-- Demo Scenario Controls for testing (Section 17) -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+                        <button class="btn-outlined" id="habits-btn-load-demo" style="flex: 1; padding: 8px 10px; font-size: 12px;">
+                            ⚡ Carregar dados de demonstração (Teste)
+                        </button>
+                        <button class="btn-outlined" id="habits-btn-clear-demo" style="padding: 8px 10px; font-size: 12px; color: var(--error-color, #ef4444);">
+                            Limpar
+                        </button>
+                    </div>
+
+                    <!-- Painel de Equilíbrio do Dia (Etapa 6 / Seção 8) -->
+                    <div id="habits-day-balance-card" class="card" style="border-radius: 20px; padding: 18px; margin-bottom: 16px; border: 1px solid var(--outline-color);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h3 style="font-size: 16px; font-weight: 700; margin: 0;">Painel de Equilíbrio</h3>
+                            <span class="badge" style="background-color: var(--secondary-container); color: var(--on-secondary-container); font-weight: 700;">Hoje</span>
+                        </div>
+
+                        <!-- 5 Category Columns -->
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 14px; text-align: center;">
+                            <div>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background: #3B82F6; margin: 0 auto 4px auto;"></div>
+                                <div style="font-size: 13px; font-weight: 700;" id="balance-col-studies">0m</div>
+                                <div style="font-size: 10px; color: var(--text-secondary);">Estudos</div>
+                            </div>
+                            <div>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background: #6366F1; margin: 0 auto 4px auto;"></div>
+                                <div style="font-size: 13px; font-weight: 700;" id="balance-col-work">0m</div>
+                                <div style="font-size: 10px; color: var(--text-secondary);">Trabalho</div>
+                            </div>
+                            <div>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; margin: 0 auto 4px auto;"></div>
+                                <div style="font-size: 13px; font-weight: 700;" id="balance-col-leisure">0m</div>
+                                <div style="font-size: 10px; color: var(--text-secondary);">Lazer</div>
+                            </div>
+                            <div>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background: #F59E0B; margin: 0 auto 4px auto;"></div>
+                                <div style="font-size: 13px; font-weight: 700;" id="balance-col-home">0m</div>
+                                <div style="font-size: 10px; color: var(--text-secondary);">Casa</div>
+                            </div>
+                            <div>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background: #8B5CF6; margin: 0 auto 4px auto;"></div>
+                                <div style="font-size: 13px; font-weight: 700;" id="balance-col-rest">0m</div>
+                                <div style="font-size: 10px; color: var(--text-secondary);">Descanso</div>
+                            </div>
+                        </div>
+
+                        <!-- Focus time highlight -->
+                        <div style="background-color: var(--surface-variant); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-size: 11px; color: var(--text-secondary);">Tempo em Foco Suave</div>
+                                <div style="font-size: 14px; font-weight: 700; color: var(--primary-color);" id="balance-total-focus">0 minutos</div>
+                            </div>
+                            <span style="font-size: 20px;">⏱️</span>
+                        </div>
+
+                        <!-- Wellbeing Recommendation -->
+                        <div id="balance-wellbeing-box" style="margin-top: 10px; background: rgba(16, 185, 129, 0.1); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 18px;" id="balance-wellbeing-icon">🌿</span>
+                            <span style="font-size: 12px; color: var(--text-primary);" id="balance-wellbeing-text">Suas atividades estão bem distribuídas. Mantenha um ritmo tranquilo.</span>
+                        </div>
+                    </div>
+
+                    <!-- Empty State (when insufficient data) -->
+                    <div id="habits-empty-state" class="empty-state">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <h4>Construindo seus padrões</h4>
+                        <p>Conforme você registra suas atividades, o LifeFlow começa a identificar padrões para ajudar na sua organização.</p>
+                    </div>
+
+                    <!-- Dashboard (when data is available) -->
+                    <div id="habits-dashboard-content" class="hidden">
+                        <!-- Consistency Card -->
+                        <div class="card" style="margin-bottom: 14px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <h3 style="font-size: 15px; font-weight: 700;">Consistência de Execução</h3>
+                                <span class="badge" id="habits-consistency-rate" style="background-color: rgba(99, 102, 241, 0.15); color: var(--primary-color); font-weight: 700;">0% de conclusão</span>
+                            </div>
+                            <div style="background-color: var(--surface-variant); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
+                                <div id="habits-consistency-bar" style="background-color: var(--primary-color); height: 100%; width: 0%;"></div>
+                            </div>
+                            <p id="habits-consistency-text" style="font-size: 12px; color: var(--text-secondary);">0 tarefas concluídas recentemente.</p>
+                        </div>
+
+                        <!-- Best Observed Time Slots -->
+                        <h3 style="margin: 16px 0 10px 0;">Melhores horários observados</h3>
+                        <div id="habits-best-times-list"></div>
+
+                        <!-- Learned Durations -->
+                        <h3 style="margin: 16px 0 10px 0;">Durações reais aprendidas</h3>
+                        <div id="habits-duration-insights-list"></div>
+
+                        <!-- Frequently Postponed Tasks -->
+                        <h3 style="margin: 16px 0 10px 0;">Ajustes de rotina sugeridos</h3>
+                        <div id="habits-postponed-list"></div>
+
+                        <!-- Category Distribution -->
+                        <h3 style="margin: 16px 0 10px 0;">Tempo dedicado por categoria</h3>
+                        <div class="card" id="habits-category-distribution-box" style="margin-bottom: 24px;"></div>
+                    </div>
+                </div>
+
+                <!-- 2.5 TAB: PERFIL E CONFIGURAÇÕES -->
+                <div id="tab-content-settings" class="scroll-content hidden">
+                    <div style="padding: 12px 0 16px 0;">
+                        <h1>Perfil e Configurações</h1>
+                        <p class="subtitle">Preferências salvas localmente no dispositivo.</p>
+                    </div>
+
+                    <!-- Dados Pessoais -->
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--primary-color);"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <h3>Dados pessoais</h3>
+                    </div>
+                    <div class="card">
+                        <div class="form-group">
+                            <label class="form-label" for="settings-input-name">Nome ou apelido</label>
+                            <input type="text" id="settings-input-name" class="input-field" placeholder="Como deseja ser chamado?">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Horário de acordar</label>
+                            <button type="button" class="time-picker-button" id="settings-wake-btn">
+                                <span>08:00</span>
+                                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            </button>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Horário de dormir</label>
+                            <button type="button" class="time-picker-button" id="settings-sleep-btn">
+                                <span>00:00</span>
+                                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Aparência -->
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 20px;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--primary-color);"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        <h3>Aparência</h3>
+                    </div>
+                    <div class="card">
+                        <label class="radio-option">
+                            <input type="radio" name="theme-option" value="SYSTEM" checked>
+                            <div class="radio-option-info">
+                                <h4>Seguir configuração do dispositivo</h4>
+                                <p>Adapta-se automaticamente ao sistema</p>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="theme-option" value="LIGHT">
+                            <div class="radio-option-info">
+                                <h4>Tema Claro</h4>
+                                <p>Fundo claro e alto contraste</p>
+                            </div>
+                        </label>
+                        <label class="radio-option" style="margin-bottom: 0;">
+                            <input type="radio" name="theme-option" value="DARK">
+                            <div class="radio-option-info">
+                                <h4>Tema Escuro</h4>
+                                <p>Fundo escuro, ideal para a noite</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Preferência de organização -->
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 20px;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--primary-color);"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
+                        <h3>Preferência de organização</h3>
+                    </div>
+                    <div class="card">
+                        <label class="radio-option">
+                            <input type="radio" name="org-option" value="MANUAL" checked>
+                            <div class="radio-option-info">
+                                <h4>Modo Manual</h4>
+                                <p>Você decide horários e atividades com sugestões</p>
+                            </div>
+                        </label>
+                        <label class="radio-option" style="margin-bottom: 0;">
+                            <input type="radio" name="org-option" value="AUTOMATIC">
+                            <div class="radio-option-info">
+                                <h4>Modo Automático</h4>
+                                <p>Propostas automáticas para sua rotina (Etapa 4)</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Equilíbrio e Lazer (Etapa 4) -->
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 20px;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--primary-color);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z"/></svg>
+                        <h3>Equilíbrio e lazer</h3>
+                    </div>
+                    <div class="card">
+                        <label class="radio-option">
+                            <input type="radio" name="balance-option" value="BALANCED" checked>
+                            <div class="radio-option-info">
+                                <h4>Equilibrado (Recomendado)</h4>
+                                <p>Alterna harmoniosamente entre foco, responsabilidades e lazer</p>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="balance-option" value="STUDY_FOCUS">
+                            <div class="radio-option-info">
+                                <h4>Foco em Estudos e Trabalho</h4>
+                                <p>Prioriza atividades produtivas e aprendizado</p>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="balance-option" value="REST_FOCUS">
+                            <div class="radio-option-info">
+                                <h4>Foco em Descanso e Lazer</h4>
+                                <p>Prioriza relaxamento, séries, leituras e bem-estar</p>
+                            </div>
+                        </label>
+                        <label class="radio-option" style="margin-bottom: 0;">
+                            <input type="radio" name="balance-option" value="NO_PREFERENCE">
+                            <div class="radio-option-info">
+                                <h4>Sem preferência</h4>
+                                <p>Distribui atividades conforme disponibilidade livre</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Inteligência e personalização (Etapa 5 / Seção 14) -->
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 20px;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--primary-color);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        <h3>Inteligência e personalização</h3>
+                    </div>
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <div>
+                                <h4 style="font-size: 14px; font-weight: 600;">Recomendações personalizadas</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Sugestões proativas adaptadas aos seus hábitos</p>
+                            </div>
+                            <input type="checkbox" id="setting-toggle-recommendations" checked style="width: 20px; height: 20px; accent-color: var(--primary-color);">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <div>
+                                <h4 style="font-size: 14px; font-weight: 600;">Aprender com o histórico</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Identifica durações habituais e melhores horários</p>
+                            </div>
+                            <input type="checkbox" id="setting-toggle-learning" checked style="width: 20px; height: 20px; accent-color: var(--primary-color);">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <div>
+                                <h4 style="font-size: 14px; font-weight: 600;">Exibir justificativas</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Mostra as evidências reais de cada sugestão</p>
+                            </div>
+                            <input type="checkbox" id="setting-toggle-explanations" checked style="width: 20px; height: 20px; accent-color: var(--primary-color);">
+                        </div>
+
+                        <button class="btn-outlined" id="settings-btn-restore-durations" style="width: 100%; margin-bottom: 8px; padding: 10px 14px; font-size: 13px;">
+                            Restaurar durações sugeridas padrão
+                        </button>
+                        <button class="btn-outlined" id="settings-btn-clear-learning" style="width: 100%; padding: 10px 14px; font-size: 13px; color: var(--error-color, #ef4444); border-color: rgba(239, 68, 68, 0.4);">
+                            Limpar dados de aprendizado
+                        </button>
+                    </div>
+
+                    <!-- Lembretes e Tranquilidade (Etapa 6) -->
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 20px;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--primary-color);"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
+                        <h3>Lembretes e tranquilidade</h3>
+                    </div>
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <div>
+                                <h4 style="font-size: 14px; font-weight: 600;">Lembretes do LifeFlow</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Avisos suaves e acompanhamento da sua rotina</p>
+                            </div>
+                            <input type="checkbox" id="setting-toggle-reminders" checked style="width: 20px; height: 20px; accent-color: var(--primary-color);">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <div>
+                                <h4 style="font-size: 14px; font-weight: 600;">Avisar antes do início</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Notificar 15 min antes da atividade começar</p>
+                            </div>
+                            <input type="checkbox" id="setting-toggle-notify-before" checked style="width: 20px; height: 20px; accent-color: var(--primary-color);">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <div>
+                                <h4 style="font-size: 14px; font-weight: 600;">Perguntar sobre conclusão</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Confirmar se terminou ou precisa de mais tempo</p>
+                            </div>
+                            <input type="checkbox" id="setting-toggle-completion-prompt" checked style="width: 20px; height: 20px; accent-color: var(--primary-color);">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <div>
+                                <h4 style="font-size: 14px; font-weight: 600;">Horário de silêncio</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Silenciar alertas entre 22:00 e 07:00</p>
+                            </div>
+                            <input type="checkbox" id="setting-toggle-quiet-hours" checked style="width: 20px; height: 20px; accent-color: var(--primary-color);">
+                        </div>
+                    </div>
+
+                    <!-- Uso do Celular e Foco (Etapa 6 - Opcional) -->
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 20px;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--primary-color);"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+                        <h3>Uso do celular e foco (Opcional)</h3>
+                    </div>
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <div>
+                                <h4 style="font-size: 14px; font-weight: 600;">Acompanhamento consciente de tela</h4>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Ajuda a identificar equilíbrio de tempo no aparelho</p>
+                            </div>
+                            <input type="checkbox" id="setting-toggle-usage-consent" style="width: 20px; height: 20px; accent-color: var(--primary-color);">
+                        </div>
+                        <div style="background-color: var(--surface-variant); padding: 10px 12px; border-radius: 12px;">
+                            <span style="font-size: 11px; font-weight: 700; color: var(--text-primary);">Privacidade total</span>
+                            <p style="font-size: 11px; color: var(--text-secondary); margin: 2px 0 0 0; line-height: 15px;">
+                                No Android nativo, usa a API UsageStatsManager com permissão explícita. Nenhum dado sai do seu aparelho.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Sobre o Aplicativo -->
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 20px;">
+                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--primary-color);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <h3>Sobre o aplicativo</h3>
+                    </div>
+                    <div class="card">
+                        <h4 style="font-size: 15px; font-weight: 700;">LifeFlow — Minha Rotina</h4>
+                        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Versão: 1.0.0 (Etapa 5/7)</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 10px; line-height: 18px;">
+                            Processamento Local e Offline: Todas as análises de hábitos, durações e preferências são realizadas no próprio dispositivo, sem envio para servidores externos.
+                        </p>
+                    </div>
+
+                    <button class="btn-outlined" style="margin-top: 10px;" id="settings-btn-reset">
+                        Reiniciar Onboarding / Limpar Dados
+                    </button>
+                </div>
+
+                <!-- Bottom Navigation Bar (4 Tabs) -->
+                <div class="bottom-nav-bar">
+                    <button class="bottom-nav-item active" data-tab="home">
+                        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        <span>Hoje</span>
+                    </button>
+                    <button class="bottom-nav-item" data-tab="planning">
+                        <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+                        <span>Planejar</span>
+                    </button>
+                    <button class="bottom-nav-item" data-tab="habits">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        <span>Hábitos</span>
+                    </button>
+                    <button class="bottom-nav-item" data-tab="settings">
+                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <span>Perfil</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL BOTTOM SHEET: ADICIONAR / EDITAR ATIVIDADE          -->
+    <!-- ========================================================= -->
+    <div id="add-activity-sheet" class="bottom-sheet-overlay hidden">
+        <div class="bottom-sheet-content">
+            <div class="bottom-sheet-header">
+                <h3 id="sheet-title" style="font-size: 18px; font-weight: 700;">Nova Atividade</h3>
+                <button class="btn-icon" id="sheet-btn-close" aria-label="Fechar" style="width: 36px; height: 36px;">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+
+            <!-- Type Selector -->
+            <label class="form-label">Tipo de atividade</label>
+            <div class="filter-chips-row" style="margin-bottom: 16px;">
+                <div class="filter-chip sheet-type-chip selected" data-type="FLEXIBLE">Atividade flexível</div>
+                <div class="filter-chip sheet-type-chip" data-type="FIXED">Compromisso fixo</div>
+                <div class="filter-chip sheet-type-chip" data-type="HABIT">Meta semanal</div>
+            </div>
+
+            <!-- Name Input -->
+            <div class="form-group">
+                <label class="form-label" for="sheet-input-title">Nome da atividade</label>
+                <input type="text" id="sheet-input-title" class="input-field" placeholder="Ex: Lavar louça, Estudar Kotlin...">
+            </div>
+
+            <!-- Suggestions container -->
+            <div id="sheet-suggestions-container" class="chips-grid" style="margin-top: 0; margin-bottom: 12px;"></div>
+
+            <!-- LifeFlow Context Detection Chip (Etapa 4) -->
+            <div id="sheet-context-pill" class="card hidden" style="background-color: rgba(99, 102, 241, 0.1); border: 1px solid var(--primary-color); padding: 10px 14px; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 18px;">✨</span>
+                    <div>
+                        <strong id="sheet-context-pill-title" style="font-size: 13px; color: var(--primary-color);">Detectamos: Breaking Bad (Episódio 35)</strong>
+                        <p style="font-size: 11px; color: var(--text-secondary); margin: 0;">Acompanhamento inteligente de continuidade ativo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Selector -->
+            <label class="form-label">Categoria</label>
+            <div class="filter-chips-row" style="margin-bottom: 16px;">
+                <div class="filter-chip sheet-category-chip selected" data-category="Casa">Casa</div>
+                <div class="filter-chip sheet-category-chip" data-category="Estudos">Estudos</div>
+                <div class="filter-chip sheet-category-chip" data-category="Saúde">Saúde</div>
+                <div class="filter-chip sheet-category-chip" data-category="Trabalho">Trabalho</div>
+                <div class="filter-chip sheet-category-chip" data-category="Lazer">Lazer</div>
+                <div class="filter-chip sheet-category-chip" data-category="Pessoal">Pessoal</div>
+            </div>
+
+            <!-- SECTION: FLEXIBLE SPECIFIC (Durations + Count) -->
+            <div id="sheet-flexible-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label class="form-label" style="margin-bottom: 0;">Duração estimada</label>
+                    <span id="sheet-duration-display" style="font-size: 13px; font-weight: 700; color: var(--primary-color);">30min</span>
+                </div>
+                <div class="filter-chips-row" style="margin-bottom: 16px;">
+                    <div class="filter-chip sheet-dur-chip" data-mins="15">15 min</div>
+                    <div class="filter-chip sheet-dur-chip selected" data-mins="30">30 min</div>
+                    <div class="filter-chip sheet-dur-chip" data-mins="45">45 min</div>
+                    <div class="filter-chip sheet-dur-chip" data-mins="60">1h</div>
+                    <div class="filter-chip sheet-dur-chip" data-mins="90">1h30</div>
+                    <div class="filter-chip sheet-dur-chip" data-mins="120">2h</div>
+                    <div class="filter-chip" id="sheet-dur-custom-btn" style="color: var(--secondary-color);">Personalizar...</div>
+                </div>
+
+                <!-- Execution Multiplier -->
+                <div class="card" style="padding: 14px 16px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h4 style="font-size: 14px; font-weight: 600;">Execuções da atividade</h4>
+                            <p id="sheet-total-dur-display" style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">1x 30min = 30min total</p>
+                        </div>
+                        <div class="stepper-box">
+                            <button type="button" class="stepper-btn" id="sheet-count-minus">-</button>
+                            <span class="stepper-val" id="sheet-count-val">1</span>
+                            <button type="button" class="stepper-btn" id="sheet-count-plus">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: FIXED COMMITMENT SPECIFIC -->
+            <div id="sheet-fixed-section" class="hidden">
+                <div style="display: flex; gap: 12px; margin-bottom: 10px;">
+                    <div style="flex: 1;" class="form-group">
+                        <label class="form-label">Início</label>
+                        <button type="button" class="time-picker-button" id="sheet-start-btn">08:00</button>
+                    </div>
+                    <div style="flex: 1;" class="form-group">
+                        <label class="form-label">Término</label>
+                        <button type="button" class="time-picker-button" id="sheet-end-btn">10:00</button>
+                    </div>
+                </div>
+                <div class="card" style="padding: 10px 14px; margin-bottom: 16px;">
+                    <span id="sheet-fixed-dur-badge" style="font-size: 13px; font-weight: 600; color: var(--secondary-color);">Duração: 2h</span>
+                </div>
+                <label class="form-label">Recorrência</label>
+                <div class="filter-chips-row" style="margin-bottom: 16px;">
+                    <div class="filter-chip sheet-rec-chip selected" data-rec="DAILY">Todos os dias</div>
+                    <div class="filter-chip sheet-rec-chip" data-rec="WEEKDAYS">Dias úteis</div>
+                    <div class="filter-chip sheet-rec-chip" data-rec="ONCE">Uma vez</div>
+                </div>
+            </div>
+
+            <!-- SECTION: HABIT / WEEKLY GOAL SPECIFIC -->
+            <div id="sheet-habit-section" class="hidden">
+                <div class="card" style="padding: 14px 16px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h4 style="font-size: 14px; font-weight: 600;">Meta semanal</h4>
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Frequência desejada</p>
+                        </div>
+                        <div class="stepper-box">
+                            <button type="button" class="stepper-btn" id="sheet-weekly-minus">-</button>
+                            <span class="stepper-val" id="sheet-weekly-target-val">3</span>
+                            <span style="font-size: 13px; color: var(--text-secondary);">vezes/sem</span>
+                            <button type="button" class="stepper-btn" id="sheet-weekly-plus">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional Description -->
+            <div class="form-group">
+                <label class="form-label" for="sheet-input-desc">Descrição opcional</label>
+                <input type="text" id="sheet-input-desc" class="input-field" placeholder="Ex: Detalhes ou metas específicas...">
+            </div>
+
+            <button class="btn-primary" id="sheet-btn-save" style="margin-top: 8px;">Salvar atividade</button>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- DELETE CONFIRMATION MODAL                                 -->
+    <!-- ========================================================= -->
+    <div id="delete-confirm-modal" class="modal-overlay hidden">
+        <div class="modal-dialog">
+            <div class="modal-icon" style="background-color: var(--error-container);">
+                <svg viewBox="0 0 24 24" style="fill: var(--error-color);"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            </div>
+            <h3 class="modal-title">Excluir atividade?</h3>
+            <p class="modal-body">Tem certeza de que deseja excluir esta atividade? Esta ação não pode ser desfeita.</p>
+            <div class="modal-actions">
+                <button class="btn-modal-cancel" id="modal-delete-cancel">Cancelar</button>
+                <button class="btn-modal-confirm" id="modal-delete-confirm" style="color: var(--error-color);">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Picker Modal -->
+    <div id="time-picker-modal" class="modal-overlay hidden">
+        <div class="modal-dialog">
+            <h3 class="modal-title" id="time-picker-title">Selecionar horário</h3>
+            <div class="time-picker-controls">
+                <!-- Hours Column -->
+                <div class="time-picker-col">
+                    <span class="col-label">Horas</span>
+                    <button class="tp-arrow-btn" id="tp-hour-plus" aria-label="Aumentar hora">
+                        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    </button>
+                    <div class="time-val-box" id="time-picker-hour-val">08</div>
+                    <button class="tp-arrow-btn" id="tp-hour-minus" aria-label="Diminuir hora">
+                        <svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg>
+                    </button>
+                </div>
+
+                <div class="time-colon">:</div>
+
+                <!-- Minutes Column -->
+                <div class="time-picker-col">
+                    <span class="col-label">Minutos</span>
+                    <button class="tp-arrow-btn" id="tp-min-plus" aria-label="Aumentar minuto">
+                        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    </button>
+                    <div class="time-val-box" id="time-picker-min-val">00</div>
+                    <button class="tp-arrow-btn" id="tp-min-minus" aria-label="Diminuir minuto">
+                        <svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-modal-cancel" id="tp-btn-cancel">Cancelar</button>
+                <button class="btn-modal-confirm" id="tp-btn-confirm">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL BOTTOM SHEET: AGENDAR ATIVIDADE (ETAPA 3)           -->
+    <!-- ========================================================= -->
+    <div id="schedule-entry-sheet" class="bottom-sheet-overlay hidden">
+        <div class="bottom-sheet-content">
+            <div class="bottom-sheet-header">
+                <h3 style="font-size: 18px; font-weight: 700;">Agendar atividade</h3>
+                <button class="btn-icon" id="sched-sheet-btn-close" aria-label="Fechar" style="width: 36px; height: 36px;">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+
+            <!-- 1. Escolher atividade cadastrada (Abas: Minhas Atividades vs Sugestões Rápidas) -->
+            <div style="display: flex; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--outline-color); padding-bottom: 8px;">
+                <button type="button" class="btn-outlined active" id="sched-tab-my-acts" style="flex: 1; padding: 8px 12px; font-size: 13px; font-weight: 700;">Minhas atividades</button>
+                <button type="button" class="btn-outlined" id="sched-tab-quick-sugg" style="flex: 1; padding: 8px 12px; font-size: 13px;">Sugestões rápidas</button>
+            </div>
+
+            <button type="button" class="btn-outlined" id="sched-btn-create-inline" style="width: 100%; margin-bottom: 12px; padding: 8px 12px; font-size: 13px; border-style: dashed; border-color: var(--primary-color); color: var(--primary-color); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <span>+ Criar nova atividade</span>
+            </button>
+
+            <label class="form-label">Escolha a atividade</label>
+            <div id="sched-activities-chips" class="filter-chips-row" style="margin-bottom: 16px;"></div>
+
+            <!-- Horários livres sugeridos (Etapa 4/5) -->
+            <div id="sched-smart-slots-container" style="margin-bottom: 16px;">
+                <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Quando você quer fazer essa atividade?</span>
+                    <span style="font-size: 11px; color: var(--text-secondary); font-weight: normal;">horários livres hoje</span>
+                </label>
+                <div id="sched-smart-slots-chips" class="filter-chips-row" style="margin-bottom: 6px;"></div>
+                <div id="sched-smart-slots-reason" style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;"></div>
+            </div>
+
+            <!-- 2. Horário de início -->
+            <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>2. Horário de início (ajuste manual)</span>
+            </label>
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px;">
+                <button type="button" class="time-picker-button" id="sched-time-picker-btn" style="flex: 1;">
+                    <span id="sched-time-display">09:00</span>
+                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                </button>
+            </div>
+
+            <!-- 3. Duração -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label class="form-label" style="margin-bottom: 0;">3. Duração</label>
+                <span id="sched-duration-display" style="font-size: 13px; font-weight: 700; color: var(--primary-color);">60 min</span>
+            </div>
+            <div class="filter-chips-row" style="margin-bottom: 16px;">
+                <div class="filter-chip sched-dur-chip" data-mins="15">15 min</div>
+                <div class="filter-chip sched-dur-chip" data-mins="30">30 min</div>
+                <div class="filter-chip sched-dur-chip" data-mins="45">45 min</div>
+                <div class="filter-chip sched-dur-chip selected" data-mins="60">1h</div>
+                <div class="filter-chip sched-dur-chip" data-mins="90">1h30</div>
+                <div class="filter-chip sched-dur-chip" data-mins="120">2h</div>
+            </div>
+
+            <!-- Feedback de Horário e Conflito -->
+            <div class="card" id="sched-feedback-card" style="padding: 12px; margin-bottom: 16px; border-color: var(--primary-color);">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" id="sched-feedback-icon" style="width: 18px; height: 18px; fill: var(--primary-color);"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    <span id="sched-feedback-text" style="font-size: 13px;">Horário: 09:00 às 10:00 (1h)</span>
+                </div>
+            </div>
+
+            <button class="btn-primary" id="sched-btn-confirm" style="margin-top: 8px;">Confirmar agendamento</button>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- COMPLETION PROMPT MODAL (ETAPA 3 & 4)                     -->
+    <!-- ========================================================= -->
+    <div id="completion-prompt-modal" class="modal-overlay hidden">
+        <div class="modal-dialog">
+            <div class="modal-icon" style="background-color: rgba(16, 185, 129, 0.15);">
+                <svg viewBox="0 0 24 24" style="fill: #10B981;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+            <h3 class="modal-title">Conseguiu terminar sua atividade?</h3>
+            <p class="modal-body" id="completion-modal-desc">Como foi a execução da tarefa?</p>
+
+            <!-- Contextual Progress Card (Etapa 4) -->
+            <div id="completion-context-box" class="card hidden" style="background-color: rgba(99, 102, 241, 0.1); border: 1px solid var(--primary-color); padding: 10px 12px; margin-top: 12px; text-align: left;">
+                <span style="font-size: 11px; color: var(--text-secondary);">Progresso atual: <strong id="comp-ctx-current">-</strong></span>
+                <div style="font-size: 13px; font-weight: 700; color: var(--primary-color); margin-top: 2px;">Deseja avançar para o <span id="comp-ctx-next">-</span>?</div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; width: 100%; gap: 8px; margin-top: 16px;">
+                <button class="btn-primary hidden" id="btn-complete-advance" style="background-color: var(--primary-color); font-weight: 700;">Concluir e avançar</button>
+                <button class="btn-primary" id="btn-complete-yes" style="background-color: #10B981; border: none;">Sim, concluí!</button>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-outlined" id="btn-complete-still" style="flex: 1; font-size: 12px; padding: 10px 4px;">Ainda fazendo</button>
+                    <button class="btn-outlined" id="btn-complete-postpone" style="flex: 1; font-size: 12px; padding: 10px 4px;">Adiar</button>
+                </div>
+                <button class="btn-modal-cancel" id="btn-complete-not-done" style="color: var(--error-color); padding: 8px; font-size: 13px;">Não consegui fazer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- POSTPONE MODAL (ETAPA 3)                                  -->
+    <!-- ========================================================= -->
+    <div id="postpone-entry-modal" class="modal-overlay hidden">
+        <div class="modal-dialog">
+            <div class="modal-icon" style="background-color: rgba(245, 158, 11, 0.15);">
+                <svg viewBox="0 0 24 24" style="fill: #F59E0B;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+            </div>
+            <h3 class="modal-title">Reagendar atividade?</h3>
+            <p class="modal-body" id="postpone-modal-desc">Seu planejamento pode mudar de forma natural. O que deseja fazer?</p>
+
+            <div style="display: flex; flex-direction: column; width: 100%; gap: 8px; margin-top: 16px;">
+                <button class="btn-primary" id="btn-postpone-tomorrow">Mover para amanhã</button>
+                <button class="btn-outlined" id="btn-postpone-keep">Manter pendente hoje</button>
+                <button class="btn-modal-cancel" id="btn-postpone-cancel-entry" style="color: var(--error-color); padding: 8px; font-size: 13px;">Cancelar ocorrência</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL BOTTOM SHEET: PROPOSTA DE ROTINA AUTOMÁTICA (ETAPA 4) -->
+    <!-- ========================================================= -->
+    <div id="proposal-review-modal" class="bottom-sheet-overlay hidden">
+        <div class="bottom-sheet-content" style="max-height: 85vh;">
+            <div class="bottom-sheet-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="quick-action-icon" style="margin: 0; width: 34px; height: 34px; background-color: rgba(99, 102, 241, 0.15);">
+                        <svg viewBox="0 0 24 24" style="fill: var(--primary-color); width: 18px; height: 18px;"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin: 0;">Proposta de Rotina</h3>
+                        <span style="font-size: 12px; color: var(--primary-color); font-weight: 600;">LifeFlow Inteligente</span>
+                    </div>
+                </div>
+                <button class="btn-icon" id="proposal-btn-close" aria-label="Fechar" style="width: 36px; height: 36px;">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+
+            <!-- Explicação do algoritmo -->
+            <div class="card" style="padding: 12px; margin-bottom: 14px; background-color: var(--surface-variant);">
+                <div style="display: flex; align-items: flex-start; gap: 8px;">
+                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: var(--primary-color); flex-shrink: 0; margin-top: 2px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <p id="proposal-explanation-text" style="font-size: 12px; color: var(--text-primary); margin: 0; line-height: 16px;">
+                        Distribuímos suas tarefas respeitando seus compromissos fixos e intervalos de respiro.
+                    </p>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; font-weight: 600;">
+                    <span id="proposal-count-text">Itens propostos: 0</span>
+                    <span id="proposal-dur-text" style="color: var(--primary-color);">0h</span>
+                </div>
+            </div>
+
+            <!-- Lista de itens propostos -->
+            <label class="form-label">Itens distribuídos para hoje:</label>
+            <div id="proposal-items-list" class="timeline-list" style="margin-bottom: 20px; max-height: 280px; overflow-y: auto;"></div>
+
+            <!-- Ações: Aprovar / Descartar -->
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-primary" id="btn-proposal-approve" style="flex: 1.4; padding: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: white;"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                    <span>Aprovar Rotina</span>
+                </button>
+                <button class="btn-outlined" id="btn-proposal-discard" style="flex: 1; padding: 14px;">Descartar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL: MODO FOCO SUAVE (ETAPA 6 / SEÇÃO 6)                -->
+    <!-- ========================================================= -->
+    <div id="modal-focus-session" class="modal-overlay hidden">
+        <div class="modal-dialog" style="max-width: 360px;">
+            <div class="modal-icon" style="background-color: rgba(46, 125, 50, 0.15);">
+                <svg viewBox="0 0 24 24" style="fill: var(--primary-color);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+            </div>
+            <h3 class="modal-title" id="focus-modal-title">Meu Momento de Foco</h3>
+            <p class="modal-body" id="focus-modal-subtitle">Atenção plena e tranquilidade</p>
+
+            <div style="margin: 20px 0; text-align: center;">
+                <div style="font-size: 42px; font-weight: 800; color: var(--primary-color); font-family: monospace;" id="focus-modal-timer">25:00</div>
+                <span class="badge" id="focus-modal-status-badge" style="background-color: rgba(16, 185, 129, 0.2); color: #047857; font-weight: 700;">Em foco</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; width: 100%; gap: 8px;">
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-outlined" id="focus-modal-btn-pause" style="flex: 1; padding: 10px;">Pausar</button>
+                    <button class="btn-outlined" id="focus-modal-btn-extend" style="flex: 1; padding: 10px;">+15 min</button>
+                </div>
+                <button class="btn-primary" id="focus-modal-btn-done" style="background-color: #10B981; border: none; padding: 10px;">Concluir momento de foco</button>
+                <button class="btn-modal-cancel" id="focus-modal-btn-close">Fechar janela</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL: EXTENSÃO DE TEMPO ("AINDA ESTOU FAZENDO") (ETAPA 6) -->
+    <!-- ========================================================= -->
+    <div id="modal-time-extension" class="modal-overlay hidden">
+        <div class="modal-dialog">
+            <div class="modal-icon" style="background-color: rgba(99, 102, 241, 0.15);">
+                <svg viewBox="0 0 24 24" style="fill: var(--primary-color);"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+            </div>
+            <h3 class="modal-title">Precisa de mais tempo?</h3>
+            <p class="modal-body" id="ext-modal-task-title">Atividade em andamento</p>
+
+            <div style="display: flex; gap: 8px; margin: 14px 0;">
+                <button class="btn-outlined ext-quick-btn" data-min="10" style="flex: 1; padding: 8px;">+10 min</button>
+                <button class="btn-outlined ext-quick-btn" data-min="15" style="flex: 1; padding: 8px; border-color: var(--primary-color); background: var(--primary-container);">+15 min</button>
+                <button class="btn-outlined ext-quick-btn" data-min="30" style="flex: 1; padding: 8px;">+30 min</button>
+            </div>
+
+            <div id="ext-conflict-warning" class="card hidden" style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error-color, #ef4444); padding: 8px 12px; margin-bottom: 12px; text-align: left;">
+                <span style="font-size: 11px; color: var(--error-color, #ef4444);">⚠️ Essa extensão sobrepõe a próxima tarefa. O início dela será ajustado suavemente.</span>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-modal-cancel" id="ext-btn-cancel">Cancelar</button>
+                <button class="btn-modal-confirm" id="ext-btn-confirm">Confirmar extensão</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL: RESPIRAÇÃO GUIADA (FASE B4.3)                      -->
+    <!-- ========================================================= -->
+    <div id="modal-breathe" class="modal-overlay hidden">
+        <div class="modal-dialog" style="max-width: 360px; text-align: center;">
+            <h3 class="modal-title" style="margin-top: 8px;">Pausa para Respirar</h3>
+            <p class="modal-body">Alinhe seu ritmo e encontre sua paz interior.</p>
+
+            <div class="breathe-ring">
+                <div class="breathe-ring-inner">🍃</div>
+            </div>
+
+            <div style="font-size: 16px; font-weight: 700; color: var(--primary-color); margin-bottom: 20px;" id="breathe-phase-text">
+                Inspire profundamente... (4s)
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-outlined" id="breathe-btn-toggle" style="flex: 1; padding: 10px;">Pausar</button>
+                <button class="btn-primary" id="breathe-btn-close" style="flex: 1; padding: 10px;">Concluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts (no modules, plain JS for full file:// compatibility) -->
+    <script src="js/storage.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
