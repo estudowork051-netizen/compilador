@@ -1,0 +1,125 @@
+name: Android CI - Build & Test
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build & Test APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Install Image Processing Dependencies
+        run: |
+          python3 -m pip install --break-system-packages pillow || true
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+          cache-read-only: false
+
+      - name: Ensure Gradle Wrapper jar
+        run: |
+          if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
+            echo "Generating Gradle wrapper jar..."
+            gradle wrapper --gradle-version 8.7 --distribution-type bin
+          fi
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Inspect Gradle Projects and Tasks
+        run: |
+          ./gradlew --no-daemon projects
+          ./gradlew --no-daemon :app:tasks
+
+      - name: Process Custom Branding Assets
+        run: |
+          PROCESSED=false
+          for script in app/src/main/assets/branding/convert_branding_icons.sh \
+                        workspace/app/src/main/assets/branding/convert_branding_icons.sh; do
+            if [ -f "$script" ]; then
+              echo "Processing branding assets using $script..."
+              chmod +x "$script"
+              bash "$script"
+              PROCESSED=true
+              break
+            fi
+          done
+          if [ "$PROCESSED" = false ]; then
+            echo "Branding script not found in standard paths; searching..."
+            FOUND_SCRIPT=$(find . -name "convert_branding_icons.sh" 2>/dev/null | head -n 1 || true)
+            if [ -n "$FOUND_SCRIPT" ]; then
+              chmod +x "$FOUND_SCRIPT"
+              bash "$FOUND_SCRIPT"
+            fi
+          fi
+
+      - name: Run Unit Tests
+        run: ./gradlew --no-daemon :app:test
+
+      - name: Build Debug APK
+        run: ./gradlew --no-daemon :app:assembleDebug
+
+      - name: Build Release APK
+        run: ./gradlew --no-daemon :app:assembleRelease
+
+      - name: Locate Generated APKs
+        run: |
+          echo "=== Locating all generated APK files ==="
+          find . -type f -name "*.apk" -print
+
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unit-Test-Reports
+          path: |
+            workspace/app/build/reports/tests/
+            app/build/reports/tests/
+          if-no-files-found: ignore
+
+      - name: Upload APK Debug
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Viora-Debug
+          path: |
+            workspace/app/build/outputs/apk/debug/*.apk
+            app/build/outputs/apk/debug/*.apk
+          if-no-files-found: ignore
+
+      - name: Upload APK Release
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Viora-Release
+          path: |
+            workspace/app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/release/*.apk
+          if-no-files-found: ignore

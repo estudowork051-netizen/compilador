@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Viora Mindful Balance Ambient Ring (Safe zone ~72dp centered at 54,54) -->
+    <path
+        android:strokeColor="#7EAA8B"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M36,44 A24,24 0 1,1 54,78 A24,24 0 0,1 32,54" />
+
+    <!-- Viora Emblem: Stylized Organic 'V' Flow -->
+    <path
+        android:fillColor="#A8CEB3"
+        android:pathData="M40,36 C42,48 48,64 54,72 C60,64 66,48 68,36 C64,42 58,54 54,60 C50,54 44,42 40,36 Z" />
+
+    <!-- Viora Sprout of Life (Central vitality stem) -->
+    <path
+        android:strokeColor="#1B3022"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M54,40 L54,64" />
+
+    <!-- Organic Mindfulness Petal (Left Harmony Wing) -->
+    <path
+        android:fillColor="#7EAA8B"
+        android:pathData="M54,46 C48,40 40,44 42,50 C46,52 50,50 54,46 Z" />
+
+    <!-- Organic Mindfulness Petal (Right Clarity Wing) -->
+    <path
+        android:fillColor="#E3F0E6"
+        android:pathData="M54,46 C60,40 68,44 66,50 C62,52 58,50 54,46 Z" />
+
+    <!-- Viora Focus Point (Present moment center) -->
+    <path
+        android:fillColor="#E3F0E6"
+        android:pathData="M54,34 A3,3 0 1,0 54,40 A3,3 0 1,0 54,34 Z" />
+</vector>
